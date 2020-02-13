@@ -2,35 +2,52 @@
 <html lang="pt-BR">
 
 <head>
-
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Adicionar Produto</title>
 
 
 <body>
 
-<H1>Adicionar Produto</H1>
+    <div class="nav-container">
+        <nav>
+            <a class="button-style nav-item" href="index.html">G</a>
+            <span class="menu-dropdown nav-item button-style">Menu ▾
+                <ul class="menu-list">
+                    <li><a href="controle-de-estoque.html">Controle de Estoque</a></li>
+                    <li><a href="adicionar-produto.html">Adicionar Produto</a></li>
+                    <li><a href="funcionarios.html">Funcionários</a></li>
+                </ul>
+            </span>
 
-<Form>
-    <label for="foto">Foto</label>
-    <input type="file" name="foto" id="foto"><br>
+        </nav>
+    </div>
 
-    <label for="desc">Descrição</label>
-    <input type="text" name="desc" id="desc"><br>
+    <header>
+        <h1>Adicionar Produto</h1>
+        <p>-------- Sistema Interno --------</p>
+    </header>
 
-    <label for="price">Preço</label>
-    <input type="number" name="price" id="price"><br>
+    <div class="page">
+        <Form class="page-content-frame">
+            <label for="foto">Foto</label>
+            <input type="file" name="foto" id="foto"><br>
 
-    <label for="amount">Qantidade</label>
-    <input type="number" name="amount" id="amount"><br>
+            <label for="desc">Descrição</label>
+            <input type="text" name="desc" id="desc"><br>
 
-    <button type="submit" >Enviar</button>
-</Form>
+            <label for="price">Preço</label>
+            <input type="number" name="price" id="price"><br>
 
-<br>
-<br>
-<br>
+            <label for="amount">Qantidade</label>
+            <input type="number" name="amount" id="amount"><br>
 
-<a href="index.html">Voltar</a>
+            <button class="button-style"" type="submit">Enviar</button>
+        </Form>
+    </div>
+
+    <footer>
+        <a class="button-style" href="index.html">Voltar à Página Inicial</a>
+    </footer>
 
 </body>
 
