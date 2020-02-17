@@ -151,6 +151,8 @@ td button:hover {
 }
 
 #back-button {
+    display: block;
+    margin: 100px auto;
     background-color: white;
     width: 100px;
     height: 20px;
@@ -162,6 +164,10 @@ td button:hover {
 
 #back-button:hover {
     background-color: #635a3d
+}
+
+.button-container a {
+    text-decoration: none;
 }
 
 div input{
