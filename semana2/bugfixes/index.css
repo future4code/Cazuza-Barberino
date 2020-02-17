@@ -7,7 +7,6 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -73,8 +72,14 @@ div img {
     color: white;
 }
 
-#container-de-descricao>ol {
+#container-de-descricao ol {
     padding: 15px 0px;
+}
+
+#description-box{
+    padding-top: 100px;
+    margin: 0 auto;
+    width: 400px;
 }
 
 #container-para-comprar {
