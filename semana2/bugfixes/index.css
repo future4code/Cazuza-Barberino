@@ -7,6 +7,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -81,9 +82,14 @@ div img {
 }
 
 #container-para-comprar>p {
+    display: block;
     color: #c44f00;
     padding: 100px 0;
     font-size: 60px;
+}
+
+#container-para-comprar > a{
+    display: block;
 }
 
 
