@@ -163,3 +163,8 @@ td button:hover {
 #back-button:hover {
     background-color: #635a3d
 }
+
+div input{
+    border: none;
+    border-bottom: 1px solid black;
+}
