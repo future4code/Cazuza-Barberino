@@ -76,10 +76,19 @@ div img {
     padding: 15px 0px;
 }
 
+#container-de-descricao li {
+    text-align: justify;
+}
+
+#container-de-descricao li span {
+    display: block;
+    text-align: center;
+}
+
 #description-box{
     padding-top: 100px;
     margin: 0 auto;
-    width: 400px;
+    width: 260px;
 }
 
 #container-para-comprar {
