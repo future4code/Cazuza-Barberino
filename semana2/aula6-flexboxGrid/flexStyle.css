@@ -1,0 +1,108 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    color: white;
+}
+
+.header{
+    background-color: rgb(56, 202, 73);
+}
+
+.menu{
+    background-color: rgb(254, 218, 49);
+}
+
+.content1{
+    background-color: rgb(237, 37, 188);
+}
+
+.content2{
+    background-color: rgb(18, 119, 214);
+}
+
+.image{
+    background-color: rgb(252, 67, 62);
+}
+
+.extra{
+    background-color: rgb(42, 253, 119);
+}
+
+.footer{
+    background-color: rgb(175, 34, 198);
+}
+
+html, body{
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+.nav{
+    display: flex;
+}
+
+.header , .menu{
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.header{
+    flex: 1;
+}
+
+.menu{
+    flex: 2;
+}
+
+.content1{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-box{
+    display: flex;
+    justify-content: space-between;
+}
+
+.image-extra{
+    display: flex;
+    flex-direction: column;
+    min-width: 25%;
+}
+
+.image{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.extra{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 250px;
+    min-width: 50%;
+}
+
+.footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50px;
+}
