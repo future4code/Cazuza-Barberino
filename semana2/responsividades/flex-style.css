@@ -1,0 +1,118 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body, html{
+    height: 100%;
+}
+
+.content-container{
+    flex: 1;
+    height: 100%;
+    background-color: hotpink;
+}
+
+.sidebard{
+    display: none;
+    min-width: 200px;
+    height: 100%;
+    background-color: grey;
+    position: fixed;
+}
+
+.sidebard p{
+    margin-top: 10px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+.sidebard ul{
+    margin-left: 20px;
+    list-style-type: disc;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.header{
+    background-color: red;
+    min-height: 100px;
+}
+
+.trio{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.item{
+    border: 1px solid black;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    width: 100%;
+    height: 100px;
+}
+
+.blue-ones{
+    background-color: blue;
+}
+
+.yellow-ones{
+    background-color: yellow;
+}
+
+.green-ones{
+    background-color: green;
+}
+
+.black-ones{
+    background-color: black;
+    color:  white;
+}
+
+.white-ones{
+    background-color: white;
+}
+
+
+
+@media only screen and (min-width: 601px) and (max-width:1200px) {
+    .blue-ones,.yellow-ones, .black-ones, .white-ones:nth-child(1), .white-ones:nth-child(2){
+        width: 50%;
+        flex: 1;
+    }
+
+    .black-ones{
+        height: 400px;
+    }
+  }
+  
+  /* Tablet Styles */
+  @media only screen and (min-width: 901px) {
+    .sidebard{
+        display: inline;;
+    }
+
+    .content-container{
+        margin-left: 200px;
+    }
+
+  }
+  
+  /* Desktop Styles */
+  @media only screen and (min-width: 1201px) {
+    .item{
+        width: 33%;
+        flex: 1;
+    }
+
+    .black-ones{
+        height: 400px;
+        width: 50%;
+        flex: 1;
+    }
+  }
