@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Portifólio</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $("#footer").load("footer.html");
+            $("#header").load("header.html");
+        });
+    </script>
+</head>
+
+<body>
+    <header id="header" ></header>
+
+    <div class="page-content">
+
+        <div class="intro">
+            <h1>Game Designer</h1>
+            <h2>
+                I will design and code to bring your dream game to life.
+            </h2>
+        </div>
+
+        <h3 id="works" class="past-work-title">Recent Work</h3>
+
+        <div class="past-work">
+            <a href="">
+                <img src="images/snake-logo.png" alt="Snakes n' Bullets">
+            </a>
+            <a href="">
+                <img src="images/find-logo.png" alt="Find The Edge">
+            </a>
+        </div>
+
+    </div>
+
+    <footer id="footer"></footer>
+</body>
+
+</html>

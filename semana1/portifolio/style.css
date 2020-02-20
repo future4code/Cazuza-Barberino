@@ -1,0 +1,209 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+html, body{
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+#header, #footer{
+    display: flex;
+    flex: none;
+}
+
+header{
+    height: 50px;
+    background-color: slateblue;
+    color: slateblue;
+}
+
+nav{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a > span{
+    margin-left: 0px;
+}
+
+nav a{
+    margin-left: 10px;
+    text-decoration: none;
+    color: white;
+    font-weight: bolder;
+    font-size: 20px;
+    padding: 2px 5px;
+
+}
+
+nav > span{
+    margin-right: 20px;
+    position: relative;
+}
+
+.menu-dropdown{
+    position: relative;
+    cursor: pointer;
+}
+
+.menu-list{
+    display: none;
+    position: absolute;
+    top: 34px;
+    right: -5px;
+    text-align: right;
+    list-style: none;
+    background-color:  slateblue;
+    padding: 10px 10px 5px 0;
+    border-bottom: 10px solid slateblue;
+    border-radius: 10px;
+    width: 180px;
+}
+
+.menu-list li{
+    margin-top: 15px;
+}
+
+.menu-list li a{
+    color: white;
+    text-decoration: none;
+}
+
+.menu-dropdown:hover .menu-list{
+    display: flex;
+    flex-direction: column;
+}
+
+.intro{
+    margin-top: 100px;
+    text-align: center;
+    color: white;
+}
+
+.page-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    background-color: salmon;
+}
+
+.contact-form{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: salmon;
+}
+
+.contact-form button
+{
+    margin-top: 20px;
+}
+
+.contact-form label{
+    color:  white;
+    font-weight: bold;
+}
+
+.about-me-content{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.about-me-article{
+    width: 500px;
+}
+
+.about-me-article img{
+    float: left;
+    width: 150px;
+    height: 165px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    
+}
+
+.about-me-article p{
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.past-work-title{
+    margin-top: 100px;
+    text-align: center;
+    color: white;
+}
+
+.past-work{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.past-work img{
+    width: 400px;
+    height: 200px;
+    margin: 20px;
+    border: 0px;
+}
+
+.past-work img:hover{
+    border: 5px solid black;
+}
+
+footer{
+    height: 150px;
+    background-color: slateblue;
+    width: 100%;
+
+    justify-content: right;
+    align-items: center;
+}
+
+.footer-links{
+    margin-right: 20px;
+}
+
+.footer-links img{
+    width: 50px;
+    border: none;
+    border-radius: 100px;
+}
+
+.footer-links img:hover{
+    border: 3px solid white;
+}
+
+.footer-links a{
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.button-style{
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border: 3px solid white;
+    border-radius: 10px;
+    padding: 2px 5px
+}
+
+.button-style:hover{
+    background-color: white;
+    color: inherit;
+}
+
