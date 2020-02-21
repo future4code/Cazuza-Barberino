@@ -1,0 +1,142 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+*:focus{
+    outline: 0;
+}
+
+html, body{
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+header{
+    display: flex;
+    flex: none;
+    justify-content: space-between;
+    align-items: center;
+
+    min-height: 50px;
+    background-color: aqua;
+}
+
+header > h1{
+    color: black;
+    margin: 10px;
+}
+
+header form{
+    margin: 20px;
+}
+
+header input{
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    border-bottom: 2px solid black;
+    width: 250px;
+}
+
+header button{
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+header button:hover{
+    cursor: pointer;
+}
+
+header img{
+    width: 20px;
+}
+
+main{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    background-color: aquamarine;
+}
+
+.video-section{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: center;
+    margin: 0 20px;
+    margin-bottom: 20px;
+    flex: 1;
+    max-width: 1600px;
+}
+
+.video-link{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 24%;
+    margin-top: 10px;
+}
+
+.video-link a{
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    flex: 1;
+}
+
+.video-link p{
+    position: absolute;
+    bottom: 0px;
+
+    background-color: rgba(1, 1, 1, .5);
+    color: white;
+    font-weight: bold;
+    width: 100%;
+}
+
+.video-link video{
+    width: 100%;
+}
+
+.video-details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    flex: 1;
+    max-width: 1200px;
+}
+
+.video-details video{
+    margin-top: 20px;
+    width: 100%;
+}
+
+
+footer{
+    display: flex;
+    flex: none;
+    justify-content: center;
+    align-items: center;
+    background-color: aqua;
+    height: 50px;
+}
+
+@media only screen and (max-width:900px) {
+
+    header{
+        flex-direction: column;
+    }
+
+    .video-link{
+        width: 100%;
+        margin-top: 20px;
+    }
+
+}
