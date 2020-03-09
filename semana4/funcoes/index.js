@@ -42,25 +42,42 @@
 //   return "O ano " + ano + " pertence ao século " + RomanConverter(sec);
 // };
 
-// let nums = [10, 5, 1];
-// let romanNums = ["X", "V", "I"];
+// let nums = [1000, 500, 100, 50, 10, 5, 1];
+// let romanSymbols = ["M", "D", "C", "L", "X", "V", "I"];
 
 // const RomanConverter = num => {
+//   if (num > 3999 || num < 0) return null;
+
 //   let romanNum = "";
 
-//   for (let i = 0; i < nums.length; i++) {
-//     if (i !== 0 && num === nums[i - 1] - 1) {
-//       romanNum += "I" + romanNums[i - 1];
-//       break;
-//     } else {
-//       let na = ~~(num / nums[i]);
-//       for (let j = 0; j < na; j++) romanNum += romanNums[i];
-//       num %= nums[i];
+//   for (let i = 0; i < 4; i++) {
+//     let temp = ~~(num / nums[2 * i]);
+
+//     switch (temp) {
+//       case 4:
+//         romanNum += romanSymbols[2 * i] + romanSymbols[2 * i - 1];
+//         break;
+//       case 9:
+//         romanNum += romanSymbols[2 * i] + romanSymbols[2 * i - 2];
+//         break;
+//       default:
+//         if (temp > 5) {
+//           romanNum += romanSymbols[2 * i - 1];
+//           temp -= 5;
+//         }
+//         for (let j = 0; j < temp; j++) romanNum += romanSymbols[2 * i];
+//         break;
 //     }
+
+//     num %= nums[2 * i];
 //   }
 
 //   return romanNum;
 // };
+
+// console.log(RomanConverter(789));
+
+// for (let i = 1; i < 20; i++) console.log(RomanConverter(i));
 
 // 6)
 
