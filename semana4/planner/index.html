@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <div class="menu">
+        <form onsubmit="AddToList(); return false">
+          <label for="name">Nome da Tarefa</label>
+          <input type="text" name="name" id="name" autocomplete="off" required />
+          <label for="date">Dia</label>
+          <select name="date" id="date">
+            <option value="0">Segunda</option>
+            <option value="1">Terça</option>
+            <option value="2">Quarta</option>
+            <option value="3">Quinta</option>
+            <option value="4">Sexta</option>
+            <option value="5">Sábado</option>
+            <option value="6">Domingo</option>
+          </select>
+          <label for="hour">Hora</label>
+          <input
+            type="number"
+            name="hour"
+            id="hour"
+            min="0"
+            max="23"
+            step="1"
+            required
+          />
+          <button type="submit">Enviar</button>
+        </form>
+
+        <button class="clear-button" onclick="ClearList()">Clear List</button>
+      
+      </div>
+    </header>
+
+    <div class="menu-btn" onclick="ToggleMenu(this)">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
+
+    <main rule="main">
+      <table>
+        <tr>
+          <th></th>
+          <th>Segunda</th>
+          <th>Terça</th>
+          <th>Quarta</th>
+          <th>Quinta</th>
+          <th>Sexta</th>
+          <th>Sábado</th>
+          <th>Domingo</th>
+        </tr>
+      </table>
+    </main>
+  </body>
+</html>
