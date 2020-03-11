@@ -1,4 +1,6 @@
 
+let postForm = document.getElementById("post-form");
+let postArea = document.getElementById("post-area");
 
 let postList = [];
 
@@ -19,4 +21,14 @@ const NewPost = () =>{
     postList.push(new Post(title, author, content));
 
     console.log(postList);
+}
+
+const GoToPosts = () =>{
+    postForm.style.display = "none";
+    postArea.style.display = "flex";
+}
+
+const GoToCreatePosts = () =>{
+    postForm.style.display = "flex";
+    postArea.style.display = "none";
 }

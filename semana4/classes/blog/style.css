@@ -4,9 +4,62 @@
     box-sizing: border-box;
 }
 
-form{
+body, html{
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+header{
+    height: 100px;
+    width: 100%;
+    flex: none;
+    border: 1px solid black;
+}
+
+nav{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.nav-btn{
+    cursor: pointer;
+}
+
+
+main{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#post-form{
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+#post-form label, #post-form button{
+    margin-top: 10px;
+}
+
+#post-form input, #post-form textarea{
+    margin-top: 5px;
+}
+
+#post-area {
+    display: none;
+    width: 100%;
+    height: 100%;
+    border: 1px solid red;
 }
