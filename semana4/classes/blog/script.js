@@ -1,4 +1,7 @@
 
+
+let postList = [];
+
 class Post{
     constructor(title, author, content){
         this.title = title;
@@ -13,6 +16,7 @@ const NewPost = () =>{
     let author = document.getElementById("author").value;
     let content = document.getElementById("content").value;
 
-    let post = new Post(title, author, content);
-    
+    postList.push(new Post(title, author, content));
+
+    console.log(postList);
 }
