@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <h1>Controlador de Despesas</h1>
+      <nav>
+        <div onclick="GoToSection(0)">Cadastrar de Despesa</div>
+        <div onclick="GoToSection(1)">Despesas Detalhadas</div>
+        <div onclick="GoToSection(2)">Extrato</div>
+      </nav>
+    </header>
+
+    <main rule="main">
+      <div id="ctr-desp" class="section">
+        <h2>Cadastrar despesa</h2>
+        <form onsubmit="AddDesp(); return false;">
+          <label for="val">Valor</label>
+          <input type="number" name="val" id="val" min="1" step="1" required />
+          <label for="type">Tipo</label>
+          <select name="type" id="type">
+            <option value="Casa">Casa</option>
+            <option value="Festas">Festas</option>
+            <option value="Viagem">Viagem</option>
+            <option value="Alimentação">Alimentação</option>
+          </select>
+          <label for="desc">Descrição</label>
+          <input type="text" name="desc" id="desc" required />
+          <button onclick="">Cadastrar Despesa</button>
+        </form>
+      </div>
+
+      <div id="desp-details" class="section">
+        <h2>Despesas Detalhadas</h2>
+        <form onsubmit="Filter(); return false">
+          <label for="filter-type"></label>
+          <select name="filter-type" id="filter-type">
+            <option value="Casa">Casa</option>
+            <option value="Festas">Festas</option>
+            <option value="Viagem">Viagem</option>
+            <option value="Alimentação">Alimentação</option>
+          </select>
+          <label for="min-val">Valor Mínimo</label>
+          <input
+            type="number"
+            name="min-val"
+            id="min-val"
+            min="0"
+            step="1"
+            required
+            value="0"
+          />
+          <label for="max-val">Valor Máximo</label>
+          <input
+            onchange="UpdateMinVal()"
+            type="number"
+            name="max-val"
+            id="max-val"
+            min="1"
+            step="1"
+            required
+          />
+          <button type="submit">Filtrar</button>
+        </form>
+        <button onclick="ClearFilter()">Limpar Filtros</button>
+        <button onclick="Sort()">Ordenar</button>
+        <div id="desp-list"></div>
+      </div>
+
+      <div id="extrato" class="section">
+        <h2>Extrato</h2>
+        <h3>Valor Total:</h3>
+        <p id="extrato-val"></p>
+      </div>
+    </main>
+  </body>
+</html>
