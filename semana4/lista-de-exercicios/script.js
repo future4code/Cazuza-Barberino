@@ -225,23 +225,49 @@ let pessoas = [
   { nome: "Artur", idade: 89 }
 ];
 
-
 //a)
 
-const AdultsOnly = arr =>{
-    return arr.filter(pessoa =>{
-        if(pessoa.idade >= 20) return true;
-        return false;
-    });
-}
+const adultsOnly = arr => {
+  return arr.filter(pessoa => {
+    if (pessoa.idade >= 20) return true;
+    return false;
+  });
+};
 
-console.log(AdultsOnly(pessoas));
+// console.log(AdultsOnly(pessoas));
 
-const ChildrenOnly = arr =>{
-    return arr.filter(pessoa =>{
-        if(pessoa.idade < 20) return true;
-        return false;
-    });
-}
+//b)
 
-console.log(ChildrenOnly(pessoas));
+const childrenOnly = arr => {
+  return arr.filter(pessoa => {
+    if (pessoa.idade < 20) return true;
+    return false;
+  });
+};
+
+// console.log(ChildrenOnly(pessoas));
+
+// 2)
+
+const array2 = [1, 2, 3, 4, 5, 6];
+
+// a)
+
+const newArray = array2.map(value => {
+  return value * 2;
+});
+
+// b)
+
+const newArray2 = array2.map(value => {
+  return `${value * 3}`;
+});
+
+// c)
+
+const newArray3 = array2.map(value => {
+  return `${value} é ${value % 2 == 0 ? "par" : "impar"}`;
+});
+
+// 3)
+
