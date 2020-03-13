@@ -119,13 +119,17 @@ const Logica5 = (num1, num2) => {
 let array = [5, 1, 4, 2, 3];
 
 const Funcoes1 = arr => {
-  for (let i = 0; i < arr.length; i++)
-    for (let j = i + 1; j < arr.length; j++)
-      if (arr[i] < arr[j]) {
-        let temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-      }
+  //   for (let i = 0; i < arr.length; i++)
+  //     for (let j = i + 1; j < arr.length; j++)
+  //       if (arr[i] < arr[j]) {
+  //         let temp = arr[i];
+  //         arr[i] = arr[j];
+  //         arr[j] = temp;
+  //       }
+
+  arr.sort((a, b) => {
+    return b - a;
+  });
 
   console.log("O segundo maior numero é: ", arr[1]);
   console.log("O segundo menor numero é: ", arr[arr.length - 2]);
@@ -270,4 +274,34 @@ const newArray3 = array2.map(value => {
 });
 
 // 3)
+
+const pessoas2 = [
+  { nome: "Paula", idade: 12, altura: 1.8 },
+  { nome: "João", idade: 20, altura: 1.3 },
+  { nome: "Pedro", idade: 15, altura: 1.9 },
+  { nome: "Luciano", idade: 22, altura: 1.8 },
+  { nome: "Artur", idade: 10, altura: 1.2 },
+  { nome: "Soter", idade: 70, altura: 1.9 }
+];
+
+//a )
+
+const pessoasComPermissao = pessoas2.filter(pessoa => {
+  if (pessoa.altura <= 1.5 || pessoa.idade > 59 || pessoa.idade < 15)
+    return false;
+
+  return true;
+});
+
+// b)
+
+const pessoasSemPermissao = pessoas2.filter(pessoa => {
+  if (pessoa.altura <= 1.5 || pessoa.idade > 59 || pessoa.idade < 15)
+    return true;
+
+  return false;
+});
+
+// 4)
+
 
