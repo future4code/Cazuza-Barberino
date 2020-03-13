@@ -156,7 +156,16 @@ let funcaoBolada = function(){
 
 // 2)
 
+const criarRetângulo = (lado1, lado2) =>{
+    return({
+        lado1: lado1,
+        lado2: lado2,
+        perimetro: (2 * (lado1 + lado2)),
+        area: lado1 * lado2
+    });
+}
 
+console.log(criarRetângulo(4, 8));
 
 
 
