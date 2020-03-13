@@ -201,16 +201,47 @@ let filme = {
 // 4)
 
 let pessoa = {
-    nome: "Cazuza",
-    idade: "99",
-    email: "no@gmail.com",
-    endereco: "r. dafuq"
+  nome: "Cazuza",
+  idade: "99",
+  email: "no@gmail.com",
+  endereco: "r. dafuq"
+};
+
+const anonimizarPessoa = person => {
+  return {
+    ...person,
+    nome: "ANÔNIMO"
+  };
+};
+
+// FUNCOES DE ARRAY
+
+//1)
+
+let pessoas = [
+  { nome: "Pedro", idade: 20 },
+  { nome: "João", idade: 10 },
+  { nome: "Paula", idade: 12 },
+  { nome: "Artur", idade: 89 }
+];
+
+
+//a)
+
+const AdultsOnly = arr =>{
+    return arr.filter(pessoa =>{
+        if(pessoa.idade >= 20) return true;
+        return false;
+    });
 }
 
-const anonimizarPessoa = person =>{
-    return({
-        ...person,
-        nome: "ANÔNIMO"
-    })
+console.log(AdultsOnly(pessoas));
+
+const ChildrenOnly = arr =>{
+    return arr.filter(pessoa =>{
+        if(pessoa.idade < 20) return true;
+        return false;
+    });
 }
 
+console.log(ChildrenOnly(pessoas));
