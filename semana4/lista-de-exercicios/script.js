@@ -145,6 +145,19 @@ let funcaoBolada = function(){
 
 // OBJETOS
 
+/**1)
+ * array são guardam varias variáves em uma lista, é muito util quando
+ * queremos agrupar e iterar objetos semelhantes;
+ * 
+ * objetos é uma forma de agrupar variáveis diferentes que juntas 
+ * representem uma abstração.
+ * 
+ */
+
+// 2)
+
+
+
 
 
 
