@@ -24,7 +24,7 @@ o codigo imprime o maior e o menor numero contigo em uma array;
 
 let arr = [1, 2, 3, 4, 5];
 
-Logica1 = () => {
+const Logica1 = () => {
   for (let i = 0; i < arr.length; i++) console.log(arr[i]);
   console.log("-----------------------------------");
   arr.forEach(element => {
@@ -52,7 +52,7 @@ Logica1 = () => {
 
 //3)
 
-Logica3 = num => {
+const Logica3 = num => {
   for (let i = 0; i < num; i++) console.log(i * 2);
 };
 
@@ -72,7 +72,7 @@ function NumeroPares(num) {
 
 //4)
 
-Logica4 = (a, b, c) => {
+const Logica4 = (a, b, c) => {
   let n = 0;
   if (a == b) n++;
   if (a == c) n++;
@@ -93,7 +93,7 @@ Logica4 = (a, b, c) => {
 
 // 5)
 
-Logica5 = (num1, num2) => {
+const Logica5 = (num1, num2) => {
   if (num2 > num1) {
     let temp = num1;
     num1 = num2;
@@ -117,8 +117,8 @@ Logica5 = (num1, num2) => {
 //1)
 
 let array = [5, 1, 4, 2, 3];
-
-Funcoes1 = arr => {
+ 
+const Funcoes1 = arr => {
   for (let i = 0; i < arr.length; i++)
     for (let j = i + 1; j < arr.length; j++)
       if (arr[i] < arr[j]) {
@@ -136,3 +136,15 @@ Funcoes1 = arr => {
 // (()=>{
 //     alert("Hello Future4");
 // })();
+
+let funcaoBolada = function(){
+    alert("Hello Future4");
+}
+
+// funcaoBolada();
+
+// OBJETOS
+
+
+
+
