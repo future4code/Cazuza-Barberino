@@ -304,4 +304,46 @@ const pessoasSemPermissao = pessoas2.filter(pessoa => {
 
 // 4)
 
+const consultas = [
+  {
+    nome: "João",
+    genero: "masculino",
+    cancelada: true,
+    dataDaConsulta: "01/10/2019"
+  },
+  {
+    nome: "Pedro",
+    genero: "masculino",
+    cancelada: false,
+    dataDaConsulta: "02/10/2019"
+  },
+  {
+    nome: "Paula",
+    genero: "feminino",
+    cancelada: true,
+    dataDaConsulta: "03/11/2019"
+  },
+  {
+    nome: "Márcia",
+    genero: "feminino",
+    cancelada: false,
+    dataDaConsulta: "04/11/2019"
+  }
+];
 
+const emails = consultas.map(pessoa => {
+  return (
+    "Olá, " +
+    (pessoa.genero === "feminino" ? "Sra. " : "Sr. ") +
+    pessoa.nome +
+    (pessoa.cancelada
+      ? ". Infelizmente, sua consulta marcada para o dia " +
+        pessoa.dataDaConsulta +
+        " foi cancelada. Se quiser, pode entrar em contato conosco para remarcá-la"
+      : ". Estamos enviando esta mensagem para lembra-" +
+        (pessoa.genero === "feminino" ? "la " : "lo ") +
+        "da sua consulta no dia " +
+        pessoa.dataDaConsulta +
+        ". Por favor, acuse o recebimento deste e-mail.")
+  );
+});
