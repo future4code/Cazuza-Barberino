@@ -117,7 +117,7 @@ const Logica5 = (num1, num2) => {
 //1)
 
 let array = [5, 1, 4, 2, 3];
- 
+
 const Funcoes1 = arr => {
   for (let i = 0; i < arr.length; i++)
     for (let j = i + 1; j < arr.length; j++)
@@ -137,9 +137,9 @@ const Funcoes1 = arr => {
 //     alert("Hello Future4");
 // })();
 
-let funcaoBolada = function(){
-    alert("Hello Future4");
-}
+let funcaoBolada = function() {
+  alert("Hello Future4");
+};
 
 // funcaoBolada();
 
@@ -148,25 +148,54 @@ let funcaoBolada = function(){
 /**1)
  * array são guardam varias variáves em uma lista, é muito util quando
  * queremos agrupar e iterar objetos semelhantes;
- * 
- * objetos é uma forma de agrupar variáveis diferentes que juntas 
+ *
+ * objetos é uma forma de agrupar variáveis diferentes que juntas
  * representem uma abstração.
- * 
+ *
  */
 
 // 2)
 
-const criarRetângulo = (lado1, lado2) =>{
-    return({
-        lado1: lado1,
-        lado2: lado2,
-        perimetro: (2 * (lado1 + lado2)),
-        area: lado1 * lado2
-    });
-}
+const criarRetângulo = (lado1, lado2) => {
+  return {
+    lado1: lado1,
+    lado2: lado2,
+    perimetro: 2 * (lado1 + lado2),
+    area: lado1 * lado2
+  };
+};
 
-console.log(criarRetângulo(4, 8));
+//3)
 
+let filme = {
+  titulo: "Pulp Fiction",
+  ano: 1994,
+  diretor: "Quentin Tarantino",
+  atores: [
+    "John Travolta",
+    "Samuel L. Jackson",
+    "Uma Thurman",
+    "Harvey Keitel",
+    "Tim Roth",
+    "Amanda Plummer",
+    "Maria de Medeiros",
+    "Ving Rhames",
+    "Eric Stoltz",
+    "Rosanna Arquette",
+    "Christopher Walken",
+    "Bruce Willis"
+  ]
+};
 
+// console.log(
+//   "Venha assistir ao filme " +
+//     filme.titulo +
+//     ", de " +
+//     filme.ano +
+//     ", dirigido por " +
+//     filme.diretor +
+//     "e estrelado por " +
+//     filme.atores.join(", ")
+// );
 
-
+// 4)
