@@ -199,3 +199,18 @@ let filme = {
 // );
 
 // 4)
+
+let pessoa = {
+    nome: "Cazuza",
+    idade: "99",
+    email: "no@gmail.com",
+    endereco: "r. dafuq"
+}
+
+const anonimizarPessoa = person =>{
+    return({
+        ...person,
+        nome: "ANÔNIMO"
+    })
+}
+
