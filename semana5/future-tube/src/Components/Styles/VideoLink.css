@@ -1,0 +1,45 @@
+.video-link {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.video-link video {
+  width: 100%;
+}
+
+.bottom-wrapper{
+    margin-top: 10px;
+    padding: 5px;
+    display: flex;
+}
+
+.channel-image{
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.video-title {
+  color: #242424;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.channel-name, .view-count{
+    color: #787878;
+    font-size: 12px;
+    transition: .3s;
+    font-weight: 500;
+}
+
+.channel-name:hover{
+    cursor: pointer;
+    color: #242424;
+}

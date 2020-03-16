@@ -1,0 +1,33 @@
+*{
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+html, body, #root{
+  height: 100%;
+}
+
+.App{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.main{
+  margin-top: 56px;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  background-color: #f9f9f9;
+  display: flex;
+}
+
+.content{
+  height: 100%;
+  width: 100%;
+  flex: 1;
+}
