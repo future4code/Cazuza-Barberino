@@ -11,10 +11,13 @@ function App() {
       <SectionTitle title="Dados Pessoais" />
       <BigCard
         cardTitle="Astrodev"
-        cardText="Oi, eu sou o Astrodev. Sou chefe dos alunos da Future4.
-         Adoro pedir e-mails na sexta-feira e esperar os alunos
-          responderem só para responder com uma bronca e dar mais
-           trabalho para eles."
+        cardText={
+          <>
+            Oi, eu sou o Astrodev. <br /> Sou chefe dos alunos da Future4. Adoro
+            pedir e-mails na sexta-feira e esperar os alunos responderem só para
+            responder com uma bronca e dar mais trabalho para eles.
+          </>
+        }
         cardImg={require("./images/astronauta2.png")}
       />
       <SmallCard
