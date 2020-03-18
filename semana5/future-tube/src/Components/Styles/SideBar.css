@@ -1,0 +1,10 @@
+.side-bar{
+    position: relative;
+    min-width: 200px;
+    height: 100%;
+    background-color: #aaa69d;
+    display: flex;
+    flex-direction: column;
+    font-size: larger;
+}
+
