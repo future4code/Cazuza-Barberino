@@ -1,0 +1,17 @@
+.img-btn {
+  border: 2px solid black;
+  width: 200px;
+  display: flex;
+  padding: 15px 25px;
+  border-radius: 70px;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.img-btn img {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  margin-right: 20px;
+}

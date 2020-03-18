@@ -1,0 +1,17 @@
+.small-card{
+    border: 2px solid black;
+    width: 450px;
+    display: flex;
+    align-items: center;
+    padding: 20px 10px;
+    margin-bottom: 10px;
+}
+
+.small-card img{
+    height: 24px;
+    margin-right: 10px;
+}
+
+.small-card .title{
+    font-weight: 700;
+}
