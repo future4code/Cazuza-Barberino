@@ -45,7 +45,12 @@ class App extends React.Component {
     }
   };
 
-  handleInput = event => {
+  handleInput = (event, numberInput) => {
+    console.log(event.target);
+    if (numberInput) {
+      const re = /^[0-9\b]+$/;
+      if (!re.test(event.target.value) && event.target.value !== "") return;
+    }
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -67,18 +72,20 @@ class App extends React.Component {
             <InputAnimated
               value={this.state.profileId}
               handleChange={this.handleInput}
-              type="number"
+              type="text"
               name="profileId"
               id=""
               displayName="Profile Photo ID"
+              numberInput={true}
             />
             <InputAnimated
               value={this.state.photoId}
               handleChange={this.handleInput}
-              type="number"
+              type="text"
               name="photoId"
               id=""
               displayName="Photo ID"
+              numberInput={true}
             />
           </InputWrapper>
           <Button type="submit">Enviar</Button>

@@ -12,7 +12,10 @@ export default class InputAnimated extends Component {
         <Input
           type={this.props.type}
           name={this.props.name}
-          onChange={this.props.handleChange}
+          id={this.props.name}
+          onChange={event =>
+            this.props.handleChange(event, this.props.numberInput)
+          }
           value={this.props.value}
           onFocus={() => this.setState({ inFocus: true })}
           onBlur={() => this.setState({ inFocus: false })}
