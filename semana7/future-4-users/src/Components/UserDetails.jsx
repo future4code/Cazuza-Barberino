@@ -31,6 +31,7 @@ class UserDetails extends Component {
     axios
       .get(
         `https://us-central1-future-apis.cloudfunctions.net/api/users/${this.userId}`,
+
         {
           headers: {
             "api-token": "cazuza-hamilton"
@@ -47,6 +48,7 @@ class UserDetails extends Component {
       .catch(err => {
         alert("User Details WTF");
       });
+
   };
 
   componentDidMount() {
@@ -58,6 +60,7 @@ class UserDetails extends Component {
 
     this.setState({ deleting: true });
     deleteUser(this.userId, this.props.togglePage, () => {
+
       this.setState({
         deleting: false
       });
@@ -83,6 +86,7 @@ class UserDetails extends Component {
   componentDidUpdate() {
     if (this.state.editorMode) this.inputRef.current.focus();
   }
+
 
   editHandler = () => {
     if (this.state.deleting || this.state.editing) return;
@@ -256,6 +260,7 @@ const BtnWrapper = styled.div`
   display: flex;
   width: 100%;
   column-gap: 20px;
+
   align-items: center;
 `;
 

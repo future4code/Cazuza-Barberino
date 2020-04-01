@@ -1,0 +1,270 @@
+{
+	"info": {
+		"_postman_id": "cde1a474-dc25-4c9c-806a-12c602dd4d6a",
+		"name": "Spotif4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreatePlaylist",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "string",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "string",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Pop\"\n}"
+				},
+				"url": {
+					"raw": "https://us-central1-future-apis.cloudfunctions.net/spotifour/playlists",
+					"protocol": "https",
+					"host": [
+						"us-central1-future-apis",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"spotifour",
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPlaylists",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "string",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://us-central1-future-apis.cloudfunctions.net/spotifour/playlists",
+					"protocol": "https",
+					"host": [
+						"us-central1-future-apis",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"spotifour",
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddSong",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "string",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Time\",\n\t\"artist\": \"Pink Floyd\",\n\t\"url\" : \"https://www.youtube.com/watch?v=JwYX52BP2Sk\"\n}"
+				},
+				"url": {
+					"raw": "https://us-central1-future-apis.cloudfunctions.net/spotifour/playlists/:playlistId/songs",
+					"protocol": "https",
+					"host": [
+						"us-central1-future-apis",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"spotifour",
+						"playlists",
+						":playlistId",
+						"songs"
+					],
+					"variable": [
+						{
+							"key": "playlistId",
+							"value": "9265d18b-20e8-40f6-946d-456be1df2d96"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPlaylistSongs",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "string",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://us-central1-future-apis.cloudfunctions.net/spotifour/playlists/:playlistId/songs",
+					"protocol": "https",
+					"host": [
+						"us-central1-future-apis",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"spotifour",
+						"playlists",
+						":playlistId",
+						"songs"
+					],
+					"variable": [
+						{
+							"key": "playlistId",
+							"value": "9265d18b-20e8-40f6-946d-456be1df2d96"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchPlaylist",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "string",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://us-central1-future-apis.cloudfunctions.net/spotifour/playlists/search?name=Rock",
+					"protocol": "https",
+					"host": [
+						"us-central1-future-apis",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"spotifour",
+						"playlists",
+						"search"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Rock"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteSong",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "auth",
+						"value": "string",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://us-central1-future-apis.cloudfunctions.net/spotifour/playlists/:playlistId/songs/:songId",
+					"protocol": "https",
+					"host": [
+						"us-central1-future-apis",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"spotifour",
+						"playlists",
+						":playlistId",
+						"songs",
+						":songId"
+					],
+					"variable": [
+						{
+							"key": "playlistId",
+							"value": "9265d18b-20e8-40f6-946d-456be1df2d96"
+						},
+						{
+							"key": "songId",
+							"value": "d83be30a-0a5a-4ae9-81ac-0e23e0e57689"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeletePlaylist",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "auth",
+						"value": "string",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://us-central1-future-apis.cloudfunctions.net/spotifour/playlists/:playlistId",
+					"protocol": "https",
+					"host": [
+						"us-central1-future-apis",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"spotifour",
+						"playlists",
+						":playlistId"
+					],
+					"variable": [
+						{
+							"key": "playlistId",
+							"value": "99272eb3-8ba6-4f4e-b040-b714701cd469"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

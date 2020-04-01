@@ -83,6 +83,7 @@ export default class UserRegister extends Component {
           type="submit"
         >
           {this.state.creating ? <Loader size="40px" /> : "Cadastrar"}
+
         </NonFlexButton>
       </Form>
     );
@@ -111,6 +112,7 @@ export const Form = styled.form`
 `;
 
 export const InteractBox = styled.input`
+
   margin: 10px 0;
   border: none;
   min-width: 0;
@@ -129,6 +131,7 @@ export const Button = styled(InteractBox)`
   width: ${props => (!props.creating ? "100%" : "100px")};
   transition: 0.2s, width 0.5s ease-out;
   border: 2px solid ${props => props.theme.bg2};
+
   flex: 1;
 
   &:hover {
@@ -136,6 +139,7 @@ export const Button = styled(InteractBox)`
     background-color: ${props => props.theme.fc};
   }
 `;
+
 
 const NonFlexButton = styled(Button)`
   flex: none;

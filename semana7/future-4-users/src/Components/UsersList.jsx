@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+
 import styled, { keyframes, withTheme } from "styled-components";
 import ListedUser from "./ListedUser";
 import { FiSearch } from "react-icons/fi";
@@ -38,6 +39,7 @@ class UsersList extends Component {
   };
 
   getAllUsers() {
+
     axios
       .get("https://us-central1-future-apis.cloudfunctions.net/api/users", {
         headers: {
@@ -51,6 +53,7 @@ class UsersList extends Component {
         });
       })
       .catch(err => {
+
         alert("Error Loading Users");
       });
   }
@@ -91,6 +94,7 @@ class UsersList extends Component {
     const content = this.state.loading ? (
       <Loader />
     ) : (
+
       <>
         <SearchWrapper>
           <InteractBox
@@ -127,6 +131,7 @@ class UsersList extends Component {
           />
         ))}
       </>
+
     );
     return <Container>{content}</Container>;
   }
@@ -163,6 +168,7 @@ const Loader = styled.div`
   animation: ${rotate} 2s linear infinite;
 `;
 
+
 const SearchWrapper = styled.div`
   display: flex;
   width: 100%;
@@ -195,9 +201,11 @@ export const deleteUser = (id, onSuccess, onCatch) => {
       onSuccess();
     })
     .catch(err => {
+
       alert("Erro ao Deletar o Usuário.");
       onCatch();
     });
 };
 
 export default withTheme(UsersList);
+
