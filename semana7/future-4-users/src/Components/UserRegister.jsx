@@ -20,14 +20,16 @@ export default class UserRegister extends Component {
     e.preventDefault();
     if (this.creating) return;
 
-    this.setState({
-      creating: true
-    });
-
     const data = {
       name: this.state.name,
       email: this.state.email
     };
+
+    this.setState({
+      creating: true,
+      name: "",
+      email: ""
+    });
 
     axios
       .post(
@@ -43,7 +45,6 @@ export default class UserRegister extends Component {
         this.setState({
           creating: false
         });
-        console.log(response);
       })
       .catch(err => {
         this.setState({
@@ -64,6 +65,7 @@ export default class UserRegister extends Component {
           id=""
           onChange={this.changeHandler}
           required
+          autocomplete="off"
         />
         <InteractBox
           value={this.state.email}
@@ -72,6 +74,7 @@ export default class UserRegister extends Component {
           name="email"
           id=""
           onChange={this.changeHandler}
+          autocomplete="off"
         />
         <Button
           creating={this.state.creating}
@@ -86,16 +89,17 @@ export default class UserRegister extends Component {
   }
 }
 
-const rotate = keyframes`
+export const rotate = keyframes`
     0% { transform:  rotate(0deg); }
   100% { transform: rotate(360deg); }
 `;
 
-const Loader = styled(FiLoader)`
+export const Loader = styled(FiLoader)`
   animation: ${rotate} 2s linear infinite;
 `;
 
-const Form = styled.form`
+export const Form = styled.form`
+  position: relative;
   padding: 96px;
   width: 100%;
   max-width: 1200px;
@@ -125,6 +129,7 @@ export const Button = styled(InteractBox)`
   width: ${props => (!props.creating ? "100%" : "100px")};
   transition: 0.2s, width 0.5s ease-out;
   border: 2px solid ${props => props.theme.bg2};
+  flex:1;
 
   &:hover {
     color: ${props => props.theme.bg2};

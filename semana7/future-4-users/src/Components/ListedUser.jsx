@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled, { keyframes } from "styled-components";
 import { Button } from "./UserRegister";
 import { FaSpinner } from "react-icons/fa";
-import axios from "axios";
+import { deleteUser } from "./UsersList";
 
 export default class ListedUser extends Component {
   state = {
@@ -14,35 +14,29 @@ export default class ListedUser extends Component {
 
     this.setState({ deleting: true });
 
-    axios
-      .delete(
-        `https://us-central1-future-apis.cloudfunctions.net/api/users/${this.props.userId}`,
-        {
-          headers: {
-            "api-token": "cazuza-hamilton"
-          }
-        }
-      )
-      .then(response => {
+    deleteUser(
+      this.props.userId,
+      () => {
         this.props.deleteHandler(this.props.userId);
         this.setState({
           deleting: false
         });
-      })
-      .catch(err => {
+      },
+      () => {
         alert("wtf");
         this.setState({
           deleting: false
         });
-      });
+      }
+    );
   };
 
   render() {
-    const { name } = this.props;
+    const { name, goToUserDetails } = this.props;
 
     return (
       <Container as="div">
-        <Text>{name}</Text>
+        <Text onClick={goToUserDetails}>{name}</Text>
         <DeleteButtton onClick={this.deleteHandler} as="button">
           {this.state.deleting ? <Icon /> : "X"}
         </DeleteButtton>
@@ -67,7 +61,7 @@ const Container = styled.div`
   align-items: center;
   background-color: ${props => props.theme.bg3};
   border-radius: 8px;
-  padding: 5px 10px;
+  padding: 0 10px;
   margin-bottom: 5px;
   transition: 0.2s ease-out;
   box-shadow: 0 4px 5px rgba(0, 0, 0, 0.5);
@@ -79,6 +73,7 @@ const Container = styled.div`
 `;
 
 const Text = styled.p`
+  padding: 5px 0;
   flex: 1;
   color: ${props => props.theme.bg};
   text-align: center;

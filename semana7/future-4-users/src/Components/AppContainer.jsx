@@ -5,24 +5,39 @@ import UserRegister, { Button } from "./UserRegister";
 import UserDetails from "./UserDetails";
 
 export default class AppContainer extends Component {
-  state = {
-    page: 1
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      page: 1
+    };
 
+    this.userId = 0;
+  }
   defContent = () => {
     switch (this.state.page) {
       case 0:
         return <UserRegister />;
       case 1:
-        return <UsersList />;
+        return <UsersList goToUserDetails={this.goToUserDetails} />;
+      case 2:
+        return (
+          <UserDetails userId={this.userId} togglePage={this.togglePage} />
+        );
       default:
         return <h1> ERRO </h1>;
     }
   };
 
+  goToUserDetails = id => {
+    this.userId = id;
+    this.setState({
+      page: 2
+    });
+  };
+
   togglePage = () => {
     this.setState({
-      page: this.state.page != 0 ? 0 : 1
+      page: this.state.page != 1 ? 1 : 0
     });
   };
 
@@ -40,7 +55,7 @@ export default class AppContainer extends Component {
             as="button"
             type="submit"
           >
-            {this.state.page != 0 ? "Register" : "User List"}
+            {this.state.page != 1 ? "User List" : "Register"}
           </SideButton>
           <Title>Future4 Users</Title>
           {content}

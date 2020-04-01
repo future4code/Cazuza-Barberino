@@ -19,9 +19,14 @@ export default class UsersList extends Component {
       .then(response => {
         this.setState({
           userList: response.data.result,
+          loading: false
         });
       })
       .catch(err => {
+        alert("wtf");
+        this.setState({
+          loading: false
+        });
       });
   }
 
@@ -37,6 +42,7 @@ export default class UsersList extends Component {
     ) : (
       this.state.userList.map(user => (
         <ListedUser
+          goToUserDetails={() => this.props.goToUserDetails(user.id)}
           deleteHandler={this.deleteHandler}
           name={user.name}
           userId={user.id}
@@ -78,3 +84,21 @@ const Loader = styled.div`
   height: 120px;
   animation: ${rotate} 2s linear infinite;
 `;
+
+export const deleteUser = (id, onSuccess, onCatch) => {
+  axios
+    .delete(
+      `https://us-central1-future-apis.cloudfunctions.net/api/users/${id}`,
+      {
+        headers: {
+          "api-token": "cazuza-hamilton"
+        }
+      }
+    )
+    .then(response => {
+      onSuccess();
+    })
+    .catch(err => {
+      onCatch();
+    });
+};
