@@ -23,7 +23,6 @@ export default class ListedUser extends Component {
         });
       },
       () => {
-        alert("wtf");
         this.setState({
           deleting: false
         });

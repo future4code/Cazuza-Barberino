@@ -91,7 +91,7 @@ const Container = styled.div`
 `;
 
 const SideButton = styled(Button)`
-  position: fixed;
+  position: absolute;
   top: 20px;
   left: 20px;
 

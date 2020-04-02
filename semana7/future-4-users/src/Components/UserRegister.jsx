@@ -76,14 +76,15 @@ export default class UserRegister extends Component {
           onChange={this.changeHandler}
           autocomplete="off"
         />
-        <Button
+        <NonFlexButton
           creating={this.state.creating}
           as="button"
           onClick={e => e.target.blur()}
           type="submit"
         >
           {this.state.creating ? <Loader size="40px" /> : "Cadastrar"}
-        </Button>
+
+        </NonFlexButton>
       </Form>
     );
   }
@@ -111,9 +112,10 @@ export const Form = styled.form`
 `;
 
 export const InteractBox = styled.input`
-  margin-bottom: 20px;
-  border: none;
 
+  margin: 10px 0;
+  border: none;
+  min-width: 0;
   width: 100%;
   height: 70px;
   background-color: ${props => props.theme.bg2};
@@ -129,10 +131,16 @@ export const Button = styled(InteractBox)`
   width: ${props => (!props.creating ? "100%" : "100px")};
   transition: 0.2s, width 0.5s ease-out;
   border: 2px solid ${props => props.theme.bg2};
-  flex:1;
+
+  flex: 1;
 
   &:hover {
     color: ${props => props.theme.bg2};
     background-color: ${props => props.theme.fc};
   }
+`;
+
+
+const NonFlexButton = styled(Button)`
+  flex: none;
 `;
