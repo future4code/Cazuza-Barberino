@@ -1,6 +1,18 @@
 import React, { Component } from "react";
 import axios from "axios";
-import {} from "./styles";
+import { ThemeProvider } from "styled-components";
+import {
+  theme,
+  Container,
+  Form,
+  DefaultBox,
+  DefaultBtn,
+  MorphBox,
+  MorphCancelBtn,
+  MorphChckBtn,
+  MorphText,
+  MorphWrapper
+} from "./styles";
 
 export default class extends Component {
   constructor(props) {
@@ -18,8 +30,13 @@ export default class extends Component {
       playlistInput: "",
       showPLaylist: false,
       followingPlaylist: false,
-      followRequest: false
+      followRequest: false,
+      editPlaylistName: false
     };
+
+    this.morphInputRef = React.createRef();
+    this.artistInputRef = React.createRef();
+    this.focusMorphInput = false;
   }
 
   componentDidMount() {
@@ -48,6 +65,110 @@ export default class extends Component {
       });
       this.createRecomendedPlaylist(artistSaved, playlistSaved);
     }
+
+    this.artistInputRef.current.focus();
+  }
+
+  componentDidUpdate() {
+    if (this.focusMorphInput) {
+      this.morphInputRef.current.focus();
+      this.focusMorphInput = false;
+    }
+  }
+
+  submitHandler = event => {
+    event.preventDefault();
+    this.createRecomendedPlaylist(
+      this.state.artistInput,
+      this.state.playlistInput
+    );
+  };
+
+  toggleEditMod = () => {
+    if (!this.state.editPlaylistName) this.focusMorphInput = true;
+
+    this.setState({
+      editPlaylistName: !this.state.editPlaylistName
+    });
+  };
+
+  render() {
+    const {
+      artistInput,
+      playlistInput,
+      loading,
+      showPLaylist,
+      followingPlaylist,
+      editPlaylistName
+    } = this.state;
+
+    return (
+      <ThemeProvider theme={theme}>
+        <Container>
+          <Form onSubmit={this.submitHandler}>
+            <MorphWrapper>
+              <MorphText editPlaylistName={editPlaylistName}>
+                Automatic playlist name
+              </MorphText>
+              <MorphBox
+                as="input"
+                ref={this.morphInputRef}
+                placeholder="Playlist name"
+                onChange={this.changeHandler}
+                name="playlistInput"
+                value={playlistInput}
+                type="text"
+                disabled={!editPlaylistName}
+              />
+              <MorphChckBtn
+                editPlaylistName={editPlaylistName}
+                onClick={this.toggleEditMod}
+                size="40px"
+              />
+              <MorphCancelBtn
+                editPlaylistName={editPlaylistName}
+                onClick={this.toggleEditMod}
+                size="40px"
+              />
+            </MorphWrapper>
+
+            <DefaultBox
+              as="input"
+              ref={this.artistInputRef}
+              placeholder="Artist"
+              onChange={this.changeHandler}
+              name="artistInput"
+              value={artistInput}
+              type="text"
+            />
+            <DefaultBtn as="button" type="submit">
+              Criar Playlist
+            </DefaultBtn>
+          </Form>
+          {loading && <h2>Loading</h2>}
+          {showPLaylist && (
+            <>
+              <iframe
+                title="spotify"
+                src={`https://open.spotify.com/embed/playlist/${this.playlist.id}`}
+                width="300"
+                height="380"
+                frameBorder="0"
+                allowtransparency="true"
+                allow="encrypted-media"
+              ></iframe>
+              {followingPlaylist ? (
+                <button onClick={this.unfollowPlaylist}>
+                  Unfollow Playlist
+                </button>
+              ) : (
+                <button onClick={this.followPlaylist}>Follow Playlist</button>
+              )}
+            </>
+          )}
+        </Container>
+      </ThemeProvider>
+    );
   }
 
   getSecurityToken = () => {
@@ -63,7 +184,8 @@ export default class extends Component {
   };
 
   createRecomendedPlaylist = async (artistInput, playlistInput) => {
-    if (this.state.loading) return;
+    if (this.state.loading || artistInput === "" || playlistInput === "")
+      return;
 
     if (!this.token) {
       this.getSecurityToken();
@@ -237,63 +359,4 @@ export default class extends Component {
       [event.target.name]: event.target.value
     });
   };
-
-  submitHandler = event => {
-    event.preventDefault();
-    this.createRecomendedPlaylist(
-      this.state.artistInput,
-      this.state.playlistInput
-    );
-  };
-
-  render() {
-    const {
-      artistInput,
-      playlistInput,
-      loading,
-      showPLaylist,
-      followingPlaylist
-    } = this.state;
-
-    return (
-      <div>
-        <form onSubmit={this.submitHandler}>
-          <input
-            placeholder="Playlist name"
-            onChange={this.changeHandler}
-            name="playlistInput"
-            value={playlistInput}
-            type="text"
-          />
-          <input
-            placeholder="Artist"
-            onChange={this.changeHandler}
-            name="artistInput"
-            value={artistInput}
-            type="text"
-          />
-          <button type="submit">Criar Playlist</button>
-        </form>
-        {loading && <h2>Loading</h2>}
-        {showPLaylist && (
-          <>
-            <iframe
-              title="spotify"
-              src={`https://open.spotify.com/embed/playlist/${this.playlist.id}`}
-              width="300"
-              height="380"
-              frameBorder="0"
-              allowtransparency="true"
-              allow="encrypted-media"
-            ></iframe>
-            {followingPlaylist ? (
-              <button onClick={this.unfollowPlaylist}>Unfollow Playlist</button>
-            ) : (
-              <button onClick={this.followPlaylist}>Follow Playlist</button>
-            )}
-          </>
-        )}
-      </div>
-    );
-  }
 }
