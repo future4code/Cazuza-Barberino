@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { ThemeProvider } from "styled-components";
+import ArtistInput from "./ArtistInput";
+import shortid from "shortid";
+import { FiArrowRightCircle, FiCheckCircle } from "react-icons/fi";
 import {
   theme,
   Container,
   Form,
-  DefaultBox,
   DefaultBtn,
   MorphBox,
   MorphCancelBtn,
@@ -26,7 +28,12 @@ export default class extends Component {
     this.user_id = "";
     this.state = {
       loading: false,
-      artistInput: "",
+      artistInput: [
+        {
+          name: "",
+          id: "primary"
+        }
+      ],
       playlistInput: "",
       showPLaylist: false,
       followingPlaylist: false,
@@ -35,8 +42,9 @@ export default class extends Component {
     };
 
     this.morphInputRef = React.createRef();
-    this.artistInputRef = React.createRef();
     this.focusMorphInput = false;
+    this.nextInputRef = React.createRef();
+    this.focusNextInput = false;
   }
 
   componentDidMount() {
@@ -71,14 +79,17 @@ export default class extends Component {
         autoNameSaved && playlistSaved
       );
     }
-
-    this.artistInputRef.current.focus();
   }
 
   componentDidUpdate() {
     if (this.focusMorphInput) {
       this.morphInputRef.current.focus();
       this.focusMorphInput = false;
+    }
+
+    if (this.focusNextInput) {
+      this.nextInputRef.current.focus();
+      this.focusNextInput = false;
     }
   }
 
@@ -90,6 +101,42 @@ export default class extends Component {
       this.state.editPlaylistName && this.state.playlistInput
     );
   };
+
+  changeHandler = event =>
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+
+  artistInputChangeHandler = (event, id) => {
+    this.setState({
+      artistInput: this.state.artistInput.map(artist => {
+        if (artist.id === id)
+          artist = {
+            ...artist,
+            name: event.target.value
+          };
+        return artist;
+      })
+    });
+  };
+
+  createInputHandler = () => {
+    this.focusNextInput = true;
+    this.setState({
+      artistInput: [
+        ...this.state.artistInput,
+        {
+          name: "",
+          id: shortid.generate()
+        }
+      ]
+    });
+  };
+
+  deleteInputHandler = id =>
+    this.setState({
+      artistInput: this.state.artistInput.filter(artist => artist.id !== id)
+    });
 
   toggleEditMod = () => {
     if (!this.state.editPlaylistName) this.focusMorphInput = true;
@@ -109,13 +156,15 @@ export default class extends Component {
       editPlaylistName
     } = this.state;
 
+    console.log(this.state.artistInput);
+
     return (
       <ThemeProvider theme={theme}>
         <Container>
           <Form onSubmit={this.submitHandler}>
             <MorphWrapper>
-              <MorphText editPlaylistName={editPlaylistName}>
-                Automatic playlist name
+              <MorphText editing={editPlaylistName}>
+                Automatic Playlist Name
               </MorphText>
               <MorphBox
                 as="input"
@@ -127,27 +176,31 @@ export default class extends Component {
                 type="text"
                 disabled={!editPlaylistName}
               />
-              <MorphChckBtn
-                editPlaylistName={editPlaylistName}
-                onClick={this.toggleEditMod}
-                size="40px"
-              />
-              <MorphCancelBtn
-                editPlaylistName={editPlaylistName}
-                onClick={this.toggleEditMod}
-                size="40px"
-              />
+              <MorphChckBtn editing={editPlaylistName}>
+                <FiCheckCircle onClick={this.toggleEditMod} size="100%" />
+              </MorphChckBtn>
+              <MorphCancelBtn editing={editPlaylistName}>
+                <FiArrowRightCircle onClick={this.toggleEditMod} size="100%" />
+              </MorphCancelBtn>
             </MorphWrapper>
 
-            <DefaultBox
-              as="input"
-              ref={this.artistInputRef}
-              placeholder="Artist"
-              onChange={this.changeHandler}
-              name="artistInput"
-              value={artistInput}
-              type="text"
-            />
+            {artistInput.map((artist, index) => (
+              <ArtistInput
+                key={artist.id}
+                value={artist.name}
+                changeHandler={event =>
+                  this.artistInputChangeHandler(event, artist.id)
+                }
+                showDelete={artistInput.length > 1}
+                showCreate={
+                  artist.name !== "" && index === artistInput.length - 1
+                }
+                createInput={this.createInputHandler}
+                deleteInput={() => this.deleteInputHandler(artist.id)}
+                innerRef={index === artistInput.length - 1 && this.nextInputRef}
+              />
+            ))}
+
             <DefaultBtn as="button" type="submit">
               Criar Playlist
             </DefaultBtn>
@@ -206,10 +259,10 @@ export default class extends Component {
   };
 
   createRecomendedPlaylist = async (artistInput, playlistInput) => {
-    if (this.state.loading || artistInput === "" || playlistInput === "")
-      return;
+    if (this.state.loading || playlistInput === "") return;
 
-    if (!playlistInput) playlistInput = this.autoPlaylistName(artistInput);
+    const filteredArtists = artistInput.filter(artist => artist.name !== "");
+    if (filteredArtists.length === 0) return;
 
     if (!this.token) {
       this.getSecurityToken();
@@ -222,16 +275,31 @@ export default class extends Component {
 
     this.setState({
       loading: true,
-      showPLaylist: false,
-      createFromSavedData: false
+      showPLaylist: false
     });
 
     await Promise.all([
-      this.getArtistTopTracks(artistInput, 5),
+      await Promise.all(
+        filteredArtists.map(artist => this.getArtistTopTracks(artist.name, 5))
+      ),
       this.getUserID()
     ]);
+
+    if (!this.tracks.length) {
+      this.setState({
+        loading: false,
+        showPLaylist: false
+      });
+      alert("Artista Invalido");
+      return;
+    }
+
+    if (!playlistInput) playlistInput = "Recomendations"; //this.autoPlaylistName(artistInput);
+
     await this.createPlaylist(playlistInput);
     await Promise.all([this.addAllTracksToPlaylist(), this.unfollowPlaylist()]);
+
+    this.tracks = [];
 
     this.setState({
       loading: false,
@@ -255,6 +323,7 @@ export default class extends Component {
       artist_id = response.data.artists.items[0].id;
     } catch (err) {
       console.log("Artist Not Found" + err);
+      return;
     }
 
     try {
@@ -376,12 +445,6 @@ export default class extends Component {
 
     this.setState({
       followRequest: false
-    });
-  };
-
-  changeHandler = event => {
-    this.setState({
-      [event.target.name]: event.target.value
     });
   };
 }
