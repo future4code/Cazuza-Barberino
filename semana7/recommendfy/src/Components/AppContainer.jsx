@@ -19,6 +19,9 @@ import {
   PlaylistContainer,
   Loader,
   SiteTitle,
+  Main,
+  Footer,
+  Background,
 } from "./styles";
 
 export default class extends Component {
@@ -163,85 +166,89 @@ export default class extends Component {
 
     return (
       <ThemeProvider theme={theme}>
+        <Background />
         <Container>
-          <SiteTitle>Recommendfy</SiteTitle>
-          <SubContainer>
-            <Form onSubmit={this.submitHandler}>
-              <MorphWrapper>
-                <MorphText editing={editPlaylistName}>
-                  Automatic Playlist Name
-                </MorphText>
-                <MorphBox
-                  as="input"
-                  ref={this.morphInputRef}
-                  placeholder="Playlist name"
-                  onChange={this.changeHandler}
-                  name="playlistInput"
-                  value={playlistInput}
-                  type="text"
-                  disabled={!editPlaylistName}
-                />
-                <MorphChckBtn
-                  editing={editPlaylistName}
-                  onClick={this.toggleEditMod}
-                >
-                  <FiCheckCircle size="100%" />
-                </MorphChckBtn>
-                <MorphCancelBtn
-                  editing={editPlaylistName}
-                  onClick={this.toggleEditMod}
-                >
-                  <FiArrowRightCircle size="100%" />
-                </MorphCancelBtn>
-              </MorphWrapper>
-
-              {artistInput.map((artist, index) => (
-                <ArtistInput
-                  key={artist.id}
-                  value={artist.name}
-                  changeHandler={(event) =>
-                    this.artistInputChangeHandler(event, artist.id)
-                  }
-                  showDelete={artistInput.length > 1}
-                  showCreate={
-                    artist.name !== "" && index === artistInput.length - 1
-                  }
-                  createInput={this.createInputHandler}
-                  deleteInput={() => this.deleteInputHandler(artist.id)}
-                  innerRef={
-                    index === artistInput.length - 1 && this.nextInputRef
-                  }
-                />
-              ))}
-
-              <DefaultBtn as="button" type="submit">
-                Criar Playlist
-              </DefaultBtn>
-            </Form>
-            <PlaylistContainer>
-              {loading && <Loader>Loading</Loader>}
-              {showPLaylist && (
-                <>
-                  <iframe
-                    title="spotify"
-                    src={`https://open.spotify.com/embed/playlist/${this.playlist.id}`}
-                    width="300"
-                    height="380"
-                    frameBorder="0"
-                    allowtransparency="true"
-                    allow="encrypted-media"
-                  ></iframe>
-                  <FollowBtn
-                    follow={this.followPlaylist}
-                    unfollow={this.unfollowPlaylist}
-                    following={followingPlaylist}
+          <Main>
+            <SiteTitle>Recommendfy</SiteTitle>
+            <SubContainer>
+              <Form onSubmit={this.submitHandler}>
+                <MorphWrapper>
+                  <MorphText editing={editPlaylistName}>
+                    Automatic Playlist Name
+                  </MorphText>
+                  <MorphBox
+                    as="input"
+                    ref={this.morphInputRef}
+                    placeholder="Playlist name"
+                    onChange={this.changeHandler}
+                    name="playlistInput"
+                    value={playlistInput}
+                    type="text"
+                    disabled={!editPlaylistName}
+                  />
+                  <MorphChckBtn
+                    editing={editPlaylistName}
+                    onClick={this.toggleEditMod}
                   >
-                    Save to Your Library
-                  </FollowBtn>
-                </>
-              )}
-            </PlaylistContainer>
-          </SubContainer>
+                    <FiCheckCircle size="100%" />
+                  </MorphChckBtn>
+                  <MorphCancelBtn
+                    editing={editPlaylistName}
+                    onClick={this.toggleEditMod}
+                  >
+                    <FiArrowRightCircle size="100%" />
+                  </MorphCancelBtn>
+                </MorphWrapper>
+
+                {artistInput.map((artist, index) => (
+                  <ArtistInput
+                    key={artist.id}
+                    value={artist.name}
+                    changeHandler={(event) =>
+                      this.artistInputChangeHandler(event, artist.id)
+                    }
+                    showDelete={artistInput.length > 1}
+                    showCreate={
+                      artist.name !== "" && index === artistInput.length - 1
+                    }
+                    createInput={this.createInputHandler}
+                    deleteInput={() => this.deleteInputHandler(artist.id)}
+                    innerRef={
+                      index === artistInput.length - 1 && this.nextInputRef
+                    }
+                  />
+                ))}
+
+                <DefaultBtn as="button" type="submit">
+                  Criar Playlist
+                </DefaultBtn>
+              </Form>
+              <PlaylistContainer>
+                {loading && <Loader>Loading</Loader>}
+                {showPLaylist && (
+                  <>
+                    <iframe
+                      title="spotify"
+                      src={`https://open.spotify.com/embed/playlist/${this.playlist.id}`}
+                      width="300"
+                      height="380"
+                      frameBorder="0"
+                      allowtransparency="true"
+                      allow="encrypted-media"
+                    ></iframe>
+                    <FollowBtn
+                      follow={this.followPlaylist}
+                      unfollow={this.unfollowPlaylist}
+                      following={followingPlaylist}
+                    >
+                      Save to Your Library
+                    </FollowBtn>
+                  </>
+                )}
+              </PlaylistContainer>
+            </SubContainer>
+          </Main>
+          <Footer></Footer>
         </Container>
       </ThemeProvider>
     );
@@ -311,6 +318,8 @@ export default class extends Component {
     }
 
     if (!playlistInput) playlistInput = "Recomendations"; //this.autoPlaylistName(artistInput);
+
+    this.shuffle(this.tracks);
 
     await this.createPlaylist(playlistInput);
     await Promise.all([this.addAllTracksToPlaylist(), this.unfollowPlaylist()]);
@@ -466,5 +475,22 @@ export default class extends Component {
     this.setState({
       followRequest: false,
     });
+  };
+
+  shuffle = (array) => {
+    let currentIndex = array.length,
+      temporaryValue,
+      randomIndex;
+
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
   };
 }

@@ -8,22 +8,10 @@ export const theme = {
   fc: "white",
 };
 
-export const Background = styled.div``;
-
-export const Footer = styled.div``;
-
-export const Container = styled.div`
-  position: absolute;
+export const Background = styled.div`
+  position: fixed;
   width: 100%;
-  min-height: 100vh;
-  padding: 20px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-
-  /* background-color: ${(props) => props.theme.bg}; */
+  height: 100vh;
 
   background: linear-gradient(
     45deg,
@@ -33,6 +21,35 @@ export const Container = styled.div`
     ${(props) => props.theme.bg} 100%
   );
 
+  filter: blur();
+`;
+
+export const Container = styled.div`
+  flex: none;
+  position: absolute;
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+`;
+
+export const Main = styled.main`
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+export const Footer = styled.div`
+  background-color: ${(props) => props.theme.bg};
+
+  height: 100px;
 `;
 
 export const SiteTitle = styled.h1`
@@ -42,9 +59,9 @@ export const SiteTitle = styled.h1`
 `;
 
 export const SubContainer = styled.div`
-  /* border: 2px solid red; */
   width: 100%;
   max-width: 1200px;
+  margin-bottom: 100px;
 
   padding: 40px;
   background: linear-gradient(
