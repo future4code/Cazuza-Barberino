@@ -4,7 +4,7 @@ import {
   DefaultBox,
   DefaultWrapper,
   CreateInputIcon,
-  DeleteInputIcon
+  DeleteInputIcon,
 } from "./styles";
 
 export default class ArtistInput extends Component {
@@ -16,7 +16,7 @@ export default class ArtistInput extends Component {
       showDelete,
       createInput,
       deleteInput,
-      innerRef
+      innerRef,
     } = this.props;
 
     return (
@@ -30,11 +30,11 @@ export default class ArtistInput extends Component {
           type="text"
           ref={innerRef}
         />
-        <CreateInputIcon showCreate={showCreate}>
-          <FiPlusCircle onClick={createInput} size="100%" />
+        <CreateInputIcon showCreate={showCreate} onClick={createInput}>
+          <FiPlusCircle size="100%" />
         </CreateInputIcon>
-        <DeleteInputIcon showDelete={showDelete}>
-          <FiXCircle onClick={deleteInput} size="100%" />
+        <DeleteInputIcon showDelete={showDelete} onClick={deleteInput}>
+          <FiXCircle size="100%" />
         </DeleteInputIcon>
       </DefaultWrapper>
     );

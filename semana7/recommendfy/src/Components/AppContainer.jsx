@@ -4,6 +4,7 @@ import { ThemeProvider } from "styled-components";
 import ArtistInput from "./ArtistInput";
 import shortid from "shortid";
 import { FiArrowRightCircle, FiCheckCircle } from "react-icons/fi";
+import FollowBtn from "./FollowBtn";
 import {
   theme,
   Container,
@@ -13,7 +14,11 @@ import {
   MorphCancelBtn,
   MorphChckBtn,
   MorphText,
-  MorphWrapper
+  MorphWrapper,
+  SubContainer,
+  PlaylistContainer,
+  Loader,
+  SiteTitle,
 } from "./styles";
 
 export default class extends Component {
@@ -31,14 +36,14 @@ export default class extends Component {
       artistInput: [
         {
           name: "",
-          id: "primary"
-        }
+          id: "primary",
+        },
       ],
       playlistInput: "",
       showPLaylist: false,
       followingPlaylist: false,
       followRequest: false,
-      editPlaylistName: false
+      editPlaylistName: false,
     };
 
     this.morphInputRef = React.createRef();
@@ -51,7 +56,7 @@ export default class extends Component {
     const hash = window.location.hash
       .substring(1)
       .split("&")
-      .reduce(function(initial, item) {
+      .reduce(function (initial, item) {
         if (item) {
           var parts = item.split("=");
           initial[parts[0]] = decodeURIComponent(parts[1]);
@@ -72,7 +77,7 @@ export default class extends Component {
       this.setState({
         artistInput: artistSaved,
         playlistInput: playlistSaved,
-        editPlaylistName: autoNameSaved
+        editPlaylistName: autoNameSaved,
       });
       this.createRecomendedPlaylist(
         artistSaved,
@@ -93,7 +98,7 @@ export default class extends Component {
     }
   }
 
-  submitHandler = event => {
+  submitHandler = (event) => {
     event.preventDefault();
 
     this.createRecomendedPlaylist(
@@ -102,21 +107,21 @@ export default class extends Component {
     );
   };
 
-  changeHandler = event =>
+  changeHandler = (event) =>
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
 
   artistInputChangeHandler = (event, id) => {
     this.setState({
-      artistInput: this.state.artistInput.map(artist => {
+      artistInput: this.state.artistInput.map((artist) => {
         if (artist.id === id)
           artist = {
             ...artist,
-            name: event.target.value
+            name: event.target.value,
           };
         return artist;
-      })
+      }),
     });
   };
 
@@ -127,22 +132,22 @@ export default class extends Component {
         ...this.state.artistInput,
         {
           name: "",
-          id: shortid.generate()
-        }
-      ]
+          id: shortid.generate(),
+        },
+      ],
     });
   };
 
-  deleteInputHandler = id =>
+  deleteInputHandler = (id) =>
     this.setState({
-      artistInput: this.state.artistInput.filter(artist => artist.id !== id)
+      artistInput: this.state.artistInput.filter((artist) => artist.id !== id),
     });
 
   toggleEditMod = () => {
     if (!this.state.editPlaylistName) this.focusMorphInput = true;
 
     this.setState({
-      editPlaylistName: !this.state.editPlaylistName
+      editPlaylistName: !this.state.editPlaylistName,
     });
   };
 
@@ -153,79 +158,90 @@ export default class extends Component {
       loading,
       showPLaylist,
       followingPlaylist,
-      editPlaylistName
+      editPlaylistName,
     } = this.state;
-
-    console.log(this.state.artistInput);
 
     return (
       <ThemeProvider theme={theme}>
         <Container>
-          <Form onSubmit={this.submitHandler}>
-            <MorphWrapper>
-              <MorphText editing={editPlaylistName}>
-                Automatic Playlist Name
-              </MorphText>
-              <MorphBox
-                as="input"
-                ref={this.morphInputRef}
-                placeholder="Playlist name"
-                onChange={this.changeHandler}
-                name="playlistInput"
-                value={playlistInput}
-                type="text"
-                disabled={!editPlaylistName}
-              />
-              <MorphChckBtn editing={editPlaylistName}>
-                <FiCheckCircle onClick={this.toggleEditMod} size="100%" />
-              </MorphChckBtn>
-              <MorphCancelBtn editing={editPlaylistName}>
-                <FiArrowRightCircle onClick={this.toggleEditMod} size="100%" />
-              </MorphCancelBtn>
-            </MorphWrapper>
+          <SiteTitle>Recommendfy</SiteTitle>
+          <SubContainer>
+            <Form onSubmit={this.submitHandler}>
+              <MorphWrapper>
+                <MorphText editing={editPlaylistName}>
+                  Automatic Playlist Name
+                </MorphText>
+                <MorphBox
+                  as="input"
+                  ref={this.morphInputRef}
+                  placeholder="Playlist name"
+                  onChange={this.changeHandler}
+                  name="playlistInput"
+                  value={playlistInput}
+                  type="text"
+                  disabled={!editPlaylistName}
+                />
+                <MorphChckBtn
+                  editing={editPlaylistName}
+                  onClick={this.toggleEditMod}
+                >
+                  <FiCheckCircle size="100%" />
+                </MorphChckBtn>
+                <MorphCancelBtn
+                  editing={editPlaylistName}
+                  onClick={this.toggleEditMod}
+                >
+                  <FiArrowRightCircle size="100%" />
+                </MorphCancelBtn>
+              </MorphWrapper>
 
-            {artistInput.map((artist, index) => (
-              <ArtistInput
-                key={artist.id}
-                value={artist.name}
-                changeHandler={event =>
-                  this.artistInputChangeHandler(event, artist.id)
-                }
-                showDelete={artistInput.length > 1}
-                showCreate={
-                  artist.name !== "" && index === artistInput.length - 1
-                }
-                createInput={this.createInputHandler}
-                deleteInput={() => this.deleteInputHandler(artist.id)}
-                innerRef={index === artistInput.length - 1 && this.nextInputRef}
-              />
-            ))}
+              {artistInput.map((artist, index) => (
+                <ArtistInput
+                  key={artist.id}
+                  value={artist.name}
+                  changeHandler={(event) =>
+                    this.artistInputChangeHandler(event, artist.id)
+                  }
+                  showDelete={artistInput.length > 1}
+                  showCreate={
+                    artist.name !== "" && index === artistInput.length - 1
+                  }
+                  createInput={this.createInputHandler}
+                  deleteInput={() => this.deleteInputHandler(artist.id)}
+                  innerRef={
+                    index === artistInput.length - 1 && this.nextInputRef
+                  }
+                />
+              ))}
 
-            <DefaultBtn as="button" type="submit">
-              Criar Playlist
-            </DefaultBtn>
-          </Form>
-          {loading && <h2>Loading</h2>}
-          {showPLaylist && (
-            <>
-              <iframe
-                title="spotify"
-                src={`https://open.spotify.com/embed/playlist/${this.playlist.id}`}
-                width="300"
-                height="380"
-                frameBorder="0"
-                allowtransparency="true"
-                allow="encrypted-media"
-              ></iframe>
-              {followingPlaylist ? (
-                <button onClick={this.unfollowPlaylist}>
-                  Unfollow Playlist
-                </button>
-              ) : (
-                <button onClick={this.followPlaylist}>Follow Playlist</button>
+              <DefaultBtn as="button" type="submit">
+                Criar Playlist
+              </DefaultBtn>
+            </Form>
+            <PlaylistContainer>
+              {loading && <Loader>Loading</Loader>}
+              {showPLaylist && (
+                <>
+                  <iframe
+                    title="spotify"
+                    src={`https://open.spotify.com/embed/playlist/${this.playlist.id}`}
+                    width="300"
+                    height="380"
+                    frameBorder="0"
+                    allowtransparency="true"
+                    allow="encrypted-media"
+                  ></iframe>
+                  <FollowBtn
+                    follow={this.followPlaylist}
+                    unfollow={this.unfollowPlaylist}
+                    following={followingPlaylist}
+                  >
+                    Save to Your Library
+                  </FollowBtn>
+                </>
               )}
-            </>
-          )}
+            </PlaylistContainer>
+          </SubContainer>
         </Container>
       </ThemeProvider>
     );
@@ -247,12 +263,12 @@ export default class extends Component {
     )}&response_type=token&show_dialog=false`;
   };
 
-  autoPlaylistName = artistInput => {
+  autoPlaylistName = (artistInput) => {
     let name =
       artistInput.charAt(0).toUpperCase() + artistInput.slice(1) + " Playlist";
 
     this.setState({
-      playlistInput: name
+      playlistInput: name,
     });
 
     return name;
@@ -261,7 +277,7 @@ export default class extends Component {
   createRecomendedPlaylist = async (artistInput, playlistInput) => {
     if (this.state.loading || playlistInput === "") return;
 
-    const filteredArtists = artistInput.filter(artist => artist.name !== "");
+    const filteredArtists = artistInput.filter((artist) => artist.name !== "");
     if (filteredArtists.length === 0) return;
 
     if (!this.token) {
@@ -275,20 +291,20 @@ export default class extends Component {
 
     this.setState({
       loading: true,
-      showPLaylist: false
+      showPLaylist: false,
     });
 
     await Promise.all([
       await Promise.all(
-        filteredArtists.map(artist => this.getArtistTopTracks(artist.name, 5))
+        filteredArtists.map((artist) => this.getArtistTopTracks(artist.name, 5))
       ),
-      this.getUserID()
+      this.getUserID(),
     ]);
 
     if (!this.tracks.length) {
       this.setState({
         loading: false,
-        showPLaylist: false
+        showPLaylist: false,
       });
       alert("Artista Invalido");
       return;
@@ -303,7 +319,7 @@ export default class extends Component {
 
     this.setState({
       loading: false,
-      showPLaylist: true
+      showPLaylist: true,
     });
   };
 
@@ -316,8 +332,8 @@ export default class extends Component {
         this.apiurl + `/search?q=${artistName}&type=${type}&limit=1`,
         {
           headers: {
-            Authorization: "Bearer " + this.token
-          }
+            Authorization: "Bearer " + this.token,
+          },
         }
       );
       artist_id = response.data.artists.items[0].id;
@@ -331,8 +347,8 @@ export default class extends Component {
         this.apiurl + `/artists/${artist_id}/top-tracks?country=BR`,
         {
           headers: {
-            Authorization: "Bearer " + this.token
-          }
+            Authorization: "Bearer " + this.token,
+          },
         }
       );
 
@@ -348,12 +364,12 @@ export default class extends Component {
       await axios.post(
         this.apiurl + `/playlists/${this.playlist.id}/tracks`,
         {
-          uris: this.tracks.map(track => track.uri)
+          uris: this.tracks.map((track) => track.uri),
         },
         {
           headers: {
-            Authorization: "Bearer " + this.token
-          }
+            Authorization: "Bearer " + this.token,
+          },
         }
       );
     } catch (err) {
@@ -365,8 +381,8 @@ export default class extends Component {
     try {
       const response = await axios.get(this.apiurl + "/me", {
         headers: {
-          Authorization: "Bearer " + this.token
-        }
+          Authorization: "Bearer " + this.token,
+        },
       });
       // console.log(response.data);
       this.user_id = response.data.id;
@@ -375,18 +391,18 @@ export default class extends Component {
     }
   };
 
-  createPlaylist = async playlistName => {
+  createPlaylist = async (playlistName) => {
     try {
       const response = await axios.post(
         this.apiurl + `/users/${this.user_id}/playlists`,
         {
           name: playlistName,
-          public: false
+          public: false,
         },
         {
           headers: {
-            Authorization: "Bearer " + this.token
-          }
+            Authorization: "Bearer " + this.token,
+          },
         }
       );
       this.playlist = response.data;
@@ -399,7 +415,6 @@ export default class extends Component {
     if (this.state.followRequest) return;
     this.setState({
       followRequest: true,
-      followingPlaylist: false
     });
 
     try {
@@ -407,16 +422,19 @@ export default class extends Component {
         this.apiurl + `/playlists/${this.playlist.id}/followers`,
         {
           headers: {
-            Authorization: "Bearer " + this.token
-          }
+            Authorization: "Bearer " + this.token,
+          },
         }
       );
+      this.setState({
+        followingPlaylist: false,
+      });
     } catch (err) {
       console.log("Cant Unfollow" + err);
     }
 
     this.setState({
-      followRequest: false
+      followRequest: false,
     });
   };
 
@@ -424,27 +442,29 @@ export default class extends Component {
     if (this.state.followRequest) return;
     this.setState({
       followRequest: true,
-      followingPlaylist: true
     });
 
     try {
       await axios.put(
         this.apiurl + `/playlists/${this.playlist.id}/followers`,
         {
-          public: true
+          public: true,
         },
         {
           headers: {
-            Authorization: "Bearer " + this.token
-          }
+            Authorization: "Bearer " + this.token,
+          },
         }
       );
+      this.setState({
+        followingPlaylist: true,
+      });
     } catch (err) {
       console.log("Cant Follow" + err);
     }
 
     this.setState({
-      followRequest: false
+      followRequest: false,
     });
   };
 }
