@@ -57,13 +57,19 @@ export default class extends Component {
     if (this.token) {
       let artistSaved = localStorage.getItem("artist");
       let playlistSaved = localStorage.getItem("playlist");
+      let autoNameSaved = localStorage.getItem("autoName");
       artistSaved = JSON.parse(artistSaved);
       playlistSaved = JSON.parse(playlistSaved);
+      autoNameSaved = JSON.parse(autoNameSaved);
       this.setState({
         artistInput: artistSaved,
-        playlistInput: playlistSaved
+        playlistInput: playlistSaved,
+        editPlaylistName: autoNameSaved
       });
-      this.createRecomendedPlaylist(artistSaved, playlistSaved);
+      this.createRecomendedPlaylist(
+        artistSaved,
+        autoNameSaved && playlistSaved
+      );
     }
 
     this.artistInputRef.current.focus();
@@ -78,9 +84,10 @@ export default class extends Component {
 
   submitHandler = event => {
     event.preventDefault();
+
     this.createRecomendedPlaylist(
       this.state.artistInput,
-      this.state.playlistInput
+      this.state.editPlaylistName && this.state.playlistInput
     );
   };
 
@@ -174,6 +181,10 @@ export default class extends Component {
   getSecurityToken = () => {
     localStorage.setItem("artist", JSON.stringify(this.state.artistInput));
     localStorage.setItem("playlist", JSON.stringify(this.state.playlistInput));
+    localStorage.setItem(
+      "autoName",
+      JSON.stringify(this.state.editPlaylistName)
+    );
     const authEndpoint = "https://accounts.spotify.com/authorize";
     const clientId = "6e2aee291e7e4b1792f8c9aece6d93ab";
     const redirectUri = this.pageLocation;
@@ -183,9 +194,22 @@ export default class extends Component {
     )}&response_type=token&show_dialog=false`;
   };
 
+  autoPlaylistName = artistInput => {
+    let name =
+      artistInput.charAt(0).toUpperCase() + artistInput.slice(1) + " Playlist";
+
+    this.setState({
+      playlistInput: name
+    });
+
+    return name;
+  };
+
   createRecomendedPlaylist = async (artistInput, playlistInput) => {
     if (this.state.loading || artistInput === "" || playlistInput === "")
       return;
+
+    if (!playlistInput) playlistInput = this.autoPlaylistName(artistInput);
 
     if (!this.token) {
       this.getSecurityToken();
@@ -193,6 +217,7 @@ export default class extends Component {
     } else {
       localStorage.removeItem("artist");
       localStorage.removeItem("playlist");
+      localStorage.removeItem("autoName");
     }
 
     this.setState({

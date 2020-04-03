@@ -2,8 +2,10 @@ import styled, { css } from "styled-components";
 import { FiArrowRightCircle, FiCheckCircle } from "react-icons/fi";
 
 export const theme = {
-  bg: "black",
+  bg: "#191414",
   bg2: "#1DB954",
+  bg3: "#2C5D91",
+  bg4: "#552F6D",
   fc: "white"
 };
 
@@ -18,11 +20,15 @@ export const Container = styled.div`
   align-items: center;
   flex-wrap: wrap;
 
-  background-color: ${props => props.theme.bg};
+  /* background-color: ${props => props.theme.bg}; */
+
+  background: linear-gradient(45deg, ${props => props.theme.bg} 0%, ${props =>
+  props.theme.bg3} 25%,  ${props => props.theme.bg4} 75%, ${props =>
+  props.theme.bg} 100%)
+
 `;
 
 export const Form = styled.form`
-  border: 2px solid red;
   width: 100%;
   max-width: 500px;
 
@@ -48,6 +54,17 @@ export const DefaultBox = styled.div`
 
 export const DefaultBtn = styled(DefaultBox)`
   cursor: pointer;
+  transition: filter 0.3s, 0.2s;
+  box-shadow: 0px 5px 0 ${props => props.theme.bg};
+
+  &:hover {
+    filter: brightness(1.2);
+  }
+
+  &:active {
+    transform: translateY(5px);
+    box-shadow: 0px 0px 0 ${props => props.theme.bg};
+  }
 `;
 
 export const MorphWrapper = styled(DefaultBox)`
@@ -58,6 +75,8 @@ export const MorphWrapper = styled(DefaultBox)`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  box-shadow: inset 0px 0px 10px ${props => props.theme.bg};
 `;
 
 export const MorphBox = styled(DefaultBox)`
