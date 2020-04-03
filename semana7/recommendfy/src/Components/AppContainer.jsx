@@ -1,20 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { ThemeProvider } from "styled-components";
-import ArtistInput from "./ArtistInput";
 import shortid from "shortid";
-import { FiArrowRightCircle, FiCheckCircle } from "react-icons/fi";
 import FollowBtn from "./FollowBtn";
+import ArtistForm from "./ArtistForm";
 import {
   theme,
   Container,
-  Form,
-  DefaultBtn,
-  MorphBox,
-  MorphCancelBtn,
-  MorphChckBtn,
-  MorphText,
-  MorphWrapper,
   SubContainer,
   PlaylistContainer,
   Loader,
@@ -171,58 +163,19 @@ export default class extends Component {
           <Main>
             <SiteTitle>Recommendfy</SiteTitle>
             <SubContainer>
-              <Form onSubmit={this.submitHandler}>
-                <MorphWrapper>
-                  <MorphText editing={editPlaylistName}>
-                    Automatic Playlist Name
-                  </MorphText>
-                  <MorphBox
-                    as="input"
-                    ref={this.morphInputRef}
-                    placeholder="Playlist name"
-                    onChange={this.changeHandler}
-                    name="playlistInput"
-                    value={playlistInput}
-                    type="text"
-                    disabled={!editPlaylistName}
-                  />
-                  <MorphChckBtn
-                    editing={editPlaylistName}
-                    onClick={this.toggleEditMod}
-                  >
-                    <FiCheckCircle size="100%" />
-                  </MorphChckBtn>
-                  <MorphCancelBtn
-                    editing={editPlaylistName}
-                    onClick={this.toggleEditMod}
-                  >
-                    <FiArrowRightCircle size="100%" />
-                  </MorphCancelBtn>
-                </MorphWrapper>
-
-                {artistInput.map((artist, index) => (
-                  <ArtistInput
-                    key={artist.id}
-                    value={artist.name}
-                    changeHandler={(event) =>
-                      this.artistInputChangeHandler(event, artist.id)
-                    }
-                    showDelete={artistInput.length > 1}
-                    showCreate={
-                      artist.name !== "" && index === artistInput.length - 1
-                    }
-                    createInput={this.createInputHandler}
-                    deleteInput={() => this.deleteInputHandler(artist.id)}
-                    innerRef={
-                      index === artistInput.length - 1 && this.nextInputRef
-                    }
-                  />
-                ))}
-
-                <DefaultBtn as="button" type="submit">
-                  Criar Playlist
-                </DefaultBtn>
-              </Form>
+              <ArtistForm
+                editPlaylistName={editPlaylistName}
+                playlistInput={playlistInput}
+                artistInput={artistInput}
+                morphInputRef={this.morphInputRef}
+                changeHandler={this.changeHandler}
+                submitHandler={this.submitHandler}
+                toggleEditMod={this.toggleEditMod}
+                artistInputChangeHandler={this.artistInputChangeHandler}
+                createInputHandler={this.createInputHandler}
+                deleteInputHandler={this.deleteInputHandler}
+                nextInputRef={this.nextInputRef}
+              />
               <PlaylistContainer>
                 {loading && <Loader>Loading</Loader>}
                 {showPLaylist && (

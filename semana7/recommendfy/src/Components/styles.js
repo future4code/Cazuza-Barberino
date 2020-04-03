@@ -16,8 +16,8 @@ export const Background = styled.div`
   background: linear-gradient(
     45deg,
     ${(props) => props.theme.bg} 0%,
-    ${(props) => props.theme.bg3} 25%,
-    ${(props) => props.theme.bg4} 75%,
+    ${(props) => props.theme.bg4} 25%,
+    ${(props) => props.theme.bg3} 75%,
     ${(props) => props.theme.bg} 100%
   );
 
@@ -72,7 +72,7 @@ export const SubContainer = styled.div`
     ${(props) => props.theme.bg} 100%
   );
 
-  box-shadow: 0 0 10px ${(props) => props.theme.bg};
+  box-shadow: 0 0 4px ${(props) => props.theme.bg};
 
   display: flex;
   align-items: flex-start;
