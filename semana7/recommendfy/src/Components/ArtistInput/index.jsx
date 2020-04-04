@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import { FiPlusCircle, FiXCircle } from "react-icons/fi";
-import {
-  DefaultBox,
-  DefaultWrapper,
-  CreateInputIcon,
-  DeleteInputIcon,
-} from "./styles";
+import { DefaultBox, DefaultWrapper } from "../global-styles";
+import { CreateInputIcon, DeleteInputIcon } from "./styles";
 
 export default class ArtistInput extends Component {
   render() {

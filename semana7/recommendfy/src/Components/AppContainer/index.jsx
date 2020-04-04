@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import { ThemeProvider } from "styled-components";
 import shortid from "shortid";
-import FollowBtn from "./FollowBtn";
-import ArtistForm from "./ArtistForm";
+import FollowBtn from "../FollowBtn";
+import ArtistForm from "../ArtistForm";
 import {
   theme,
   Container,
@@ -16,7 +16,7 @@ import {
   Background,
 } from "./styles";
 
-export default class extends Component {
+export default class AppContainer extends Component {
   constructor(props) {
     super(props);
 

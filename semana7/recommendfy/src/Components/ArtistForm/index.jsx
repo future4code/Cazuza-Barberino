@@ -1,6 +1,6 @@
 import React from "react";
 import { FiArrowRightCircle, FiCheckCircle } from "react-icons/fi";
-import ArtistInput from "./ArtistInput";
+import ArtistInput from "../ArtistInput";
 import {
   Form,
   DefaultBtn,
