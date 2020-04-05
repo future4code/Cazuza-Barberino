@@ -9,6 +9,9 @@ function SpotifyPlaylist({
   following,
   showPLaylist,
   playlist_id,
+  artistList,
+  followArtist,
+  unfollowArtist,
 }) {
   return (
     <PlaylistContainer>
@@ -31,6 +34,16 @@ function SpotifyPlaylist({
             allowtransparency="true"
             allow="encrypted-media"
           ></iframe>
+          {artistList.map((artist) => (
+            <FollowBtn
+              key={artist.id}
+              follow={() => followArtist(artist.id)}
+              unfollow={() => unfollowArtist(artist.id)}
+              following={artist.following}
+            >
+              Follow {artist.name} on Spotify
+            </FollowBtn>
+          ))}
         </>
       )}
     </PlaylistContainer>

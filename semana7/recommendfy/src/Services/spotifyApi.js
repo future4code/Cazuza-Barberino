@@ -8,7 +8,7 @@ export const requestSecurityToken = (pageLocation) => {
   const clientId = "6e2aee291e7e4b1792f8c9aece6d93ab";
   const redirectUri = pageLocation;
   const scopes = [
-    "playlist-modify-public playlist-modify-private user-follow-modify",
+    "playlist-modify-public playlist-modify-private user-follow-modify user-follow-read",
   ];
   window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
     "%20"
@@ -37,7 +37,7 @@ export const getArtistTopTracks = async (
   artistName,
   numOfTracks,
   trackList,
-  nameList
+  artistList
 ) => {
   const type = "artist";
   let artist_id = "";
@@ -52,7 +52,12 @@ export const getArtistTopTracks = async (
       }
     );
     artist_id = response.data.artists.items[0].id;
-    nameList.push(response.data.artists.items[0].name);
+    const following = await userFollowArtist(artist_id);
+    artistList.push({
+      name: response.data.artists.items[0].name,
+      id: artist_id,
+      following: following,
+    });
   } catch (err) {
     console.log("Artist Not Found " + err);
     return;
@@ -156,5 +161,54 @@ export const followPlaylist = async (playlist_id, successCallback) => {
     successCallback();
   } catch (err) {
     console.log("Cant Follow" + err);
+  }
+};
+
+export const followArtist = async (artist_id, successCallback) => {
+  try {
+    await axios.put(
+      apiurl + `/me/following?type=artist`,
+      {
+        ids: [artist_id],
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    successCallback();
+  } catch (err) {
+    console.log("Cant Follow" + err);
+  }
+};
+
+export const unfollowArtist = async (artist_id, successCallback) => {
+  try {
+    await axios.delete(apiurl + `/me/following?type=artist&ids=${artist_id}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    successCallback();
+  } catch (err) {
+    console.log("Cant Unfollow" + err);
+  }
+};
+
+export const userFollowArtist = async (artist_id) => {
+  try {
+    const response = await axios.get(
+      apiurl + `/me/following/contains?type=artist&ids=${artist_id}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return response.data[0];
+  } catch (err) {
+    console.log("Cant get an Answer " + err);
   }
 };

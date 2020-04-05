@@ -49,12 +49,6 @@ export const Main = styled.main`
   }
 `;
 
-export const Footer = styled.div`
-  background-color: ${(props) => props.theme.bg};
-
-  height: 100px;
-`;
-
 export const SiteTitle = styled.h1`
   color: ${(props) => props.theme.fc};
   font-size: 70px;
@@ -63,5 +57,28 @@ export const SiteTitle = styled.h1`
 
   @media ${(props) => props.theme.mobile} {
     font-size: 50px;
+  }
+`;
+
+export const Footer = styled.div`
+  background-color: ${(props) => props.theme.bg};
+  height: 100px;
+  display: grid;
+  grid-template-columns: 40px 40px;
+  justify-content: center;
+  align-content: center;
+  column-gap: 20px;
+`;
+
+export const FooterIconWrapper = styled.div`
+  box-sizing: content-box;
+  color: ${(props) => props.theme.bg3};
+  height: 40px;
+  padding: 5px;
+  border-radius: 15px;
+  cursor: pointer;
+
+  &:last-child {
+    color: ${(props) => props.theme.bg4};
   }
 `;

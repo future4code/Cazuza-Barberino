@@ -1,6 +1,7 @@
 import React from "react";
 import { ThemeProvider } from "styled-components";
 import TopTracksFromSpotify from "../TopTracksFromSpotify";
+import { FiGithub, FiLinkedin } from "react-icons/fi";
 import {
   theme,
   Container,
@@ -8,6 +9,7 @@ import {
   Main,
   Footer,
   Background,
+  FooterIconWrapper,
 } from "./styles";
 
 export default function AppContainer() {
@@ -19,7 +21,14 @@ export default function AppContainer() {
           <SiteTitle>Recommendfy</SiteTitle>
           <TopTracksFromSpotify />
         </Main>
-        <Footer></Footer>
+        <Footer>
+          <FooterIconWrapper>
+            <FiGithub size="40px" />
+          </FooterIconWrapper>
+          <FooterIconWrapper>
+            <FiLinkedin size="40px" />
+          </FooterIconWrapper>
+        </Footer>
       </Container>
     </ThemeProvider>
   );

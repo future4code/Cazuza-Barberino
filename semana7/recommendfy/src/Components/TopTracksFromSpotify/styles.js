@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const SubContainer = styled.div`
   width: 100%;
   max-width: 1200px;
-  margin-bottom: 100px;
 
   padding: 40px;
   background: linear-gradient(

@@ -13,6 +13,8 @@ import {
   requestSecurityToken,
   tokenIsValid,
   getToken,
+  followArtist,
+  unfollowArtist,
 } from "../../Services/spotifyApi";
 
 export default class AppContainer extends Component {
@@ -30,6 +32,7 @@ export default class AppContainer extends Component {
           id: "primary",
         },
       ],
+      artistList: [],
       playlistInput: "",
       showPLaylist: false,
       followingPlaylist: false,
@@ -121,22 +124,6 @@ export default class AppContainer extends Component {
     });
   };
 
-  changeArtistFollowState = (state, id) => {
-    console.log("lol");
-
-    this.setState({
-      artistsOnPlaylist: this.state.artistsOnPlaylist.map((artist) => {
-        if (artist.id === id) {
-          artist = {
-            ...artist,
-            following: state,
-          };
-        }
-        return artist;
-      }),
-    });
-  };
-
   createInputHandler = () => {
     this.focusNextInput = true;
     this.setState({
@@ -172,6 +159,7 @@ export default class AppContainer extends Component {
       showPLaylist,
       followingPlaylist,
       editPlaylistName,
+      artistList,
     } = this.state;
 
     return (
@@ -197,6 +185,9 @@ export default class AppContainer extends Component {
           playlist_id={this.playlist && this.playlist.id}
           followPlaylist={this.followPlaylist}
           unfollowPlaylist={this.unfollowPlaylist}
+          artistList={artistList}
+          followArtist={this.followArtist}
+          unfollowArtist={this.unfollowArtist}
         />
       </SubContainer>
     );
@@ -218,7 +209,7 @@ export default class AppContainer extends Component {
   };
 
   createRecomendedPlaylist = async (artistInput, playlistInput) => {
-    if (this.state.loading || playlistInput === "") return;
+    if (this.state.loading) return;
 
     const filteredArtists = artistInput.filter((artist) => artist.name !== "");
     if (filteredArtists.length === 0) return;
@@ -239,7 +230,7 @@ export default class AppContainer extends Component {
     });
 
     let trackList = [],
-      nameList = [];
+      artistList = [];
     const user_id = await getUserID();
 
     await Promise.all(
@@ -248,7 +239,7 @@ export default class AppContainer extends Component {
           artist.name,
           Math.max(artist.number, 1),
           trackList,
-          nameList
+          artistList
         )
       )
     );
@@ -262,9 +253,9 @@ export default class AppContainer extends Component {
       return;
     }
 
-    if (!playlistInput)
-      playlistInput = nameList.reduce((playlistName, artistName) => {
-        return playlistName + artistName + " | ";
+    if (!playlistInput || playlistInput === "")
+      playlistInput = artistList.reduce((playlistName, artist) => {
+        return playlistName + artist.name + " | ";
       }, "| ");
 
     this.shuffle(trackList);
@@ -278,6 +269,7 @@ export default class AppContainer extends Component {
     this.setState({
       loading: false,
       showPLaylist: true,
+      artistList: artistList,
     });
   };
 
@@ -314,6 +306,46 @@ export default class AppContainer extends Component {
 
     this.setState({
       followRequest: false,
+    });
+  };
+
+  followArtist = async (id) => {
+    if (this.state.followRequest) return;
+    this.setState({
+      followRequest: true,
+    });
+
+    await followArtist(id, () => this.changeArtistFollowState(true, id));
+
+    this.setState({
+      followRequest: false,
+    });
+  };
+
+  unfollowArtist = async (id) => {
+    if (this.state.followRequest) return;
+    this.setState({
+      followRequest: true,
+    });
+
+    await unfollowArtist(id, () => this.changeArtistFollowState(false, id));
+
+    this.setState({
+      followRequest: false,
+    });
+  };
+
+  changeArtistFollowState = (state, id) => {
+    this.setState({
+      artistList: this.state.artistList.map((artist) => {
+        if (artist.id === id) {
+          artist = {
+            ...artist,
+            following: state,
+          };
+        }
+        return artist;
+      }),
     });
   };
 

@@ -7,6 +7,7 @@ export const DefaultBox = styled.div`
 
   background-color: ${(props) => props.theme.bg2};
   color: ${(props) => props.theme.fc};
+  font-family: cursive;
 
   font-size: 20px;
   border-radius: 20px;
