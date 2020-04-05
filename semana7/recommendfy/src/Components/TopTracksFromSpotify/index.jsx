@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import shortid from "shortid";
-import FollowBtn from "../FollowBtn";
 import ArtistForm from "../ArtistForm";
-import { SubContainer, PlaylistContainer, Loader } from "./styles";
+import SpotifyPlaylist from "../SpotifyPlaylist";
+import { SubContainer } from "./styles";
 import {
   getArtistTopTracks,
   addAllTracksToPlaylist,
@@ -13,7 +13,7 @@ import {
   requestSecurityToken,
   tokenIsValid,
   getToken,
-} from "./spotifyApi";
+} from "../../Services/spotifyApi";
 
 export default class AppContainer extends Component {
   constructor(props) {
@@ -121,6 +121,22 @@ export default class AppContainer extends Component {
     });
   };
 
+  changeArtistFollowState = (state, id) => {
+    console.log("lol");
+
+    this.setState({
+      artistsOnPlaylist: this.state.artistsOnPlaylist.map((artist) => {
+        if (artist.id === id) {
+          artist = {
+            ...artist,
+            following: state,
+          };
+        }
+        return artist;
+      }),
+    });
+  };
+
   createInputHandler = () => {
     this.focusNextInput = true;
     this.setState({
@@ -174,29 +190,14 @@ export default class AppContainer extends Component {
           deleteInputHandler={this.deleteInputHandler}
           nextInputRef={this.nextInputRef}
         />
-        <PlaylistContainer>
-          {loading && <Loader>Loading</Loader>}
-          {showPLaylist && (
-            <>
-              <iframe
-                title="spotify"
-                src={`https://open.spotify.com/embed/playlist/${this.playlist.id}`}
-                width="300"
-                height="380"
-                frameBorder="0"
-                allowtransparency="true"
-                allow="encrypted-media"
-              ></iframe>
-              <FollowBtn
-                follow={this.followPlaylist}
-                unfollow={this.unfollowPlaylist}
-                following={followingPlaylist}
-              >
-                Save to your Spotify library
-              </FollowBtn>
-            </>
-          )}
-        </PlaylistContainer>
+        <SpotifyPlaylist
+          loading={loading}
+          showPLaylist={showPLaylist}
+          following={followingPlaylist}
+          playlist_id={this.playlist && this.playlist.id}
+          followPlaylist={this.followPlaylist}
+          unfollowPlaylist={this.unfollowPlaylist}
+        />
       </SubContainer>
     );
   }
@@ -233,14 +234,22 @@ export default class AppContainer extends Component {
     this.setState({
       loading: true,
       showPLaylist: false,
+      followingPlaylist: false,
+      followRequest: false,
     });
 
-    let trackList = [];
+    let trackList = [],
+      nameList = [];
     const user_id = await getUserID();
 
     await Promise.all(
       filteredArtists.map((artist) =>
-        getArtistTopTracks(artist.name, Math.max(artist.number, 1), trackList)
+        getArtistTopTracks(
+          artist.name,
+          Math.max(artist.number, 1),
+          trackList,
+          nameList
+        )
       )
     );
 
@@ -253,7 +262,10 @@ export default class AppContainer extends Component {
       return;
     }
 
-    if (!playlistInput) playlistInput = "Recomendations";
+    if (!playlistInput)
+      playlistInput = nameList.reduce((playlistName, artistName) => {
+        return playlistName + artistName + " | ";
+      }, "| ");
 
     this.shuffle(trackList);
 

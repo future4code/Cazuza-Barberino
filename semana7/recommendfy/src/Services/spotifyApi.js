@@ -7,7 +7,9 @@ export const requestSecurityToken = (pageLocation) => {
   const authEndpoint = "https://accounts.spotify.com/authorize";
   const clientId = "6e2aee291e7e4b1792f8c9aece6d93ab";
   const redirectUri = pageLocation;
-  const scopes = ["playlist-modify-public playlist-modify-private"];
+  const scopes = [
+    "playlist-modify-public playlist-modify-private user-follow-modify",
+  ];
   window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
     "%20"
   )}&response_type=token&show_dialog=false`;
@@ -34,7 +36,8 @@ export const tokenIsValid = () => token;
 export const getArtistTopTracks = async (
   artistName,
   numOfTracks,
-  trackList
+  trackList,
+  nameList
 ) => {
   const type = "artist";
   let artist_id = "";
@@ -49,6 +52,7 @@ export const getArtistTopTracks = async (
       }
     );
     artist_id = response.data.artists.items[0].id;
+    nameList.push(response.data.artists.items[0].name);
   } catch (err) {
     console.log("Artist Not Found " + err);
     return;

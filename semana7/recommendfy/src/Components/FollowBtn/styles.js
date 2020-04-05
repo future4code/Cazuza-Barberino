@@ -13,7 +13,7 @@ export const FollowBtnContainer = styled.div`
   font-size: 18px;
 
   width: 100%;
-  padding: 5px 15px;
+  padding: 5px 5px;
 `;
 
 export const BugFixingWrapperOfTheHolyProgrammerOrder = styled.div`
