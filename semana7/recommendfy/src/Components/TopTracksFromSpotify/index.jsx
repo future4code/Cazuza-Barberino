@@ -4,7 +4,6 @@ import FollowBtn from "../FollowBtn";
 import ArtistForm from "../ArtistForm";
 import { SubContainer, PlaylistContainer, Loader } from "./styles";
 import {
-  setToken,
   getArtistTopTracks,
   addAllTracksToPlaylist,
   createPlaylist,
@@ -12,6 +11,7 @@ import {
   getUserID,
   followPlaylist,
   requestSecurityToken,
+  tokenIsValid,
   getToken,
 } from "./spotifyApi";
 
@@ -26,6 +26,7 @@ export default class AppContainer extends Component {
       artistInput: [
         {
           name: "",
+          number: 5,
           id: "primary",
         },
       ],
@@ -43,38 +44,24 @@ export default class AppContainer extends Component {
   }
 
   componentDidMount() {
-    const hash = window.location.hash
-      .substring(1)
-      .split("&")
-      .reduce(function (initial, item) {
-        if (item) {
-          var parts = item.split("=");
-          initial[parts[0]] = decodeURIComponent(parts[1]);
-        }
-        return initial;
-      }, {});
-
-    window.location.hash = "";
-    setToken(hash.access_token);
-
-    if (getToken()) {
-      let artistSaved = localStorage.getItem("artist");
-      let playlistSaved = localStorage.getItem("playlist");
-      let autoNameSaved = localStorage.getItem("autoName");
-      artistSaved = JSON.parse(artistSaved);
-      playlistSaved = JSON.parse(playlistSaved);
-      autoNameSaved = JSON.parse(autoNameSaved);
-      this.setState({
-        artistInput: artistSaved,
-        playlistInput: playlistSaved,
-        editPlaylistName: autoNameSaved,
-      });
-      this.createRecomendedPlaylist(
-        artistSaved,
-        autoNameSaved && playlistSaved
-      );
-    }
+    getToken();
+    if (tokenIsValid()) this.createPlaylistAfterValidation();
   }
+
+  createPlaylistAfterValidation = () => {
+    let artistSaved = localStorage.getItem("artist");
+    let playlistSaved = localStorage.getItem("playlist");
+    let autoNameSaved = localStorage.getItem("autoName");
+    artistSaved = JSON.parse(artistSaved);
+    playlistSaved = JSON.parse(playlistSaved);
+    autoNameSaved = JSON.parse(autoNameSaved);
+    this.setState({
+      artistInput: artistSaved,
+      playlistInput: playlistSaved,
+      editPlaylistName: autoNameSaved,
+    });
+    this.createRecomendedPlaylist(artistSaved, autoNameSaved && playlistSaved);
+  };
 
   componentDidUpdate() {
     if (this.focusMorphInput) {
@@ -115,6 +102,25 @@ export default class AppContainer extends Component {
     });
   };
 
+  numberInputChangeHandler = (event, id) => {
+    const re = /^[0-9\b]+$/;
+    let value = event.target.value;
+    if (!re.test(value) && value !== "") return;
+
+    if (Number(value) > 10) value = 10;
+
+    this.setState({
+      artistInput: this.state.artistInput.map((artist) => {
+        if (artist.id === id)
+          artist = {
+            ...artist,
+            number: value,
+          };
+        return artist;
+      }),
+    });
+  };
+
   createInputHandler = () => {
     this.focusNextInput = true;
     this.setState({
@@ -122,6 +128,7 @@ export default class AppContainer extends Component {
         ...this.state.artistInput,
         {
           name: "",
+          number: 5,
           id: shortid.generate(),
         },
       ],
@@ -151,8 +158,6 @@ export default class AppContainer extends Component {
       editPlaylistName,
     } = this.state;
 
-    console.log(this.playlist);
-
     return (
       <SubContainer>
         <ArtistForm
@@ -164,6 +169,7 @@ export default class AppContainer extends Component {
           submitHandler={this.submitHandler}
           toggleEditMod={this.toggleEditMod}
           artistInputChangeHandler={this.artistInputChangeHandler}
+          numberInputChangeHandler={this.numberInputChangeHandler}
           createInputHandler={this.createInputHandler}
           deleteInputHandler={this.deleteInputHandler}
           nextInputRef={this.nextInputRef}
@@ -216,7 +222,7 @@ export default class AppContainer extends Component {
     const filteredArtists = artistInput.filter((artist) => artist.name !== "");
     if (filteredArtists.length === 0) return;
 
-    if (!getToken()) {
+    if (!tokenIsValid()) {
       this.saveStateToLocal();
       requestSecurityToken(this.pageLocation);
       return;
@@ -234,7 +240,7 @@ export default class AppContainer extends Component {
 
     await Promise.all(
       filteredArtists.map((artist) =>
-        getArtistTopTracks(artist.name, 5, trackList)
+        getArtistTopTracks(artist.name, Math.max(artist.number, 1), trackList)
       )
     );
 
@@ -247,7 +253,7 @@ export default class AppContainer extends Component {
       return;
     }
 
-    if (!playlistInput) playlistInput = "Recomendations"; //this.autoPlaylistName(artistInput);
+    if (!playlistInput) playlistInput = "Recomendations";
 
     this.shuffle(trackList);
 

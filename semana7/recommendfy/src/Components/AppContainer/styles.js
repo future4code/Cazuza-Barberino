@@ -6,7 +6,7 @@ export const theme = {
   bg3: "#2C5D91",
   bg4: "#552F6D",
   fc: "white",
-  mobile: `(max-width: 425px)`,
+  mobile: `(max-width: 750px)`,
 };
 
 export const Background = styled.div`

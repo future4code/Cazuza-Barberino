@@ -13,11 +13,23 @@ export const requestSecurityToken = (pageLocation) => {
   )}&response_type=token&show_dialog=false`;
 };
 
-export const setToken = (myToken) => {
-  token = myToken;
+export const getToken = () => {
+  const hash = window.location.hash
+    .substring(1)
+    .split("&")
+    .reduce(function (initial, item) {
+      if (item) {
+        var parts = item.split("=");
+        initial[parts[0]] = decodeURIComponent(parts[1]);
+      }
+      return initial;
+    }, {});
+
+  window.location.hash = "";
+  token = hash.access_token;
 };
 
-export const getToken = () => token;
+export const tokenIsValid = () => token;
 
 export const getArtistTopTracks = async (
   artistName,

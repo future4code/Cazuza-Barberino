@@ -17,7 +17,6 @@ export const DefaultWrapper = styled(DefaultBox)`
   padding: 0;
   position: relative;
   background-color: transparent;
-
   display: flex;
   align-items: center;
   justify-content: flex-end;

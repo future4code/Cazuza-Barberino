@@ -1,13 +1,20 @@
 import React, { Component } from "react";
 import { FiPlusCircle, FiXCircle } from "react-icons/fi";
-import { DefaultBox, DefaultWrapper } from "../global-styles";
-import { CreateInputIcon, DeleteInputIcon } from "./styles";
+import { DefaultWrapper } from "../global-styles";
+import {
+  CreateInputIcon,
+  DeleteInputIcon,
+  NumberInput,
+  AInput,
+} from "./styles";
 
 export default class ArtistInput extends Component {
   render() {
     const {
-      value,
-      changeHandler,
+      artistValue,
+      numberValue,
+      nameChangeHandler,
+      numberChangeHandler,
       showCreate,
       showDelete,
       createInput,
@@ -17,14 +24,22 @@ export default class ArtistInput extends Component {
 
     return (
       <DefaultWrapper>
-        <DefaultBox
+        <AInput
           as="input"
           placeholder="Artist"
-          onChange={changeHandler}
+          onChange={nameChangeHandler}
           name="artistInput"
-          value={value}
+          value={artistValue}
           type="text"
           ref={innerRef}
+        />
+        <NumberInput
+          as="input"
+          placeholder="Number"
+          onChange={numberChangeHandler}
+          name="artistInput"
+          value={numberValue}
+          type="text"
         />
         <CreateInputIcon showCreate={showCreate} onClick={createInput}>
           <FiPlusCircle size="100%" />
