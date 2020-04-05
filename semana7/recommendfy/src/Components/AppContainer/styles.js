@@ -6,6 +6,7 @@ export const theme = {
   bg3: "#2C5D91",
   bg4: "#552F6D",
   fc: "white",
+  mobile: `(max-width: 425px)`,
 };
 
 export const Background = styled.div`
@@ -20,8 +21,6 @@ export const Background = styled.div`
     ${(props) => props.theme.bg4} 75%,
     ${(props) => props.theme.bg} 100%
   );
-
-  filter: blur();
 `;
 
 export const Container = styled.div`
@@ -44,6 +43,10 @@ export const Main = styled.main`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
+  @media ${(props) => props.theme.mobile} {
+    padding: 0px;
+  }
 `;
 
 export const Footer = styled.div`
@@ -54,6 +57,11 @@ export const Footer = styled.div`
 
 export const SiteTitle = styled.h1`
   color: ${(props) => props.theme.fc};
-  font-size: 50px;
-  margin-bottom: 100px;
+  font-size: 70px;
+  margin-bottom: 20px;
+  font-family: "Lobster Two", cursive;
+
+  @media ${(props) => props.theme.mobile} {
+    font-size: 50px;
+  }
 `;

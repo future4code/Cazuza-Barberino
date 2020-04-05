@@ -22,6 +22,14 @@ export const SubContainer = styled.div`
   flex-wrap: wrap;
   column-gap: 70px;
   row-gap: 70px;
+
+  @media ${(props) => props.theme.mobile} {
+    padding-top: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
 `;
 
 export const PlaylistContainer = styled.div`
@@ -32,6 +40,10 @@ export const PlaylistContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+
+  @media ${(props) => props.theme.mobile} {
+    min-height: 0;
+  }
 `;
 
 export const Loader = styled.div`

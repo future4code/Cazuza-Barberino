@@ -151,6 +151,8 @@ export default class AppContainer extends Component {
       editPlaylistName,
     } = this.state;
 
+    console.log(this.playlist);
+
     return (
       <SubContainer>
         <ArtistForm
@@ -184,7 +186,7 @@ export default class AppContainer extends Component {
                 unfollow={this.unfollowPlaylist}
                 following={followingPlaylist}
               >
-                Save to Your Library
+                Save to your Spotify library
               </FollowBtn>
             </>
           )}
@@ -192,17 +194,6 @@ export default class AppContainer extends Component {
       </SubContainer>
     );
   }
-
-  requestSecurityToken = () => {
-    this.saveStateToLocal();
-    const authEndpoint = "https://accounts.spotify.com/authorize";
-    const clientId = "6e2aee291e7e4b1792f8c9aece6d93ab";
-    const redirectUri = this.pageLocation;
-    const scopes = ["playlist-modify-public playlist-modify-private"];
-    window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
-      "%20"
-    )}&response_type=token&show_dialog=false`;
-  };
 
   saveStateToLocal = () => {
     localStorage.setItem("artist", JSON.stringify(this.state.artistInput));

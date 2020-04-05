@@ -4,7 +4,6 @@ import { DefaultBox, DefaultWrapper, NoErroWrapper } from "../global-styles";
 export const Form = styled.form`
   width: 100%;
   max-width: 500px;
-  min-width: 300px;
 
   display: flex;
   flex-direction: column;
@@ -13,6 +12,11 @@ export const Form = styled.form`
   row-gap: 20px;
 
   flex: 1;
+
+  @media ${(props) => props.theme.mobile} {
+    position: relative;
+    right: 20px;
+  }
 `;
 
 export const DefaultBtn = styled(DefaultBox)`

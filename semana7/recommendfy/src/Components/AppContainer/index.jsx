@@ -16,7 +16,7 @@ export default function AppContainer() {
       <Background />
       <Container>
         <Main>
-          <SiteTitle>Recommendfy</SiteTitle>;
+          <SiteTitle>Recommendfy</SiteTitle>
           <TopTracksFromSpotify />
         </Main>
         <Footer></Footer>
