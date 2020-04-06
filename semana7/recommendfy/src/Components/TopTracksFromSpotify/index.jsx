@@ -24,6 +24,7 @@ export default class AppContainer extends Component {
     this.pageLocation = window.location.origin;
     this.playlist = null;
     this.state = {
+      sideContent: "instructions",
       loading: false,
       artistInput: [
         {
@@ -155,8 +156,7 @@ export default class AppContainer extends Component {
     const {
       artistInput,
       playlistInput,
-      loading,
-      showPLaylist,
+      sideContent,
       followingPlaylist,
       editPlaylistName,
       artistList,
@@ -179,8 +179,7 @@ export default class AppContainer extends Component {
           nextInputRef={this.nextInputRef}
         />
         <SpotifyPlaylist
-          loading={loading}
-          showPLaylist={showPLaylist}
+          content={sideContent}
           following={followingPlaylist}
           playlist_id={this.playlist && this.playlist.id}
           followPlaylist={this.followPlaylist}
@@ -209,7 +208,7 @@ export default class AppContainer extends Component {
   };
 
   createRecomendedPlaylist = async (artistInput, playlistInput) => {
-    if (this.state.loading) return;
+    if (this.state.sideContent === "loading") return;
 
     const filteredArtists = artistInput.filter((artist) => artist.name !== "");
     if (filteredArtists.length === 0) return;
@@ -223,8 +222,7 @@ export default class AppContainer extends Component {
     }
 
     this.setState({
-      loading: true,
-      showPLaylist: false,
+      sideContent: "loading",
       followingPlaylist: false,
       followRequest: false,
     });
@@ -247,8 +245,7 @@ export default class AppContainer extends Component {
     if (!trackList.length) {
       alert("Nenhum artista válido");
       this.setState({
-        loading: false,
-        showPLaylist: false,
+        sideContent: "instructions",
       });
       return;
     }
@@ -267,8 +264,7 @@ export default class AppContainer extends Component {
     ]);
 
     this.setState({
-      loading: false,
-      showPLaylist: true,
+      sideContent: "playlist",
       artistList: artistList,
     });
   };
