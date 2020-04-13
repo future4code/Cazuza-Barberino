@@ -1,5 +1,15 @@
-import { formReducer, FormAction } from "./FormReducer";
-import { todoReducer, TodoAction } from "./TodoReducer";
+import { formReducer } from "./FormReducer";
+import { todoReducer, TodoData } from "./TodoReducer";
 import { combineReducers, createStore } from "redux";
 
-export const store = createStore<string, FormAction, null, null>(formReducer);
+export interface StateData {
+  form: string;
+  todo: TodoData[];
+}
+
+export const reducers = combineReducers<StateData>({
+  form: formReducer,
+  todo: todoReducer,
+});
+
+export const store = createStore(reducers);

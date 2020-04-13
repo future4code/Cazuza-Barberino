@@ -1,15 +1,23 @@
 import React from "react";
 import TodoForm from "./TodoForm";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { TodoData } from "../Store/TodoReducer";
+import { StateData } from "../Store";
 
 function MainContent() {
+  const todoList = useSelector<StateData, TodoData[]>(
+    (state: StateData) => state.todo
+  );
+
   return (
     <Container>
       <TodoContainer>
         <TodoForm />
         <TodoList>
-          <Todos>WTf</Todos>
-          <Todos>Comprar Coca</Todos>
+          {todoList.map((todo) => (
+            <Todos>{todo.name}</Todos>
+          ))}
         </TodoList>
       </TodoContainer>
     </Container>
@@ -42,4 +50,6 @@ const TodoContainer = styled.div`
 
 const TodoList = styled.ul``;
 
-const Todos = styled.li``;
+const Todos = styled.li`
+  text-align: center;
+`;

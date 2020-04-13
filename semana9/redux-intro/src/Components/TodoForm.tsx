@@ -1,25 +1,33 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useRef } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { FormDispatch } from "../Store/FormReducer";
+import { TodoDispatcher } from "../Store/TodoReducer";
+import { StateData } from "../Store";
 
 function TodoForm() {
+  const inputValue = useSelector<StateData, string>(
+    (state: StateData) => state.form
+  );
+
+  const fDispatch = useDispatch();
+
+  const formDispatcher = useRef(new FormDispatch(fDispatch));
+  const todoDispatcher = useRef(new TodoDispatcher(fDispatch));
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    console.log("Submitted");
+    todoDispatcher.current.addTodo(inputValue);
+    formDispatcher.current.changeInput("");
   };
-
-  const inputValue = useSelector<string, string>((state: string) => state);
-
-  const dispatch = useDispatch();
-
-  const formDispatcher = new FormDispatch(dispatch);
 
   return (
     <Container onSubmit={handleSubmit}>
       <input
         value={inputValue}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          formDispatcher.changeInput(e.target.value);
+          formDispatcher.current.changeInput(e.target.value);
         }}
         type="text"
       />

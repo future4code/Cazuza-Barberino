@@ -7,7 +7,7 @@ export interface FormAction extends Action<ActionType> {
 }
 
 export enum ActionType {
-  ChangeInput,
+  ChangeInput = 3,
 }
 
 export const formReducer: Reducer<string, FormAction> = (
