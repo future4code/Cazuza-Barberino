@@ -11,6 +11,7 @@ function TodoForm() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (input === "") return;
     dispatch(addTodo(input));
     setInput("");
   };

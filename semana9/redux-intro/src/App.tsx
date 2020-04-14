@@ -1,19 +1,12 @@
 import React from "react";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import MainContent from "./Components/MainContent";
-
-const theme = {
-  bg: "#ccc",
-  fc: "#211",
-};
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Container>
-        <MainContent />
-      </Container>
-    </ThemeProvider>
+    <Container>
+      <MainContent />
+    </Container>
   );
 }
 
@@ -24,7 +17,7 @@ const Container = styled.div`
   width: 100%;
   min-height: 100vh;
 
-  background-color: ${(props) => props.theme.bg};
+  background-color: #eee;
   display: flex;
   flex-direction: column;
 `;
