@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Box, TextField, Button } from "@material-ui/core";
+import { Box, TextField, Button, Grid } from "@material-ui/core";
 import { FiPlus } from "react-icons/fi";
 import { StateData } from "../Store";
 import { useSelector } from "react-redux";
@@ -28,13 +28,16 @@ const TodoHeader = (props: Props) => {
         const current = panel.id === currentPanel;
         if (current) setTabName(panel.name);
         return (
-          <Button
-            color="primary"
-            variant={current ? "contained" : "text"}
-            onClick={() => dispatch(changeTab(panel.id))}
-          >
-            {panel.name}
-          </Button>
+          <Grid item xs={3}>
+            <Button
+              fullWidth={true}
+              color="primary"
+              variant={current ? "contained" : "text"}
+              onClick={() => dispatch(changeTab(panel.id))}
+            >
+              {panel.name}
+            </Button>
+          </Grid>
         );
       }),
     [panels, currentPanel, dispatch]
@@ -59,10 +62,18 @@ const TodoHeader = (props: Props) => {
       flexDirection="column"
     >
       <Box marginBottom="5px">
-        {tabs}
-        <Button onClick={() => dispatch(newPanel())}>
-          <FiPlus />
-        </Button>
+        <Grid container>
+          {tabs}
+          <Grid item xs={3}>
+            <Button
+              variant="outlined"
+              fullWidth={false}
+              onClick={() => dispatch(newPanel())}
+            >
+              +
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
       <form onSubmit={handleSubmit}>
         <TextField
