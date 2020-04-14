@@ -4,6 +4,7 @@ import MainContent from "./Components/MainContent";
 
 const theme = {
   bg: "#ccc",
+  fc: "#211",
 };
 
 function App() {

@@ -1,8 +1,8 @@
-import React, { ChangeEvent, useRef } from "react";
+import React, { ChangeEvent } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { FormDispatch } from "../Store/FormReducer";
-import { TodoDispatcher } from "../Store/TodoReducer";
+import { changeInput } from "../Store/FormReducer";
+import { addTodo } from "../Store/TodoReducer";
 import { StateData } from "../Store";
 
 function TodoForm() {
@@ -10,24 +10,21 @@ function TodoForm() {
     (state: StateData) => state.form
   );
 
-  const fDispatch = useDispatch();
-
-  const formDispatcher = useRef(new FormDispatch(fDispatch));
-  const todoDispatcher = useRef(new TodoDispatcher(fDispatch));
+  const dispatch = useDispatch();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Submitted");
-    todoDispatcher.current.addTodo(inputValue);
-    formDispatcher.current.changeInput("");
+    dispatch(addTodo(inputValue));
+    dispatch(changeInput(""));
   };
 
   return (
     <Container onSubmit={handleSubmit}>
-      <input
+      <Input
         value={inputValue}
+        placeholder="O que tem que ser feito?"
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          formDispatcher.current.changeInput(e.target.value);
+          dispatch(changeInput(e.target.value));
         }}
         type="text"
       />
@@ -35,12 +32,16 @@ function TodoForm() {
   );
 }
 
-// const mapStateToProps = (state) => {
-//   return {
-//     counter: state.counter,
-//   };
-// };
-
 export default TodoForm;
 
-const Container = styled.form``;
+const Container = styled.form`
+  width: 100%;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 30px;
+  border: none;
+  color: ${(props) => props.theme.fc};
+`;

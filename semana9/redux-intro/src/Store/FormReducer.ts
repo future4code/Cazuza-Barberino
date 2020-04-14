@@ -1,4 +1,4 @@
-import { Action, Reducer, Dispatch } from "redux";
+import { Action, Reducer } from "redux";
 
 const initialState: string = "";
 
@@ -6,29 +6,23 @@ export interface FormAction extends Action<ActionType> {
   payload: Partial<string>;
 }
 
-export enum ActionType {
-  ChangeInput = 3,
-}
+const CHANGE_INPUT = "CHANGE_INPUT";
+
+type ActionType = typeof CHANGE_INPUT;
 
 export const formReducer: Reducer<string, FormAction> = (
   state: string = initialState,
   action
 ): string => {
   switch (action.type) {
-    case ActionType.ChangeInput:
+    case CHANGE_INPUT:
       return action.payload;
     default:
       return state;
   }
 };
 
-export class FormDispatch {
-  private readonly dispatch: Dispatch<FormAction>;
-
-  constructor(dispatch: Dispatch<FormAction>) {
-    this.dispatch = dispatch;
-  }
-
-  changeInput = (value: string) =>
-    this.dispatch({ type: ActionType.ChangeInput, payload: value });
-}
+export const changeInput = (value: string) => ({
+  type: CHANGE_INPUT,
+  payload: value,
+});

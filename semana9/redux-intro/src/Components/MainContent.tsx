@@ -1,24 +1,41 @@
 import React from "react";
 import TodoForm from "./TodoForm";
 import styled from "styled-components";
+import TodoOption from "./TodoOption";
 import { useSelector } from "react-redux";
-import { TodoData } from "../Store/TodoReducer";
+import { TodoState } from "../Store/TodoReducer";
 import { StateData } from "../Store";
+import Todo from "./Todo";
 
 function MainContent() {
-  const todoList = useSelector<StateData, TodoData[]>(
+  const { todoList, filter } = useSelector<StateData, TodoState>(
     (state: StateData) => state.todo
   );
+
+  let doneTodos = 0;
+
+  const todos = todoList
+    .filter(
+      (todo) =>
+        filter === "all" ||
+        (filter === "done" && todo.done) ||
+        (filter === "undone" && !todo.done)
+    )
+    .map((todo) => {
+      if (todo.done) doneTodos++;
+      return <Todo todo={todo} />;
+    });
 
   return (
     <Container>
       <TodoContainer>
-        <TodoForm />
-        <TodoList>
-          {todoList.map((todo) => (
-            <Todos>{todo.name}</Todos>
-          ))}
-        </TodoList>
+        <Wrapper>
+          <TodoForm />
+          <TodoList>{todos}</TodoList>
+          {todoList.length > 0 && (
+            <TodoOption totalTodos={todos.length} doneTodos={doneTodos} />
+          )}
+        </Wrapper>
       </TodoContainer>
     </Container>
   );
@@ -29,27 +46,30 @@ export default MainContent;
 const Container = styled.div`
   position: relative;
   flex: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TodoContainer = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
   width: 100%;
   max-width: 1200px;
+  padding: 50px 0;
 
   background-color: ${(props) => props.theme.bg};
   box-shadow: 0 0 100px rgba(0, 0, 0, 0.2);
 
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
-const TodoList = styled.ul``;
+const TodoList = styled.ul`
+  list-style-type: none;
+`;
 
-const Todos = styled.li`
-  text-align: center;
+const Wrapper = styled.div`
+  width: 100%;
+  max-width: 700px;
 `;
