@@ -31,10 +31,10 @@ function MainContent() {
       <TodoContainer>
         <Wrapper>
           <TodoForm />
-          <TodoList>{todos}</TodoList>
           {todoList.length > 0 && (
             <TodoOption totalTodos={todos.length} doneTodos={doneTodos} />
           )}
+          <TodoList>{todos}</TodoList>
         </Wrapper>
       </TodoContainer>
     </Container>

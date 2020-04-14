@@ -1,5 +1,4 @@
-import React from "react";
-import styled, { css } from "styled-components";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { StateData } from "../Store";
 import {
@@ -7,6 +6,11 @@ import {
   deleteCompletedTodo,
   changeFilter,
 } from "../Store/TodoReducer";
+import Button from "@material-ui/core/Button";
+import Zoom from "@material-ui/core/Zoom";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import Box from "@material-ui/core/Box";
 
 interface Props {
   totalTodos: number;
@@ -17,62 +21,46 @@ function TodoOption({ totalTodos, doneTodos }: Props) {
   const filter = useSelector((state: StateData) => state.todo.filter);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    return () => {
+      dispatch(changeFilter("all"));
+    };
+  }, [dispatch]);
+
   return (
-    <Container>
-      <Btn
-        onClick={() => dispatch(completeAllTodo())}
-        show={doneTodos < totalTodos}
-      >
-        Marcar todas como completas
-      </Btn>
+    <Box display="flex">
+      <Zoom in={doneTodos < totalTodos}>
+        <Button
+          fullWidth={true}
+          variant="contained"
+          onClick={() => dispatch(completeAllTodo())}
+        >
+          Marcar todas como completas
+        </Button>
+      </Zoom>
 
       <Select
+        variant="outlined"
+        fullWidth={true}
         value={filter}
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-          dispatch(changeFilter(e.target.value))
-        }
+        onChange={(e) => dispatch(changeFilter(e.target.value as string))}
       >
-        <option value="all">all</option>
-        <option value="done">done</option>
-        <option value="undone">undone</option>
+        <MenuItem value="all">all</MenuItem>
+        <MenuItem value="done">done</MenuItem>
+        <MenuItem value="undone">undone</MenuItem>
       </Select>
 
-      <Btn onClick={() => dispatch(deleteCompletedTodo())} show={doneTodos > 0}>
-        Remover completas
-      </Btn>
-    </Container>
+      <Zoom in={doneTodos > 0}>
+        <Button
+          fullWidth={true}
+          variant="contained"
+          onClick={() => dispatch(deleteCompletedTodo())}
+        >
+          Remover completas
+        </Button>
+      </Zoom>
+    </Box>
   );
 }
 
 export default TodoOption;
-
-interface BtnProps {
-  show: boolean;
-}
-
-const Select = styled.select`
-  flex: 1;
-  font-size: 20px;
-  padding: 15px 10px;
-`;
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Btn = styled.button<BtnProps>`
-  flex: 1;
-  border: none;
-  padding: 15px 10px;
-  font-size: 20px;
-  opacity: 1;
-  cursor: pointer;
-  ${(props) =>
-    !props.show &&
-    css`
-      pointer-events: none;
-      opacity: 0;
-    `};
-`;

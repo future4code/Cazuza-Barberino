@@ -1,30 +1,29 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-import { changeInput } from "../Store/FormReducer";
+import { useDispatch } from "react-redux";
 import { addTodo } from "../Store/TodoReducer";
-import { StateData } from "../Store";
+import { TextField } from "@material-ui/core";
 
 function TodoForm() {
-  const inputValue = useSelector<StateData, string>(
-    (state: StateData) => state.form
-  );
+  const [input, setInput] = useState("");
 
   const dispatch = useDispatch();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    dispatch(addTodo(inputValue));
-    dispatch(changeInput(""));
+    dispatch(addTodo(input));
+    setInput("");
   };
 
   return (
     <Container onSubmit={handleSubmit}>
-      <Input
-        value={inputValue}
+      <TextField
+        fullWidth={true}
+        variant="outlined"
+        value={input}
         placeholder="O que tem que ser feito?"
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          dispatch(changeInput(e.target.value));
+          setInput(e.target.value);
         }}
         type="text"
       />
@@ -36,12 +35,4 @@ export default TodoForm;
 
 const Container = styled.form`
   width: 100%;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px 20px;
-  font-size: 30px;
-  border: none;
-  color: ${(props) => props.theme.fc};
 `;

@@ -1,4 +1,4 @@
-import { Action, Reducer } from "redux";
+import { Reducer } from "redux";
 import shortid from "shortid";
 
 export interface TodoData {
@@ -14,65 +14,47 @@ export interface TodoState {
 
 const initalState: TodoState = { todoList: [], filter: "all" };
 
-interface TodoAction extends Action<ActionType> {
-  payload: {
-    todo: TodoData;
-    filter: string;
-  };
-}
-
-const ADD_TODO = "ADD_TODO";
-const TOGGLE_TODO = "TOGGLE_TODO";
-const DELETE_TODO = "DELETE_TODO";
-const COMPLETE_ALL = "COMPLETE_ALL";
-const REMOVE_COMPLETED = "REMOVE_COMPLETED";
-const CHANGE_FILTER = "CHANGE_FILTER";
-
-type ActionType =
-  | typeof ADD_TODO
-  | typeof TOGGLE_TODO
-  | typeof DELETE_TODO
-  | typeof COMPLETE_ALL
-  | typeof REMOVE_COMPLETED
-  | typeof CHANGE_FILTER;
+type TodoAction =
+  | { type: "ADD_TODO"; todo: TodoData }
+  | { type: "TOGGLE_TODO"; id: string }
+  | { type: "DELETE_TODO"; id: string }
+  | { type: "COMPLETE_ALL" }
+  | { type: "REMOVE_COMPLETED" }
+  | { type: "CHANGE_FILTER"; filter: string };
 
 export const todoReducer: Reducer<TodoState, TodoAction> = (
   state: TodoState = initalState,
   action
 ) => {
   switch (action.type) {
-    case ADD_TODO:
-      return { ...state, todoList: [...state.todoList, action.payload.todo] };
-    case TOGGLE_TODO:
+    case "ADD_TODO":
+      return { ...state, todoList: [...state.todoList, action.todo] };
+    case "TOGGLE_TODO":
       return {
         ...state,
         todoList: state.todoList.map((todo) =>
-          todo.id === action.payload.todo.id
-            ? { ...todo, done: !todo.done }
-            : todo
+          todo.id === action.id ? { ...todo, done: !todo.done } : todo
         ),
       };
-    case DELETE_TODO:
+    case "DELETE_TODO":
       return {
         ...state,
-        todoList: state.todoList.filter(
-          (todo) => todo.id !== action.payload.todo.id
-        ),
+        todoList: state.todoList.filter((todo) => todo.id !== action.id),
       };
-    case COMPLETE_ALL:
+    case "COMPLETE_ALL":
       return {
         ...state,
         todoList: state.todoList.map((todo) => ({ ...todo, done: true })),
       };
-    case REMOVE_COMPLETED:
+    case "REMOVE_COMPLETED":
       return {
         ...state,
         todoList: state.todoList.filter((todo) => !todo.done),
       };
-    case CHANGE_FILTER:
+    case "CHANGE_FILTER":
       return {
         ...state,
-        filter: action.payload.filter,
+        filter: action.filter,
       };
     default:
       return state;
@@ -80,63 +62,33 @@ export const todoReducer: Reducer<TodoState, TodoAction> = (
 };
 
 export const addTodo = (todoName: string): TodoAction => ({
-  type: ADD_TODO,
-  payload: {
-    todo: {
-      name: todoName,
-      done: false,
-      id: shortid.generate(),
-    },
-    filter: "",
+  type: "ADD_TODO",
+  todo: {
+    name: todoName,
+    done: false,
+    id: shortid.generate(),
   },
 });
 
 export const toggleTodo = (id: string): TodoAction => ({
-  type: TOGGLE_TODO,
-  payload: {
-    todo: {
-      id,
-    },
-    filter: "",
-  },
+  type: "TOGGLE_TODO",
+  id,
 });
 
 export const deleteTodo = (id: string): TodoAction => ({
-  type: DELETE_TODO,
-  payload: {
-    todo: {
-      id,
-    },
-    filter: "",
-  },
+  type: "DELETE_TODO",
+  id,
 });
 
 export const completeAllTodo = (): TodoAction => ({
-  type: COMPLETE_ALL,
-  payload: {
-    todo: {
-      id: "",
-    },
-    filter: "",
-  },
+  type: "COMPLETE_ALL",
 });
 
 export const deleteCompletedTodo = (): TodoAction => ({
-  type: REMOVE_COMPLETED,
-  payload: {
-    todo: {
-      id: "",
-    },
-    filter: "",
-  },
+  type: "REMOVE_COMPLETED",
 });
 
 export const changeFilter = (filter: string): TodoAction => ({
-  type: CHANGE_FILTER,
-  payload: {
-    todo: {
-      id: "",
-    },
-    filter,
-  },
+  type: "CHANGE_FILTER",
+  filter,
 });
