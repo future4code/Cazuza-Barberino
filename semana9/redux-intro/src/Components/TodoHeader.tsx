@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Box, TextField, Button, Grid } from "@material-ui/core";
-import { FiPlus } from "react-icons/fi";
+import { Add } from "@material-ui/icons";
 import { StateData } from "../Store";
 import { useSelector } from "react-redux";
 import {
@@ -70,7 +70,7 @@ const TodoHeader = (props: Props) => {
               fullWidth={false}
               onClick={() => dispatch(newPanel())}
             >
-              +
+              <Add />
             </Button>
           </Grid>
         </Grid>

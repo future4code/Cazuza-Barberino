@@ -2,7 +2,7 @@ import { Reducer } from "redux";
 import shortid from "shortid";
 
 export interface TodoData {
-  name?: string;
+  name: string;
   id: string;
   done?: boolean;
 }
@@ -16,12 +16,14 @@ export interface TodoPanel {
 export interface TodoState {
   panels: TodoPanel[];
   filter: string;
+  search: string;
   currentPanel: string;
 }
 
 const initalState: TodoState = {
   panels: [{ name: "New Panel", id: "primary", todoList: [] }],
   filter: "all",
+  search: "",
   currentPanel: "primary",
 };
 
@@ -34,7 +36,8 @@ type TodoAction =
   | { type: "CHANGE_FILTER"; filter: string }
   | { type: "NEW_PANEL" }
   | { type: "CHANGE_TAB"; panelId: string }
-  | { type: "RENAME_PANEL"; name: string };
+  | { type: "RENAME_PANEL"; name: string }
+  | { type: "SEARCH_TODO"; search: string };
 
 export const todoReducer: Reducer<TodoState, TodoAction> = (
   state: TodoState = initalState,
@@ -139,6 +142,11 @@ export const todoReducer: Reducer<TodoState, TodoAction> = (
               }
         ),
       };
+    case "SEARCH_TODO":
+      return {
+        ...state,
+        search: action.search,
+      };
     default:
       return state;
   }
@@ -188,4 +196,9 @@ export const changeTab = (panelId: string): TodoAction => ({
 export const changeName = (name: string): TodoAction => ({
   type: "RENAME_PANEL",
   name,
+});
+
+export const searchTodo = (search: string): TodoAction => ({
+  type: "SEARCH_TODO",
+  search,
 });

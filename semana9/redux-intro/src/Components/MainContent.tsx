@@ -9,9 +9,10 @@ import TodoHeader from "./TodoHeader";
 import Todo from "./Todo";
 
 function MainContent() {
-  const { panels, currentPanel, filter } = useSelector<StateData, TodoState>(
-    (state: StateData) => state.todo
-  );
+  const { panels, currentPanel, filter, search } = useSelector<
+    StateData,
+    TodoState
+  >((state: StateData) => state.todo);
 
   let doneTodos = 0;
   let todoList: TodoData[] = [];
@@ -23,9 +24,10 @@ function MainContent() {
   const todos = todoList
     .filter(
       (todo) =>
-        filter === "all" ||
-        (filter === "done" && todo.done) ||
-        (filter === "undone" && !todo.done)
+        todo.name.toUpperCase().indexOf(search.toUpperCase()) > -1 &&
+        (filter === "all" ||
+          (filter === "done" && todo.done) ||
+          (filter === "undone" && !todo.done))
     )
     .map((todo) => {
       if (todo.done) doneTodos++;
