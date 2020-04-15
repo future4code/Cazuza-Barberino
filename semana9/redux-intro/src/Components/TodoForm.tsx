@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { addTodo } from "../Store/TodoReducer";
+import { createTodo } from "../Store/TodoReducer";
 import { TextField } from "@material-ui/core";
 
 function TodoForm() {
@@ -12,7 +12,7 @@ function TodoForm() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (input === "") return;
-    dispatch(addTodo(input));
+    dispatch(createTodo(input));
     setInput("");
   };
 

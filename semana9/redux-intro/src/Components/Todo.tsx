@@ -32,7 +32,7 @@ function Todo({ todo }: Props) {
         >
           {todo.done ? <FiCheckCircle /> : <FiCircle />}
         </Button>
-        <TodoText done={todo.done}>{todo.name}</TodoText>
+        <TodoText done={todo.done}>{todo.text}</TodoText>
         <Button
           disableElevation
           variant="contained"

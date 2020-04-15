@@ -1,30 +1,25 @@
 import { Reducer } from "redux";
-import shortid from "shortid";
+import { ThunkAction } from "redux-thunk";
+import { StateData } from "../Store";
+import { Action } from "redux";
+import api from "../services/api";
 
 export interface TodoData {
-  name: string;
+  text: string;
   id: string;
   done?: boolean;
 }
 
-export interface TodoPanel {
-  todoList: TodoData[];
-  name: string;
-  id: string;
-}
-
 export interface TodoState {
-  panels: TodoPanel[];
+  todoList: TodoData[];
   filter: string;
   search: string;
-  currentPanel: string;
 }
 
 const initalState: TodoState = {
-  panels: [{ name: "New Panel", id: "primary", todoList: [] }],
+  todoList: [],
   filter: "all",
   search: "",
-  currentPanel: "primary",
 };
 
 type TodoAction =
@@ -34,113 +29,53 @@ type TodoAction =
   | { type: "COMPLETE_ALL" }
   | { type: "REMOVE_COMPLETED" }
   | { type: "CHANGE_FILTER"; filter: string }
-  | { type: "NEW_PANEL" }
-  | { type: "CHANGE_TAB"; panelId: string }
-  | { type: "RENAME_PANEL"; name: string }
-  | { type: "SEARCH_TODO"; search: string };
+  | { type: "SEARCH_TODO"; search: string }
+  | { type: "LOAD_TODOS"; todos: TodoData[] };
 
 export const todoReducer: Reducer<TodoState, TodoAction> = (
   state: TodoState = initalState,
   action
 ) => {
   switch (action.type) {
+    case "LOAD_TODOS":
+      return {
+        ...state,
+        todoList: action.todos,
+      };
     case "ADD_TODO":
       return {
         ...state,
-        panels: state.panels.map((panel) =>
-          panel.id !== state.currentPanel
-            ? panel
-            : {
-                ...panel,
-                todoList: [...panel.todoList, action.todo],
-              }
-        ),
+        todoList: [...state.todoList, action.todo],
       };
     case "TOGGLE_TODO":
       return {
         ...state,
-        panels: state.panels.map((panel) =>
-          panel.id !== state.currentPanel
-            ? panel
-            : {
-                ...panel,
-                todoList: panel.todoList.map((todo) =>
-                  todo.id !== action.todoId
-                    ? todo
-                    : { ...todo, done: !todo.done }
-                ),
-              }
+        todoList: state.todoList.map((todo) =>
+          todo.id !== action.todoId ? todo : { ...todo, done: !todo.done }
         ),
       };
     case "DELETE_TODO":
       return {
         ...state,
-        panels: state.panels.map((panel) =>
-          panel.id !== state.currentPanel
-            ? panel
-            : {
-                ...panel,
-                todoList: panel.todoList.filter(
-                  (todo) => todo.id !== action.todoId
-                ),
-              }
-        ),
+        todoList: state.todoList.filter((todo) => todo.id !== action.todoId),
       };
     case "COMPLETE_ALL":
       return {
         ...state,
-        panels: state.panels.map((panel) =>
-          panel.id !== state.currentPanel
-            ? panel
-            : {
-                ...panel,
-                todoList: panel.todoList.map((todo) => ({
-                  ...todo,
-                  done: !todo.done,
-                })),
-              }
-        ),
+        todoList: state.todoList.map((todo) => ({
+          ...todo,
+          done: !todo.done,
+        })),
       };
     case "REMOVE_COMPLETED":
       return {
         ...state,
-        panels: state.panels.map((panel) =>
-          panel.id !== state.currentPanel
-            ? panel
-            : {
-                ...panel,
-                todoList: panel.todoList.filter((todo) => !todo.done),
-              }
-        ),
+        todoList: state.todoList.filter((todo) => !todo.done),
       };
     case "CHANGE_FILTER":
       return {
         ...state,
         filter: action.filter,
-      };
-    case "NEW_PANEL":
-      const id = shortid.generate();
-      return {
-        ...state,
-        panels: [...state.panels, { name: "New Panel", todoList: [], id }],
-        currentPanel: id,
-      };
-    case "CHANGE_TAB":
-      return {
-        ...state,
-        currentPanel: action.panelId,
-      };
-    case "RENAME_PANEL":
-      return {
-        ...state,
-        panels: state.panels.map((panel) =>
-          panel.id !== state.currentPanel
-            ? panel
-            : {
-                ...panel,
-                name: action.name,
-              }
-        ),
       };
     case "SEARCH_TODO":
       return {
@@ -152,53 +87,108 @@ export const todoReducer: Reducer<TodoState, TodoAction> = (
   }
 };
 
-export const addTodo = (todoName: string): TodoAction => ({
-  type: "ADD_TODO",
-  todo: {
-    name: todoName,
-    done: false,
-    id: shortid.generate(),
-  },
-});
-
-export const toggleTodo = (todoId: string): TodoAction => ({
-  type: "TOGGLE_TODO",
-  todoId,
-});
-
-export const deleteTodo = (todoId: string): TodoAction => ({
-  type: "DELETE_TODO",
-  todoId,
-});
-
-export const completeAllTodo = (): TodoAction => ({
-  type: "COMPLETE_ALL",
-});
-
-export const deleteCompletedTodo = (): TodoAction => ({
-  type: "REMOVE_COMPLETED",
-});
-
 export const changeFilter = (filter: string): TodoAction => ({
   type: "CHANGE_FILTER",
   filter,
-});
-
-export const newPanel = (): TodoAction => ({
-  type: "NEW_PANEL",
-});
-
-export const changeTab = (panelId: string): TodoAction => ({
-  type: "CHANGE_TAB",
-  panelId,
-});
-
-export const changeName = (name: string): TodoAction => ({
-  type: "RENAME_PANEL",
-  name,
 });
 
 export const searchTodo = (search: string): TodoAction => ({
   type: "SEARCH_TODO",
   search,
 });
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  StateData,
+  unknown,
+  Action<string>
+>;
+
+export const fetchTodos = (): AppThunk => async (dispatch, getstate) => {
+  try {
+    const id = getstate().lists.currentlist;
+    const response = await api.get(`cazuza-${id}/todos`);
+    dispatch<TodoAction>({ type: "LOAD_TODOS", todos: response.data.todos });
+  } catch (err) {
+    alert("FetchTodos " + err);
+  }
+};
+
+export const createTodo = (todoName: string): AppThunk => async (
+  dispatch,
+  getstate
+) => {
+  try {
+    const id = getstate().lists.currentlist;
+    const response = await api.post(`cazuza-${id}/todos`, {
+      text: todoName,
+    });
+    dispatch<TodoAction>({ type: "ADD_TODO", todo: response.data.todo });
+  } catch (err) {
+    alert("CreateTodos " + err);
+  }
+};
+
+export const toggleTodo = (todoId: string): AppThunk => async (
+  dispatch,
+  getstate
+) => {
+  try {
+    const id = getstate().lists.currentlist;
+    const response = await api.put(`cazuza-${id}/todos/${todoId}/toggle`);
+    dispatch<TodoAction>({
+      type: "TOGGLE_TODO",
+      todoId,
+    });
+  } catch (err) {
+    alert("FetchTodos " + err);
+  }
+};
+
+export const deleteTodo = (todoId: string): AppThunk => async (
+  dispatch,
+  getstate
+) => {
+  try {
+    const id = getstate().lists.currentlist;
+    const response = await api.delete(`cazuza-${id}/todos/${todoId}`);
+    dispatch<TodoAction>({
+      type: "DELETE_TODO",
+      todoId,
+    });
+  } catch (err) {
+    alert("FetchTodos " + err);
+  }
+};
+
+export const completeAllTodo = (): AppThunk => async (dispatch, getstate) => {
+  try {
+    const id = getstate().lists.currentlist;
+    const todoIdList = getstate()
+      .todo.todoList.filter((todo) => !todo.done)
+      .map((todo) => todo.id);
+
+    await Promise.all(
+      todoIdList.map((todoId) => api.put(`cazuza-${id}/todos/${todoId}/toggle`))
+    );
+
+    dispatch<TodoAction>({
+      type: "COMPLETE_ALL",
+    });
+  } catch (err) {
+    alert("FetchTodos " + err);
+  }
+};
+
+export const deleteCompletedTodo = (): AppThunk => async (
+  dispatch,
+  getstate
+) => {
+  try {
+    const id = getstate().lists.currentlist;
+    const response = await api.delete(`cazuza-${id}/todos/delete-done`);
+    dispatch<TodoAction>({ type: "REMOVE_COMPLETED" });
+  } catch (err) {
+    alert("FetchTodos " + err);
+  }
+};

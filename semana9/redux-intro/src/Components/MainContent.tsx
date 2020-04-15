@@ -2,29 +2,38 @@ import React from "react";
 import TodoForm from "./TodoForm";
 import styled from "styled-components";
 import TodoOption from "./TodoOption";
-import { useSelector } from "react-redux";
-import { TodoState, TodoData } from "../Store/TodoReducer";
+import { useSelector, useDispatch } from "react-redux";
+import { TodoState, TodoData, fetchTodos } from "../Store/TodoReducer";
+import { fetchLists } from "../Store/todoListReducer";
 import { StateData } from "../Store";
 import TodoHeader from "./TodoHeader";
 import Todo from "./Todo";
 
 function MainContent() {
-  const { panels, currentPanel, filter, search } = useSelector<
-    StateData,
-    TodoState
-  >((state: StateData) => state.todo);
+  const { filter, search, todoList } = useSelector<StateData, TodoState>(
+    (state: StateData) => state.todo
+  );
+
+  const currentlist = useSelector(
+    (state: StateData) => state.lists.currentlist
+  );
+
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(fetchLists());
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    dispatch(fetchTodos());
+  }, [currentlist]);
 
   let doneTodos = 0;
-  let todoList: TodoData[] = [];
-
-  panels.forEach((panel) => {
-    if (panel.id === currentPanel) todoList = panel.todoList;
-  });
 
   const todos = todoList
     .filter(
       (todo) =>
-        todo.name.toUpperCase().indexOf(search.toUpperCase()) > -1 &&
+        todo.text.toUpperCase().indexOf(search.toUpperCase()) > -1 &&
         (filter === "all" ||
           (filter === "done" && todo.done) ||
           (filter === "undone" && !todo.done))

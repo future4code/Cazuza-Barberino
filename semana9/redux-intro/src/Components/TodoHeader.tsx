@@ -4,19 +4,12 @@ import { Box, TextField, Button, Grid } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { StateData } from "../Store";
 import { useSelector } from "react-redux";
-import {
-  TodoState,
-  changeName,
-  newPanel,
-  changeTab,
-} from "../Store/TodoReducer";
+import { createList, changeList } from "../Store/todoListReducer";
 
 interface Props {}
 
 const TodoHeader = (props: Props) => {
-  const { panels, currentPanel } = useSelector<StateData, TodoState>(
-    (state: StateData) => state.todo
-  );
+  const { currentlist, lists } = useSelector((state: StateData) => state.lists);
 
   const [tabName, setTabName] = React.useState("");
 
@@ -24,31 +17,30 @@ const TodoHeader = (props: Props) => {
 
   const tabs = React.useMemo(
     () =>
-      panels.map((panel) => {
-        const current = panel.id === currentPanel;
-        if (current) setTabName(panel.name);
+      lists.map((list) => {
+        const current = list.id === currentlist;
+        if (current) setTabName(list.name);
         return (
-          <Grid item xs={3}>
+          <Grid key={list.id} item xs={3}>
             <Button
               fullWidth={true}
               color="primary"
               variant={current ? "contained" : "text"}
-              onClick={() => dispatch(changeTab(panel.id))}
+              onClick={() => dispatch(changeList(list.id))}
             >
-              {panel.name}
+              {list.name}
             </Button>
           </Grid>
         );
       }),
-    [panels, currentPanel, dispatch]
+    [lists, currentlist, dispatch]
   );
 
   const handleSubmit = React.useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (tabName !== "") dispatch(changeName(tabName));
     },
-    [dispatch, tabName]
+    []
   );
 
   return (
@@ -68,7 +60,7 @@ const TodoHeader = (props: Props) => {
             <Button
               variant="outlined"
               fullWidth={false}
-              onClick={() => dispatch(newPanel())}
+              onClick={() => dispatch(createList())}
             >
               <Add />
             </Button>
@@ -78,9 +70,6 @@ const TodoHeader = (props: Props) => {
       <form onSubmit={handleSubmit}>
         <TextField
           value={tabName}
-          onBlur={() => {
-            if (tabName !== "") dispatch(changeName(tabName));
-          }}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setTabName(e.target.value)
           }
