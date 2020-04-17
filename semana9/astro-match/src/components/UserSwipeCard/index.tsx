@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   BlurredBackground,
   InfoWrapper,
@@ -15,12 +15,18 @@ import { useDrag } from "./useDrag";
 import { OptionType } from "../../containers/SwipeScreen/types";
 
 interface Props {
-  animation: Keyframes | null;
+  animation: ((translate: number, rotate: number) => () => Keyframes) | null;
   userToSwipe: Profile | null;
   onChooseOption: (option: OptionType) => () => void;
+  index: number;
 }
 
-const UserSwipeCard = ({ userToSwipe, animation, onChooseOption }: Props) => {
+const UserSwipeCard = ({
+  userToSwipe,
+  animation,
+  onChooseOption,
+  index,
+}: Props) => {
   const { coord, isDragging, itemRef, mouseDown, mouseUp } = useDrag();
 
   React.useLayoutEffect(() => {
@@ -29,28 +35,37 @@ const UserSwipeCard = ({ userToSwipe, animation, onChooseOption }: Props) => {
     }
   }, [isDragging, onChooseOption]);
 
+  const transform = React.useRef({
+    t: 0,
+    r: 0,
+  });
+
+  if (isDragging) {
+    transform.current.t = minmax(coord.x, -200, 200);
+    transform.current.r = minmax(coord.x / 10, -20, 20);
+  }
+
   if (!userToSwipe) return <></>;
   else
     return (
       <UserCardWrapper
+        index={index}
         onMouseDown={mouseDown}
         onMouseUp={mouseUp}
-        animation={animation}
+        animation={
+          animation ? animation(transform.current.t, transform.current.r) : null
+        }
         ref={itemRef}
         dragging={isDragging}
         coord={coord}
         style={
-          isDragging
+          isDragging && index === 0
             ? {
-                transform: `translate(${minmax(
-                  coord.x,
-                  -200,
-                  200
-                )}px) rotate(${minmax(coord.x / 10, -20, 20)}deg)`,
+                transform: `translate(${transform.current.t}px) rotate(${transform.current.r}deg)`,
                 opacity: 1 - minmax(Math.abs(coord.x / 400), 0, 0.5),
               }
             : {
-                transition: ".5s ease-out",
+                transition: "transform 1s, .5s ease-out",
               }
         }
       >

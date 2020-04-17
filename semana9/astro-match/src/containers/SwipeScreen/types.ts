@@ -5,8 +5,9 @@ import { choosePerson } from "../../reducers/profiles/actions";
 import { Keyframes } from "styled-components";
 
 const mapState = (state: RootState) => ({
-  profileToSwipe: state.profiles.currentProfile,
+  profileToSwipe: state.profiles.profileToSwap,
   matches: state.profiles.matches,
+  fetching: state.profiles.fetching,
 });
 
 const mapDispatch = {
@@ -17,9 +18,9 @@ const mapDispatch = {
 export const connector = connect(mapState, mapDispatch);
 
 export interface State {
-  currentAnimation: null | Keyframes;
-  showCard: boolean;
-  showButtons: boolean;
+  currentAnimation:
+    | ((translate: number, rotate: number) => () => Keyframes)
+    | null;
   showSnackBar: boolean;
 }
 

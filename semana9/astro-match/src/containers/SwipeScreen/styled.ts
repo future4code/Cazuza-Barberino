@@ -75,7 +75,8 @@ export const ButtonsWrapper = styled.div<ButtonsWrapperProps>`
   position: absolute;
   bottom: ${(props) => (props.show ? 0 : `-80px`)};
   left: 0;
-
+  z-index: 2;
+  background-color: white;
   transition: bottom 0.5s;
 
   width: 100%;

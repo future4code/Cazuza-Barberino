@@ -30,6 +30,7 @@ const MainContainer = styled.div`
   border-radius: 5px;
   background-color: white;
   box-shadow: 0 0 5px #0000000f;
+  overflow: hidden;
 `;
 
 const theme = {

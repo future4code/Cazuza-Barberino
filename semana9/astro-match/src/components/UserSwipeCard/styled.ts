@@ -2,10 +2,14 @@ import styled, { keyframes, css, Keyframes } from "styled-components";
 import { Coord } from "./useDrag";
 
 // CSS Animations for the SwipeCard
-export const swipeRight = keyframes`
+export const swipeRight = (translate: number, rotate: number) => () => {
+  const t = `${translate}px`;
+  const r = `${rotate}px`;
+
+  return keyframes`
   from {
     opacity: 1;
-	  transform: translate(0) rotate(0);
+	  transform: translate(${t}) rotate(${r});
   }
 
   to {
@@ -13,10 +17,15 @@ export const swipeRight = keyframes`
 	  transform: translate(-200px) rotate(-20deg);
   }
 `;
-export const swipeLeft = keyframes`
+};
+export const swipeLeft = (translate: number, rotate: number) => () => {
+  const t = `${translate}px`;
+  const r = `${rotate}px`;
+
+  return keyframes`
   from {
     opacity: 1;
-	  transform: translate(0) rotate(0);
+	  transform: translate(${t}) rotate(${r});
   }
 
   to {
@@ -24,35 +33,33 @@ export const swipeLeft = keyframes`
 	  transform: translate(200px) rotate(20deg);
   }
 `;
+};
 
 interface UserCardWrapperProps {
-  animation: Keyframes | null;
+  animation: (() => Keyframes) | null;
   dragging: boolean;
   coord: Coord;
+  index: number;
 }
 
-export const UserCardWrapper = styled.div.attrs((props: UserCardWrapperProps) =>
-  props.dragging
-    ? {
-        border: "2px solid red",
-        transform: `translate(${minmax(
-          props.coord.x,
-          -200,
-          200
-        )}px) rotate(${minmax(props.coord.x / 10, -20, 20)}deg)`,
-      }
-    : {}
+export const UserCardWrapper = styled.div.attrs(
+  (props: UserCardWrapperProps) => {}
 )<UserCardWrapperProps>`
+  background-color: white;
   box-shadow: 0 2px 10px 0 rgba(117, 117, 117, 0.77);
-  position: relative;
+  position: absolute;
+  left: ${(props) => 24 - props.index * 8}px;
+  top: ${(props) => 24 - props.index * 8}px;
   border-radius: 5px;
   overflow: hidden;
-  /* transition: 0.5s ease-out; */
   height: 430px;
-  animation: ${(props) => props.animation} 0.5s forwards;
+  width: 350px;
+  animation: ${(props) => (props.animation ? props.animation() : null)} 0.5s
+    forwards;
   display: flex;
   align-items: center;
   cursor: ${(props) => (props.dragging ? "grabbing" : "grab")};
+  z-index: ${(props) => 4 - props.index};
 `;
 
 export const minmax = (val: number, min: number, max: number): number => {

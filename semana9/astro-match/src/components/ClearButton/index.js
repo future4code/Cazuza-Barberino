@@ -12,7 +12,11 @@ const ClearButton = styled.button`
 
 function ClearButtonWrapper(props) {
   return (
-    <ClearButton onClick={props.clearSwipes}>
+    <ClearButton
+      onClick={() => {
+        if (!props.fetching) props.clearSwipes();
+      }}
+    >
       Limpar swipes e matches
     </ClearButton>
   );
@@ -28,4 +32,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(ClearButtonWrapper);
+function mapState(state) {
+  return {
+    fetching: state.profiles.fetching,
+  };
+}
+
+export default connect(mapState, mapDispatchToProps)(ClearButtonWrapper);

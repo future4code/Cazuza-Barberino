@@ -16,6 +16,7 @@ import { Loader } from "../../components/Loader";
 import { State, OptionType, Props, connector } from "./types";
 import { Snackbar } from "@material-ui/core";
 import Slide, { SlideProps } from "@material-ui/core/Slide";
+import TrustfulForm from "../../components/TrustfulForm";
 
 export class SwipeScreen extends Component<Props, State> {
   checkingMatchSucces: boolean;
@@ -28,15 +29,26 @@ export class SwipeScreen extends Component<Props, State> {
 
     this.state = {
       currentAnimation: null,
-      showCard: true,
-      showButtons: false,
       showSnackBar: false,
     };
   }
 
+  componentDidMount() {
+    window.addEventListener("keydown", this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKeyDown);
+  }
+
+  handleKeyDown = (ev: KeyboardEvent) => {
+    if (ev.keyCode === 39) this.onChooseOption("like")();
+    else if (ev.keyCode === 37) this.onChooseOption("dislike")();
+  };
+
   componentDidUpdate(prevProps: Props, prevState: State) {
-    if (prevProps.profileToSwipe !== this.props.profileToSwipe) {
-      this.setState({ showCard: true, currentAnimation: null });
+    if (prevProps.profileToSwipe[0] !== this.props.profileToSwipe[0]) {
+      this.setState({ currentAnimation: null });
     }
 
     if (
@@ -54,22 +66,22 @@ export class SwipeScreen extends Component<Props, State> {
 
   onChooseOption = (option: OptionType) => () => {
     if (
-      !this.props.profileToSwipe ||
-      !this.state.showCard ||
+      this.props.profileToSwipe.length === 0 ||
+      this.props.fetching ||
       this.state.currentAnimation !== null
     )
       return;
 
     this.setState({
       currentAnimation: option === "dislike" ? swipeRight : swipeLeft,
-      showButtons: true,
     });
 
     this.checkingMatchSucces = true;
 
-    this.props.chooseProfile(this.props.profileToSwipe.id, option === "like");
-
-    setTimeout(() => this.setState({ showCard: false }), 500);
+    this.props.chooseProfile(
+      this.props.profileToSwipe[0].id,
+      option === "like"
+    );
   };
 
   TransitionDown = (props: SlideProps) => {
@@ -77,13 +89,10 @@ export class SwipeScreen extends Component<Props, State> {
   };
 
   render() {
-    const { profileToSwipe, goToMatchScreen, matches } = this.props;
-    const {
-      currentAnimation,
-      showCard,
-      showButtons,
-      showSnackBar,
-    } = this.state;
+    const { profileToSwipe, goToMatchScreen, matches, fetching } = this.props;
+    const { currentAnimation, showSnackBar } = this.state;
+
+    // console.log(profileToSwipe);
 
     return (
       <SwipeScreenWrapper>
@@ -108,17 +117,25 @@ export class SwipeScreen extends Component<Props, State> {
               })
             }
           />
-          {currentAnimation !== null && <Loader />}
-          {profileToSwipe && showCard ? (
-            <UserSwipeCard
-              userToSwipe={profileToSwipe}
-              animation={currentAnimation}
-              onChooseOption={this.onChooseOption}
-            />
-          ) : (
-            <Loader />
-          )}
-          <ButtonsWrapper show={showButtons}>
+          {profileToSwipe.length > 0 &&
+            profileToSwipe.map((profile, index) => (
+              <UserSwipeCard
+                index={index}
+                key={profile.id}
+                userToSwipe={profile}
+                animation={index !== 0 ? null : currentAnimation}
+                onChooseOption={this.onChooseOption}
+              />
+            ))}
+          {profileToSwipe.length === 0 && !fetching && <TrustfulForm />}
+          <Loader />
+          <ButtonsWrapper
+            show={
+              currentAnimation === null &&
+              !fetching &&
+              profileToSwipe.length > 0
+            }
+          >
             <OptionButton
               onClick={this.onChooseOption("dislike")}
               option="dislike"
