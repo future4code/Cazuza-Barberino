@@ -8,6 +8,8 @@ export const MatchIcon = styled(Icon)`
 
 export const List = styled.ul`
   padding: 0 10px;
+  height: 500px;
+  overflow-y: auto;
 `;
 
 export const ListItem = styled.li`
@@ -57,4 +59,9 @@ export const Avatar = styled.div<AvatarProps>`
 
 export const ListText = styled.p`
   user-select: none;
+`;
+
+export const Container = styled.div`
+  height: 100%;
+  width: 100%;
 `;

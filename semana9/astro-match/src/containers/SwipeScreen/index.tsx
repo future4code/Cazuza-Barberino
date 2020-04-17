@@ -20,6 +20,7 @@ export class SwipeScreen extends Component<Props, State> {
     this.state = {
       currentAnimation: null,
       showCard: true,
+      showButtons: false,
     };
   }
 
@@ -39,6 +40,7 @@ export class SwipeScreen extends Component<Props, State> {
 
     this.setState({
       currentAnimation: option === "dislike" ? swipeRight : swipeLeft,
+      showButtons: true,
     });
 
     this.props.chooseProfile(this.props.profileToSwipe.id, option === "like");
@@ -48,7 +50,7 @@ export class SwipeScreen extends Component<Props, State> {
 
   render() {
     const { profileToSwipe, goToMatchScreen } = this.props;
-    const { currentAnimation, showCard } = this.state;
+    const { currentAnimation, showCard, showButtons } = this.state;
 
     return (
       <SwipeScreenWrapper>
@@ -64,12 +66,13 @@ export class SwipeScreen extends Component<Props, State> {
           {profileToSwipe && showCard ? (
             <UserSwipeCard
               userToSwipe={profileToSwipe}
-              animationDirection={currentAnimation}
+              animation={currentAnimation}
+              onChooseOption={this.onChooseOption}
             />
           ) : (
             <Loader />
           )}
-          <ButtonsWrapper>
+          <ButtonsWrapper show={showButtons}>
             <OptionButton
               onClick={this.onChooseOption("dislike")}
               option="dislike"

@@ -46,12 +46,14 @@ export const OptionButton = styled.button<OptionButtonProps>`
 `;
 
 export const ContentWrapper = styled.div`
+  position: relative;
   padding: 20px;
   padding-bottom: 0;
   display: flex;
   flex-direction: column;
   flex: 1;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  overflow: hidden;
 `;
 
 export const SwipeScreenWrapper = styled.div`
@@ -65,9 +67,20 @@ export const MatchIcon = styled(Icon)`
   fill: #753192;
 `;
 
-export const ButtonsWrapper = styled.div`
+interface ButtonsWrapperProps {
+  show?: boolean;
+}
+
+export const ButtonsWrapper = styled.div<ButtonsWrapperProps>`
+  position: absolute;
+  bottom: ${(props) => (props.show ? 0 : `-80px`)};
+  left: 0;
+
+  transition: bottom 0.5s;
+
+  width: 100%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  padding: 10px 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 `;

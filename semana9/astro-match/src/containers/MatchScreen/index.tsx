@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 import { AppBar } from "../../components/AppBar";
 import { mdiAccountSwitch } from "@mdi/js";
-import { Avatar, List, ListItem, ListText, MatchIcon } from "./styled";
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListText,
+  MatchIcon,
+  Container,
+} from "./styled";
 import { connector, Props } from "./types";
 
 class MatchScreen extends Component<Props> {
@@ -9,7 +16,7 @@ class MatchScreen extends Component<Props> {
     const { goToSwipeScreen, matches } = this.props;
 
     return (
-      <div>
+      <Container>
         <AppBar
           leftAction={
             <div onClick={goToSwipeScreen}>
@@ -26,7 +33,7 @@ class MatchScreen extends Component<Props> {
               </ListItem>
             ))}
         </List>
-      </div>
+      </Container>
     );
   }
 }

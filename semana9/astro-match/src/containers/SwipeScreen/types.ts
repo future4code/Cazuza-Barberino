@@ -18,6 +18,7 @@ export const connector = connect(mapState, mapDispatch);
 export interface State {
   currentAnimation: null | Keyframes;
   showCard: boolean;
+  showButtons: boolean;
 }
 
 export type Props = ConnectedProps<typeof connector>;
