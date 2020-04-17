@@ -6,6 +6,7 @@ import { Keyframes } from "styled-components";
 
 const mapState = (state: RootState) => ({
   profileToSwipe: state.profiles.currentProfile,
+  matches: state.profiles.matches,
 });
 
 const mapDispatch = {
@@ -19,6 +20,7 @@ export interface State {
   currentAnimation: null | Keyframes;
   showCard: boolean;
   showButtons: boolean;
+  showSnackBar: boolean;
 }
 
 export type Props = ConnectedProps<typeof connector>;

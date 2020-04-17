@@ -84,3 +84,31 @@ export const ButtonsWrapper = styled.div<ButtonsWrapperProps>`
   align-items: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 `;
+
+export const NavBtnWrapper = styled.div`
+  position: relative;
+`;
+
+interface BadgeProps {
+  show: boolean;
+}
+
+export const Badge = styled.div<BadgeProps>`
+  position: absolute;
+  box-sizing: border-box;
+  width: 50%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: red;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 12px;
+  top: 0;
+  right: 0;
+  transition: 0.2s;
+  transform: translate(25%, -25%) scale(${(props) => (props.show ? 1 : 0)});
+  user-select: none;
+`;
