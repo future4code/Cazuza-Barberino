@@ -8,27 +8,12 @@ export interface Coord {
 export interface DragData {
   coord: Coord;
   isDragging: boolean;
-  itemRef: React.Ref<HTMLDivElement> | null;
   mouseDown: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   mouseUp: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
 export const useDrag = (): DragData => {
-  const itemRef = React.useRef<HTMLDivElement>(null);
-
   const [isDragging, setIsDragging] = React.useState(false);
-
-  const [rect, setRect] = React.useState<DOMRect>({
-    bottom: 0,
-    height: 0,
-    left: 0,
-    right: 0,
-    top: 0,
-    width: 0,
-    x: 0,
-    y: 0,
-    toJSON: () => {},
-  });
 
   const [coord, setCoord] = React.useState<Coord>({
     x: 0,
@@ -72,12 +57,5 @@ export const useDrag = (): DragData => {
     [mouseMove]
   );
 
-  React.useLayoutEffect(() => {
-    if (itemRef.current) {
-      const newRect = itemRef.current.getBoundingClientRect();
-      setRect(newRect);
-    }
-  }, []);
-
-  return { coord, isDragging, itemRef, mouseDown, mouseUp };
+  return { coord, isDragging, mouseDown, mouseUp };
 };

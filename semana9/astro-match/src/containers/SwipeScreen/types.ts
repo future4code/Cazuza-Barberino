@@ -1,7 +1,11 @@
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../reducers";
 import { updateCurrentPage } from "../../reducers/routes/actions";
-import { choosePerson } from "../../reducers/profiles/actions";
+import {
+  choosePerson,
+  fetchPerson,
+  dequeueProfile,
+} from "../../reducers/profiles/actions";
 import { Keyframes } from "styled-components";
 
 const mapState = (state: RootState) => ({
@@ -13,6 +17,8 @@ const mapState = (state: RootState) => ({
 const mapDispatch = {
   goToMatchScreen: () => updateCurrentPage("MatchScreen"),
   chooseProfile: (id: string, choice: boolean) => choosePerson(id, choice),
+  enqueueProfile: () => fetchPerson(),
+  dequeueProfile: () => dequeueProfile(),
 };
 
 export const connector = connect(mapState, mapDispatch);

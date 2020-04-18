@@ -10,7 +10,7 @@ const setFetch = (fetch: boolean): ProfileAction => ({
   },
 });
 
-const dequeueProfile = (): ProfileAction => ({
+export const dequeueProfile = (): ProfileAction => ({
   type: "DEQUEUE_PROFILE",
 });
 
@@ -19,7 +19,7 @@ const clearProfiles = (): ProfileAction => ({
 });
 
 const setProfile = (profile: Profile): ProfileAction => ({
-  type: "SET_PROFILE",
+  type: "ENQUEUE_PROFILE",
   payload: {
     profile,
   },
@@ -80,8 +80,14 @@ export const choosePerson = (id: string, choice: boolean): AppThunk => async (
     });
     if (responseChoose.data.isMatch) dispatch(addMatch(profile));
 
-    dispatch(dequeueProfile());
+    // dispatch(setFetch(false));
+  } catch (err) {
+    alert("getProfile " + err);
+  }
+};
 
+export const fetchPerson = (): AppThunk => async (dispatch) => {
+  try {
     const responseProfile = await api.get("person");
     if (responseProfile.data.profile !== null) {
       dispatch(setProfile(responseProfile.data.profile));
@@ -90,9 +96,8 @@ export const choosePerson = (id: string, choice: boolean): AppThunk => async (
         choice: false,
       });
     }
-    // dispatch(setFetch(false));
   } catch (err) {
-    alert("getProfile " + err);
+    alert("fetchPerson " + err);
   }
 };
 

@@ -82,6 +82,10 @@ export class SwipeScreen extends Component<Props, State> {
       this.props.profileToSwipe[0].id,
       option === "like"
     );
+
+    this.props.enqueueProfile();
+
+    setTimeout(this.props.dequeueProfile, 500);
   };
 
   TransitionDown = (props: SlideProps) => {

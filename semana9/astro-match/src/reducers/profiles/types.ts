@@ -14,7 +14,7 @@ export interface ProfilesState {
 
 export type ProfileAction =
   | {
-      type: "SET_PROFILE";
+      type: "ENQUEUE_PROFILE";
       payload: { profile: Profile };
     }
   | {

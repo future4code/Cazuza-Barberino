@@ -8,10 +8,8 @@ const initialState: ProfilesState = {
 
 const profiles = (state = initialState, action: ProfileAction) => {
   switch (action.type) {
-    case "SET_PROFILE":
+    case "ENQUEUE_PROFILE":
       if (!action.payload.profile) return state;
-      // let newArr = [...state.profileToSwap, action.payload.profile];
-      // if (newArr.length > 3) newArr.shift();
       return {
         ...state,
         profileToSwap: [...state.profileToSwap, action.payload.profile],

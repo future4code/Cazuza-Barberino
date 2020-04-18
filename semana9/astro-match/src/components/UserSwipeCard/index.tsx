@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import {
   BlurredBackground,
   InfoWrapper,
@@ -27,7 +27,7 @@ const UserSwipeCard = ({
   onChooseOption,
   index,
 }: Props) => {
-  const { coord, isDragging, itemRef, mouseDown, mouseUp } = useDrag();
+  const { coord, isDragging, mouseDown, mouseUp } = useDrag();
 
   React.useLayoutEffect(() => {
     if (!isDragging && Math.abs(coord.x) > 200) {
@@ -55,7 +55,6 @@ const UserSwipeCard = ({
         animation={
           animation ? animation(transform.current.t, transform.current.r) : null
         }
-        ref={itemRef}
         dragging={isDragging}
         coord={coord}
         style={
