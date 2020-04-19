@@ -1,16 +1,11 @@
 import React, { Component } from "react";
 import UserSwipeCard from "../../components/UserSwipeCard";
-import { AppBar } from "../../components/AppBar";
 import {
   ButtonsWrapper,
   ContentWrapper,
   SwipeScreenWrapper,
-  MatchIcon,
   OptionButton,
-  Badge,
-  NavBtnWrapper,
 } from "./styled";
-import { mdiAccountMultipleCheck } from "@mdi/js";
 import { swipeLeft, swipeRight } from "../../components/UserSwipeCard/styled";
 import { Loader } from "../../components/Loader";
 import { State, OptionType, Props, connector } from "./types";
@@ -94,8 +89,6 @@ export class SwipeScreen extends Component<Props, State> {
   render() {
     const {
       profileToSwipe,
-      goToMatchScreen,
-      matches,
       fetching,
       profilesBeingFetch,
     } = this.props;
@@ -103,14 +96,6 @@ export class SwipeScreen extends Component<Props, State> {
 
     return (
       <SwipeScreenWrapper>
-        <AppBar
-          rightAction={
-            <NavBtnWrapper onClick={goToMatchScreen}>
-              <Badge show={matches.length > 0}>{matches.length}</Badge>
-              <MatchIcon size={1.5} path={mdiAccountMultipleCheck} />
-            </NavBtnWrapper>
-          }
-        />
         <ContentWrapper>
           <Snackbar
             open={showSnackBar}

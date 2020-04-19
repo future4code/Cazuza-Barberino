@@ -5,7 +5,11 @@ export type RoutesAction = {
   };
 };
 
-export type Pages = "SwipeScreen" | "MatchScreen" | "ProfileScreen";
+export enum Pages {
+  SwipeScreen,
+  MatchScreen,
+  ProfileScreen,
+}
 
 export interface RoutesState {
   currentPage: Pages;

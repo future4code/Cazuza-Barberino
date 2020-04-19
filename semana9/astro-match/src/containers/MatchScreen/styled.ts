@@ -63,5 +63,5 @@ export const ListText = styled.p`
 
 export const Container = styled.div`
   height: 100%;
-  width: 100%;
+  padding-top: 50px;
 `;

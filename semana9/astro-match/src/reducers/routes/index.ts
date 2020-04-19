@@ -1,7 +1,7 @@
-import { RoutesState, RoutesAction } from "./types";
+import { RoutesState, RoutesAction, Pages } from "./types";
 
 const initialState: RoutesState = {
-  currentPage: "SwipeScreen",
+  currentPage: Pages.SwipeScreen,
 };
 
 export default (state = initialState, action: RoutesAction): RoutesState => {

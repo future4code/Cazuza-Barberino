@@ -29,7 +29,7 @@ const MainContainer = styled.div`
   border: 1px solid black;
   border-radius: 5px;
   background-color: white;
-  box-shadow: 0 0 5px #0000000f;
+  /* box-shadow: 0 0 5px #0000000f; */
   overflow: hidden;
 `;
 

@@ -29,7 +29,7 @@ const UserSwipeCard = ({
 }: Props) => {
   const { coord, isDragging, mouseDown, mouseUp } = useDrag();
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (!isDragging && Math.abs(coord.x) > 200) {
       onChooseOption(coord.x > 0 ? "like" : "dislike")();
     }
