@@ -12,6 +12,7 @@ const mapState = (state: RootState) => ({
   profileToSwipe: state.profiles.profileToSwap,
   matches: state.profiles.matches,
   fetching: state.profiles.fetching,
+  profilesBeingFetch: state.profiles.profilesBeingFetch,
 });
 
 const mapDispatch = {

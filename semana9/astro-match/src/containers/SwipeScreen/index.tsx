@@ -47,10 +47,6 @@ export class SwipeScreen extends Component<Props, State> {
   };
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    if (prevProps.profileToSwipe[0] !== this.props.profileToSwipe[0]) {
-      this.setState({ currentAnimation: null });
-    }
-
     if (
       this.checkingMatchSucces &&
       prevProps.matches.length < this.props.matches.length
@@ -85,7 +81,10 @@ export class SwipeScreen extends Component<Props, State> {
 
     this.props.enqueueProfile();
 
-    setTimeout(this.props.dequeueProfile, 500);
+    setTimeout(() => {
+      this.props.dequeueProfile();
+      this.setState({ currentAnimation: null });
+    }, 500);
   };
 
   TransitionDown = (props: SlideProps) => {
@@ -93,10 +92,14 @@ export class SwipeScreen extends Component<Props, State> {
   };
 
   render() {
-    const { profileToSwipe, goToMatchScreen, matches, fetching } = this.props;
+    const {
+      profileToSwipe,
+      goToMatchScreen,
+      matches,
+      fetching,
+      profilesBeingFetch,
+    } = this.props;
     const { currentAnimation, showSnackBar } = this.state;
-
-    // console.log(profileToSwipe);
 
     return (
       <SwipeScreenWrapper>
@@ -131,7 +134,9 @@ export class SwipeScreen extends Component<Props, State> {
                 onChooseOption={this.onChooseOption}
               />
             ))}
-          {profileToSwipe.length === 0 && !fetching && <TrustfulForm />}
+          {profileToSwipe.length === 0 &&
+            !fetching &&
+            profilesBeingFetch === 0 && <TrustfulForm />}
           <Loader />
           <ButtonsWrapper
             show={

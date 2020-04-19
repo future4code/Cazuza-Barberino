@@ -3,6 +3,10 @@ import { ThunkAction } from "redux-thunk";
 import { ProfileAction, Profile } from "./types";
 import { RootState } from "..";
 
+const fetchingProfile = (): ProfileAction => ({
+  type: "FETCHING_PROFILE",
+});
+
 const setFetch = (fetch: boolean): ProfileAction => ({
   type: "SET_FETCH",
   payload: {
@@ -79,7 +83,6 @@ export const choosePerson = (id: string, choice: boolean): AppThunk => async (
       choice,
     });
     if (responseChoose.data.isMatch) dispatch(addMatch(profile));
-
     // dispatch(setFetch(false));
   } catch (err) {
     alert("getProfile " + err);
@@ -88,14 +91,14 @@ export const choosePerson = (id: string, choice: boolean): AppThunk => async (
 
 export const fetchPerson = (): AppThunk => async (dispatch) => {
   try {
+    dispatch(fetchingProfile());
     const responseProfile = await api.get("person");
-    if (responseProfile.data.profile !== null) {
-      dispatch(setProfile(responseProfile.data.profile));
+    if (responseProfile.data.profile)
       await api.post("choose-person", {
         id: responseProfile.data.profile.id,
         choice: false,
       });
-    }
+    dispatch(setProfile(responseProfile.data.profile));
   } catch (err) {
     alert("fetchPerson " + err);
   }

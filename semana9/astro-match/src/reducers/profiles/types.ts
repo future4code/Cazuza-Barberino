@@ -10,6 +10,7 @@ export interface ProfilesState {
   profileToSwap: Profile[];
   matches: Profile[];
   fetching: boolean;
+  profilesBeingFetch: number;
 }
 
 export type ProfileAction =
@@ -26,4 +27,5 @@ export type ProfileAction =
   | { type: "ADD_MATCH"; payload: { match: Profile } }
   | { type: "CLEAR_SWIPE_PROFILES" }
   | { type: "SET_FETCH"; payload: { fetch: boolean } }
-  | { type: "DEQUEUE_PROFILE" };
+  | { type: "DEQUEUE_PROFILE" }
+  | { type: "FETCHING_PROFILE" };

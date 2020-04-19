@@ -4,15 +4,18 @@ const initialState: ProfilesState = {
   profileToSwap: [],
   matches: [],
   fetching: false,
+  profilesBeingFetch: 0,
 };
 
 const profiles = (state = initialState, action: ProfileAction) => {
   switch (action.type) {
     case "ENQUEUE_PROFILE":
-      if (!action.payload.profile) return state;
       return {
         ...state,
-        profileToSwap: [...state.profileToSwap, action.payload.profile],
+        profilesBeingFetch: Math.max(state.profilesBeingFetch - 1, 0),
+        profileToSwap: action.payload.profile
+          ? [...state.profileToSwap, action.payload.profile]
+          : [...state.profileToSwap],
       };
     case "DEQUEUE_PROFILE":
       let newArr = [...state.profileToSwap];
@@ -40,6 +43,11 @@ const profiles = (state = initialState, action: ProfileAction) => {
       return {
         ...state,
         fetching: action.payload.fetch,
+      };
+    case "FETCHING_PROFILE":
+      return {
+        ...state,
+        profilesBeingFetch: state.profilesBeingFetch + 1,
       };
     default:
       return state;
