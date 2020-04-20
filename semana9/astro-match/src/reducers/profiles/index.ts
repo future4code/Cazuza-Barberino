@@ -5,6 +5,7 @@ const initialState: ProfilesState = {
   matches: [],
   fetching: false,
   profilesBeingFetch: 0,
+  currentProfile: null,
 };
 
 const profiles = (state = initialState, action: ProfileAction) => {
@@ -48,6 +49,11 @@ const profiles = (state = initialState, action: ProfileAction) => {
       return {
         ...state,
         profilesBeingFetch: state.profilesBeingFetch + 1,
+      };
+    case "SET_CURRENT_PROFILE":
+      return {
+        ...state,
+        currentProfile: action.payload.match,
       };
     default:
       return state;

@@ -1,16 +1,15 @@
+import { mdiAccountMultipleCheck, mdiAccountSwitch } from "@mdi/js";
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import SwipeScreen from "../SwipeScreen";
-import MatchScreen from "../MatchScreen";
-import ProfileScreen from "../ProfileScreen";
+import { useDispatch, useSelector } from "react-redux";
+import { AppBar } from "../../components/AppBar";
+import { RootState } from "../../reducers";
 import { firstLoad } from "../../reducers/profiles/actions";
 import { updateCurrentPage } from "../../reducers/routes/actions";
 import { Pages } from "../../reducers/routes/types";
-import { RootState } from "../../reducers";
-import { mdiAccountMultipleCheck } from "@mdi/js";
-import { mdiAccountSwitch } from "@mdi/js";
-import { AppBar } from "../../components/AppBar";
-import { NavBtnWrapper, Badge, MatchIcon, Container } from "./styled";
+import MatchScreen from "../MatchScreen";
+import ProfileScreen from "../ProfileScreen";
+import SwipeScreen from "../SwipeScreen";
+import { Badge, Container, MatchIcon, NavBtnWrapper } from "./styled";
 
 const Router = () => {
   const currentPage = useSelector(
@@ -25,9 +24,12 @@ const Router = () => {
     dispatch(firstLoad());
   }, [dispatch]); //colocando dispath como dependencia so para sair o warning
 
+  console.log(currentPage);
+
   return (
     <>
       <AppBar
+        show={currentPage !== Pages.ProfileScreen}
         rightAction={
           <NavBtnWrapper
             show={currentPage === Pages.SwipeScreen}

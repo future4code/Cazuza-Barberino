@@ -11,6 +11,7 @@ export interface ProfilesState {
   matches: Profile[];
   fetching: boolean;
   profilesBeingFetch: number;
+  currentProfile: Profile | null;
 }
 
 export type ProfileAction =
@@ -28,4 +29,5 @@ export type ProfileAction =
   | { type: "CLEAR_SWIPE_PROFILES" }
   | { type: "SET_FETCH"; payload: { fetch: boolean } }
   | { type: "DEQUEUE_PROFILE" }
-  | { type: "FETCHING_PROFILE" };
+  | { type: "FETCHING_PROFILE" }
+  | { type: "SET_CURRENT_PROFILE"; payload: { match: Profile } };

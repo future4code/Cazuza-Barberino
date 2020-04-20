@@ -1,12 +1,18 @@
 import styled from "styled-components";
 
-export const AppBarWrapper = styled.div`
+interface AppBarWrapperProps {
+  show: boolean;
+}
+
+export const AppBarWrapper = styled.div<AppBarWrapperProps>`
   position: absolute;
-  top: 0;
+  top: ${(props) => (props.show ? 0 : `-50px`)};
+  transition: top 0.3s;
   z-index: 99;
   height: 50px;
   width: 100%;
   flex-shrink: 0;
+  background-color: white;
 
   border-bottom: 1px solid lightgray;
   padding: 0 10px;
@@ -22,4 +28,3 @@ export const Logo = styled.img`
   transform: translateX(-50%);
   user-select: none;
 `;
-

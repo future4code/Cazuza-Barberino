@@ -1,24 +1,25 @@
 import React, { Component } from "react";
-import {
-  Avatar,
-  List,
-  ListItem,
-  ListText,
-  MatchIcon,
-  Container,
-} from "./styled";
+import { Avatar, List, ListItem, ListText, Container } from "./styled";
 import { connector, Props } from "./types";
+import { Pages } from "../../reducers/routes/types";
 
 class MatchScreen extends Component<Props> {
   render() {
-    const { matches } = this.props;
+    const { matches, setCurrenteProfile, updateCurrentPage } = this.props;
 
     return (
       <Container>
         <List>
           {matches &&
             matches.map((match) => (
-              <ListItem key={match.id}>
+              <ListItem
+                key={match.id}
+                onClick={() => {
+                  console.log("lol");
+                  updateCurrentPage(Pages.ProfileScreen);
+                  setCurrenteProfile(match);
+                }}
+              >
                 <Avatar src={match.photo} />
                 <ListText>{match.name}</ListText>
               </ListItem>

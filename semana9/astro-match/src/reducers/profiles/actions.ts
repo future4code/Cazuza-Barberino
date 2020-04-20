@@ -3,6 +3,13 @@ import { ThunkAction } from "redux-thunk";
 import { ProfileAction, Profile } from "./types";
 import { RootState } from "..";
 
+export const setCurrenteProfile = (match: Profile): ProfileAction => ({
+  type: "SET_CURRENT_PROFILE",
+  payload: {
+    match,
+  },
+});
+
 const fetchingProfile = (): ProfileAction => ({
   type: "FETCHING_PROFILE",
 });
