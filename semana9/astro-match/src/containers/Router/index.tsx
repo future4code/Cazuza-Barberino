@@ -24,8 +24,6 @@ const Router = () => {
     dispatch(firstLoad());
   }, [dispatch]); //colocando dispath como dependencia so para sair o warning
 
-  console.log(currentPage);
-
   return (
     <>
       <AppBar

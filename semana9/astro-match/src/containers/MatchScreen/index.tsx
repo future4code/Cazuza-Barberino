@@ -15,7 +15,6 @@ class MatchScreen extends Component<Props> {
               <ListItem
                 key={match.id}
                 onClick={() => {
-                  console.log("lol");
                   updateCurrentPage(Pages.ProfileScreen);
                   setCurrenteProfile(match);
                 }}
