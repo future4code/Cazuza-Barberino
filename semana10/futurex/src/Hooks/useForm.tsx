@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-interface FormValue {
+export interface FormValue {
   [key: string]: string;
 }
 

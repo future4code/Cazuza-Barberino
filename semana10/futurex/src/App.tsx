@@ -69,5 +69,5 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  background-color: ${(props) => props.theme.primary};
+  background-color: ${(props) => props.theme.light};
 `;

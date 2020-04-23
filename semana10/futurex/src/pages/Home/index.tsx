@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Btn, InvertedBtn } from "../../Components/global-styled";
+import { Btn } from "../../Components/global-styled";
 import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
 import { Routes } from "../../App";
@@ -16,9 +16,9 @@ const Home = (props: Props) => {
         <Btn onClick={() => dispatch(push(Routes.trips))}>
           Visualizar Viagens
         </Btn>
-        <InvertedBtn onClick={() => dispatch(push(Routes.login))}>
+        <Btn onClick={() => dispatch(push(Routes.login))}>
           Login
-        </InvertedBtn>
+        </Btn>
       </BtnWrapper>
     </Container>
   );
