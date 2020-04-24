@@ -1,16 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import InputField from "../../Components/InputField";
+import InputField, { FormField } from "../../Components/InputField";
 import { useForm, FormValue } from "../../Hooks/useForm";
-import { validNotEmptyInput, capitalize } from "../../util";
 import { Btn } from "../../Components/global-styled";
-
-export interface FormField {
-  name: string;
-  label?: string;
-  initialValue?: string;
-  validations?: Array<(inputValue: string) => [boolean, string]>;
-}
 
 interface Props {
   fields: FormField[];
@@ -28,8 +20,20 @@ const Forms = ({ fields, submitHandler }: Props) => {
     )
   );
 
+  interface refi {
+    wtf: () => void;
+  }
+
+  const refs = React.useRef<React.RefObject<refi>[]>([]);
+
+  React.useEffect(() => {
+    refs.current.length = fields.length;
+    refs.current.fill({ current: null });
+  }, [fields.length]);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (refs.current) refs.current[0].current?.wtf();
     const hasError = Object.values(errors).reduce((out, error) => {
       return out || error;
     }, false);
@@ -39,17 +43,14 @@ const Forms = ({ fields, submitHandler }: Props) => {
 
   return (
     <Container onSubmit={handleSubmit}>
-      {fields.map((field) => (
+      {fields.map((field, i) => (
         <InputField
-          name={field.name}
-          label={field.label || capitalize(field.name)}
+          field={field}
           value={formInput[field.name]}
           changeHandler={setFormInput}
           fontSize="20px"
-          onBlurValidation={{
-            onError: setErrors,
-            validations: [...(field.validations || []), validNotEmptyInput],
-          }}
+          onError={setErrors}
+          ref={refs.current[i]}
         />
       ))}
       <Btn as="button" type="submit">

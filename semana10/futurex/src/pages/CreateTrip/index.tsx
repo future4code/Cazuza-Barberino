@@ -1,21 +1,38 @@
 import React from "react";
 import styled from "styled-components";
 import Forms from "../../Components/Forms";
-import { FormValue } from "../../Hooks/useForm";
 import { FormField } from "../../Components/InputField";
+import { FormValue } from "../../Hooks/useForm";
 
 interface Props {}
 
 const formFields: FormField[] = [
   {
-    name: "username",
+    name: "name",
+    label: "Nome",
   },
   {
-    name: "password",
+    name: "planet",
+    label: "Planeta",
+    type: "select",
+    options: ["wtf", "dafuq", "myfuck"],
+  },
+  {
+    name: "date",
+    label: "Data",
+  },
+  {
+    name: "duration",
+    label: "Duração em dias",
+  },
+  {
+    name: "description",
+    label: "Descrição",
+    type: "textarea",
   },
 ];
 
-const Login = (props: Props) => {
+const CreateTrip = (props: Props) => {
   const handleSubmit = (values: FormValue) => {
     console.log(values["username"]);
   };
@@ -46,4 +63,4 @@ const LoginWrapper = styled.div`
   padding: 100px;
 `;
 
-export default Login;
+export default CreateTrip;

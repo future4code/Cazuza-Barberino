@@ -15,7 +15,7 @@ const formFields: FormField[] = [
   },
 ];
 
-const Login = (props: Props) => {
+const TripSubscription = (props: Props) => {
   const handleSubmit = (values: FormValue) => {
     console.log(values["username"]);
   };
@@ -46,4 +46,4 @@ const LoginWrapper = styled.div`
   padding: 100px;
 `;
 
-export default Login;
+export default TripSubscription;

@@ -8,6 +8,8 @@ import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import Home from "./pages/Home";
 import Trips from "./pages/Trips";
 import Login from "./pages/Login";
+import CreateTrip from "./pages/CreateTrip";
+import TripSubscription from "./pages/TripSubscription";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 
 const history = createBrowserHistory();
@@ -20,6 +22,8 @@ export const Routes = {
   home: "/",
   login: "/login",
   trips: "/trips",
+  tripSubscription: "/trips/subscribe",
+  createTrip: "/trips/create",
 };
 
 function App() {
@@ -31,8 +35,13 @@ function App() {
             <GlobalStyle />
             <Container>
               <Route exact path={Routes.home} component={Home} />
-              <Route path={Routes.trips} component={Trips} />
-              <Route path={Routes.login} component={Login} />
+              <Route exact path={Routes.trips} component={Trips} />
+              <Route exact path={Routes.login} component={Login} />
+              <Route path={Routes.createTrip} component={CreateTrip} />
+              <Route
+                path={Routes.tripSubscription}
+                component={TripSubscription}
+              />
             </Container>
           </ThemeProvider>
         </Switch>
