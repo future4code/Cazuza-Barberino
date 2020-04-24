@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Forms from "../../Components/Forms";
 import { FormField } from "../../Components/InputField";
-import { FormValue } from "../../Hooks/useForm";
 
 interface Props {}
 
@@ -33,8 +32,8 @@ const formFields: FormField[] = [
 ];
 
 const CreateTrip = (props: Props) => {
-  const handleSubmit = (values: FormValue) => {
-    console.log(values["username"]);
+  const handleSubmit = (values: string[]) => {
+    console.log(values);
   };
 
   return (

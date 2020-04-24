@@ -1,46 +1,45 @@
-import { useState } from "react";
-
-export interface FormValue {
-  [key: string]: string;
-}
-
-interface FormErrors {
-  [key: string]: boolean;
-}
+import { useState, useCallback } from "react";
 
 export const useForm = (
-  initialValues: FormValue
+  initialValues: string[]
 ): [
-  FormValue,
-  (e: any) => void,
-  FormErrors,
-  (name: string, error: boolean) => void
+  Array<string>,
+  (index: number) => (value: string) => void,
+  Array<Array<string>>,
+  (index: number, errors: Array<string>) => number
 ] => {
-  const [values, setValues] = useState(initialValues);
-  const [errors, setErrors] = useState(
-    (Object.keys(initialValues) as Array<keyof typeof initialValues>).reduce(
-      (obj, key) => ({
-        ...obj,
-        [key]: true,
-      }),
-      {}
-    )
+  const [values, setValues] = useState<Array<string>>(initialValues);
+
+  const [errors, setErrors] = useState<Array<Array<string>>>(() => {
+    const arr: Array<Array<string>> = [];
+    arr.length = values.length;
+    arr.fill([]);
+    return arr;
+  });
+
+  const copyArrayWithNewVal = useCallback(
+    <T,>(oldArray: Array<T>, index: number, val: T) => {
+      const newArray = [...oldArray];
+      newArray[index] = val;
+      return newArray;
+    },
+    []
   );
 
   return [
     values,
-    (e: any) => {
-      setValues({
-        ...values,
-        [e.target.name]: e.target.value,
-      });
+    (index: number) => (value: string) => {
+      setValues((vals) => copyArrayWithNewVal(vals, index, value));
     },
     errors,
-    (name: string, error: boolean) => {
-      setErrors({
-        ...errors,
-        [name]: error,
+    (index: number, error: Array<string>) => {
+      setErrors((errs) => copyArrayWithNewVal(errs, index, error));
+
+      let count = 0;
+      error.forEach(() => {
+        count++;
       });
+      return count;
     },
   ];
 };
