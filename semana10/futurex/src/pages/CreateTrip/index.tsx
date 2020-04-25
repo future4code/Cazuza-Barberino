@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Forms from "../../Components/Forms";
 import { FormField } from "../../Components/InputField";
+import { validNumberInput, validMinValue, validMinLetters } from "../../util";
 
 interface Props {}
 
@@ -9,25 +10,39 @@ const formFields: FormField[] = [
   {
     name: "name",
     label: "Nome",
+    validations: [validMinLetters(5)],
   },
   {
     name: "planet",
     label: "Planeta",
     type: "select",
-    options: ["wtf", "dafuq", "myfuck"],
+    options: [
+      "Mercúrio",
+      "Vênus",
+      "Marte",
+      "Jupiter",
+      "Saturno",
+      "Netuno",
+      "Urano",
+      "Plutão",
+    ],
   },
   {
     name: "date",
     label: "Data",
+    mask: "99/99/99",
   },
   {
     name: "duration",
     label: "Duração em dias",
+    inputRestriction: validNumberInput,
+    validations: [validMinValue(50)],
   },
   {
     name: "description",
     label: "Descrição",
     type: "textarea",
+    validations: [validMinLetters(30)],
   },
 ];
 

@@ -2,15 +2,34 @@ import React from "react";
 import styled from "styled-components";
 import Forms from "../../Components/Forms";
 import { FormField } from "../../Components/InputField";
+import { validMinLetters, validNumberInput, validMinValue } from "../../util";
+import { countryList } from "../../util/variousCountryListFormats";
 
 interface Props {}
 
 const formFields: FormField[] = [
   {
-    name: "username",
+    name: "name",
+    validations: [validMinLetters(3)],
   },
   {
-    name: "password",
+    name: "age",
+    validations: [validMinValue(18)],
+    inputRestriction: validNumberInput,
+  },
+  {
+    name: "applicationText",
+    type: "textarea",
+    validations: [validMinLetters(30)],
+  },
+  {
+    name: "profession",
+    validations: [validMinLetters(10)],
+  },
+  {
+    name: "country",
+    type: "select",
+    options: countryList,
   },
 ];
 

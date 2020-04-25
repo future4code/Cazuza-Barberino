@@ -2,6 +2,9 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { Btn } from "../global-styled";
 import CandidateCard from "../CandidateCard";
+import { push } from "connected-react-router";
+import { Routes } from "../../App";
+import { useDispatch } from "react-redux";
 
 interface Props {
   trip: {
@@ -30,6 +33,8 @@ const TripCard = ({ trip }: Props) => {
 
   const [showCandidates, setShowCandidates] = React.useState(false);
 
+  const dispatch = useDispatch();
+
   return (
     <div>
       <Container>
@@ -54,7 +59,12 @@ const TripCard = ({ trip }: Props) => {
           </div>
         </TripDataWrapper>
         <BtnWrapper>
-          <Btn color="secondary">Inscrever-se</Btn>
+          <Btn
+            color="secondary"
+            onClick={() => dispatch(push(Routes.tripSubscription))}
+          >
+            Inscrever-se
+          </Btn>
           <Btn color="secondary" onClick={() => setShowCandidates((c) => !c)}>
             {!showCandidates ? "Mostrar " : "Esconder "}Candidatos
           </Btn>

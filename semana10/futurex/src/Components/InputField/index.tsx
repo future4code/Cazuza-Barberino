@@ -9,6 +9,8 @@ export interface FormField {
   validations?: Array<(inputValue: string) => [boolean, string]>;
   type?: "input" | "textarea" | "select";
   options?: string[];
+  inputRestriction?: (inputValue: string) => [boolean, string];
+  mask?: string;
 }
 
 interface Props {
@@ -19,7 +21,6 @@ interface Props {
   label: string;
   changeHandler: (value: string) => void;
   checkForErrors: (label: string) => void;
-  onChangeValidation?: (inputValue: string) => [boolean, string];
 }
 
 const InputField = ({
@@ -27,7 +28,6 @@ const InputField = ({
   value,
   changeHandler,
   fontSize,
-  onChangeValidation,
   errors,
   checkForErrors,
   label,
@@ -35,8 +35,62 @@ const InputField = ({
   const [showLabel, setShowLabel] = React.useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (onChangeValidation && !onChangeValidation(e.target.value)[0]) return;
-    changeHandler(e.target.value);
+    let newValue = e.target.value;
+
+    if (field.inputRestriction && !field.inputRestriction(newValue)[0]) return;
+
+    if (field.mask) {
+      // switch (field.mask[value.length]) {
+      //   case "*":
+      //     break;
+      //   case "9":
+      //     if (!/^[0-9\b]+$/.test(newValue[value.length])) {
+      //       return;
+      //     }
+      //     break;
+      //   default:
+      //     newValue =
+      //       newValue.slice(0, value.length) +
+      //       field.mask[value.length] +
+      //       newValue[value.length];
+      //     break;
+      //   case undefined:
+      //     return;
+      // }
+
+      const n = Math.min(field.mask.length, newValue.length);
+      let maskedValue = newValue.split("");
+      let e = 0;
+
+      for (let i = 0; i < n; i++) {
+        switch (field.mask[i]) {
+          case "9":
+            let j = 1;
+            while (!/^[0-9\b]+$/.test(maskedValue[i])) {
+              if (i + j >= maskedValue.length) {
+                maskedValue = maskedValue.slice(0, i);
+                break;
+              } else {
+                const temp = maskedValue[i];
+                maskedValue[i] = maskedValue[i + j];
+                maskedValue[i + j] = temp;
+              }
+              j++;
+            }
+            break;
+          default:
+            if (maskedValue[i] !== field.mask[i]) {
+              maskedValue.splice(i, 0, field.mask[i]);
+              e++;
+            }
+            break;
+        }
+      }
+      maskedValue.length = Math.min(field.mask.length, n + e);
+      newValue = maskedValue.join("");
+    }
+
+    changeHandler(newValue);
   };
 
   const getOptions = React.useCallback(() => {
@@ -83,7 +137,7 @@ interface InputProps {
 
 const Input = styled(DefaultBox)<InputProps>`
   background-color: ${(props) => props.theme.light};
-
+  -webkit-appearance: none;
   ${(props) =>
     props.error &&
     css`
