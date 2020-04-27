@@ -3,6 +3,12 @@ import styled from "styled-components";
 import Forms from "../../Components/Forms";
 import { FormField } from "../../Components/InputField";
 import { validNumberInput, validMinValue, validMinLetters } from "../../util";
+import { useDispatch } from "react-redux";
+import { Routes } from "../../App";
+import { replace } from "connected-react-router";
+import { Btn } from "../../Components/global-styled";
+import LoadingSpinner from "../../Components/LoadingSpinner";
+import { createTrip } from "../../services/api";
 
 interface Props {}
 
@@ -48,18 +54,71 @@ const formFields: FormField[] = [
 ];
 
 const CreateTrip = (props: Props) => {
+  const [loading, setLoading] = React.useState(false);
+  const [postSubmit, setPostSubmit] = React.useState({
+    msg: "",
+    color: "",
+  });
+
+  const dispatch = useDispatch();
+
+  const createTripResponse = (success: boolean) => {
+    setLoading(false);
+    setPostSubmit(
+      success
+        ? {
+            msg: "Viagem criada com sucesso!",
+            color: "green",
+          }
+        : {
+            msg: "Erro na aplicação, tente mais tarde.",
+            color: "red",
+          }
+    );
+    if (!success) localStorage.clear();
+  };
+
+  React.useEffect(() => {
+    if (localStorage.getItem("token") === null) dispatch(replace(Routes.trips));
+  }, []);
+
   const handleSubmit = (values: string[]) => {
-    console.log(values);
+    setLoading(true);
+    createTrip(values, createTripResponse);
   };
 
   return (
     <Container>
-      <LoginWrapper>
-        <Forms submitHandler={handleSubmit} fields={formFields} />
-      </LoginWrapper>
+      <FormWrapper>
+        {loading ? (
+          <LoadingSpinner />
+        ) : postSubmit.msg === "" ? (
+          <Forms submitHandler={handleSubmit} fields={formFields} />
+        ) : (
+          <>
+            <ColoredText color={postSubmit.color}>{postSubmit.msg}</ColoredText>
+            <Btn
+              onClick={() => {
+                dispatch(replace(Routes.trips));
+              }}
+            >
+              OK!
+            </Btn>
+          </>
+        )}
+      </FormWrapper>
     </Container>
   );
 };
+
+interface ColoredTextProps {
+  color: string;
+}
+
+const ColoredText = styled.p<ColoredTextProps>`
+  font-size: 40px;
+  color: ${(props) => props.color};
+`;
 
 const Container = styled.div`
   display: flex;
@@ -69,7 +128,8 @@ const Container = styled.div`
   background-color: ${(props) => props.theme.light};
 `;
 
-const LoginWrapper = styled.div`
+const FormWrapper = styled.div`
+  position: relative;
   width: 100%;
   max-width: 800px;
 

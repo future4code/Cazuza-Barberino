@@ -85,4 +85,32 @@ export const decideCandidate = async (
   callback();
 };
 
+export const createTrip = async (
+  [name, planet, date, durationInDays, description]: string[],
+  callback: (success: boolean) => void
+) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const body = {
+        name,
+        planet,
+        date,
+        description,
+        durationInDays,
+      };
+
+      await api.post("trips", body, {
+        headers: {
+          auth: token,
+        },
+      });
+
+      callback(true);
+    } catch (err) {
+      callback(false);
+    }
+  } else callback(false);
+};
+
 export default api;

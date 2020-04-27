@@ -22,14 +22,18 @@ const Header = (props: Props) => {
   return (
     <Container>
       <Title onClick={() => dispatch(push(Routes.home))}>Future X</Title>
-      {validToken && (
-        <BtnWrapper>
-          <Btn onClick={() => dispatch(push(Routes.createTrip))}>
-            Create Trip
-          </Btn>
-          <Btn onClick={handleLogout}>Logout</Btn>
-        </BtnWrapper>
-      )}
+      <BtnWrapper>
+        {validToken ? (
+          <>
+            <Btn onClick={() => dispatch(push(Routes.createTrip))}>
+              Create Trip
+            </Btn>
+            <Btn onClick={handleLogout}>Logout</Btn>
+          </>
+        ) : (
+          <Btn onClick={() => dispatch(push(Routes.login))}>Login</Btn>
+        )}
+      </BtnWrapper>
     </Container>
   );
 };
