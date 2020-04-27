@@ -40,24 +40,6 @@ const InputField = ({
     if (field.inputRestriction && !field.inputRestriction(newValue)[0]) return;
 
     if (field.mask) {
-      // switch (field.mask[value.length]) {
-      //   case "*":
-      //     break;
-      //   case "9":
-      //     if (!/^[0-9\b]+$/.test(newValue[value.length])) {
-      //       return;
-      //     }
-      //     break;
-      //   default:
-      //     newValue =
-      //       newValue.slice(0, value.length) +
-      //       field.mask[value.length] +
-      //       newValue[value.length];
-      //     break;
-      //   case undefined:
-      //     return;
-      // }
-
       const n = Math.min(field.mask.length, newValue.length);
       let maskedValue = newValue.split("");
       let e = 0;

@@ -49,7 +49,7 @@ const Forms = ({ fields, submitHandler }: Props) => {
     let hasError = false;
     for (let i = 0; i < fields.length; i++) {
       const nErrors = checkForErrors(i)(labels[i]);
-      console.log(i + " " + nErrors);
+      // console.log(i + " " + nErrors);
       hasError = hasError || nErrors > 0;
     }
     if (hasError) return;

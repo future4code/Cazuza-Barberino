@@ -1,10 +1,13 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import { Btn } from "../global-styled";
-import CandidateCard from "../CandidateCard";
 import { push } from "connected-react-router";
-import { Routes } from "../../App";
+import React from "react";
 import { useDispatch } from "react-redux";
+import styled, { css } from "styled-components";
+import { Routes } from "../../App";
+import LoadingSpinner from "../../Components/LoadingSpinner";
+import { setSubscribeID } from "../../reducers/trips/actions";
+import { getTripDetails } from "../../services/api";
+import CandidateCard from "../CandidateCard";
+import { Btn } from "../global-styled";
 
 interface Props {
   trip: {
@@ -17,23 +20,97 @@ interface Props {
   };
 }
 
-const candidates = [
-  {
-    id: "NAOp5L3Wuunexq9SbUso",
-    applicationText: "Quero muuuuuuito ir!!!",
-    profession: "Chefe",
-    age: 20,
-    name: "Astrodev",
-    country: "Brasil",
-  },
-];
+interface Candidate {
+  id: string;
+  applicationText: string;
+  profession: string;
+  age: number;
+  name: string;
+  country: string;
+}
+
+interface Candidates {
+  approved: Candidate[];
+  pendencies: Candidate[];
+}
+
+type CandidatesAction =
+  | { type: "DECIDE"; payload: { id: string; approve: boolean } }
+  | { type: "SET_CANDIDATES"; payload: { candidates: Candidates } };
+
+const reducer = (state: Candidates, action: CandidatesAction): Candidates => {
+  switch (action.type) {
+    case "SET_CANDIDATES":
+      return action.payload.candidates;
+    case "DECIDE":
+      let candidateToDecide = null;
+      const newPendencies = state.pendencies.filter((candidate) => {
+        if (candidate.id === action.payload.id) {
+          candidateToDecide = candidate;
+          return false;
+        } else return true;
+      });
+      const newApproved = [...state.approved];
+      if (action.payload.approve && candidateToDecide)
+        newApproved.push(candidateToDecide);
+      return {
+        approved: newApproved,
+        pendencies: newPendencies,
+      };
+    default:
+      return state;
+  }
+};
 
 const TripCard = ({ trip }: Props) => {
-  const { name, description, planet, durationInDays, date } = trip;
+  const { name, description, planet, durationInDays, date, id } = trip;
 
   const [showCandidates, setShowCandidates] = React.useState(false);
 
+  const [loading, setLoading] = React.useState(false);
+
+  const [candidates, candidatesDispatch] = React.useReducer(reducer, {
+    approved: [],
+    pendencies: [],
+  });
+
   const dispatch = useDispatch();
+
+  const decideAction = React.useCallback(
+    (approve: boolean, id: string) =>
+      candidatesDispatch({
+        type: "DECIDE",
+        payload: {
+          id,
+          approve,
+        },
+      }),
+    []
+  );
+
+  const tripDetailsReponse = (
+    pendencies: Candidate[],
+    approved: Candidate[]
+  ) => {
+    setLoading(false);
+    candidatesDispatch({
+      type: "SET_CANDIDATES",
+      payload: {
+        candidates: {
+          approved,
+          pendencies,
+        },
+      },
+    });
+  };
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setLoading(true);
+      getTripDetails(token, id, tripDetailsReponse);
+    }
+  }, []);
 
   return (
     <div>
@@ -59,23 +136,61 @@ const TripCard = ({ trip }: Props) => {
           </div>
         </TripDataWrapper>
         <BtnWrapper>
-          <Btn
-            color="secondary"
-            onClick={() => dispatch(push(Routes.tripSubscription))}
-          >
-            Inscrever-se
-          </Btn>
-          <Btn color="secondary" onClick={() => setShowCandidates((c) => !c)}>
-            {!showCandidates ? "Mostrar " : "Esconder "}Candidatos
-          </Btn>
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <Btn
+                color="secondary"
+                onClick={() => {
+                  dispatch(setSubscribeID(id));
+                  dispatch(push(Routes.tripSubscription));
+                }}
+              >
+                Inscrever-se
+              </Btn>
+              {(candidates.pendencies.length > 0 ||
+                candidates.approved.length > 0) && (
+                <Btn
+                  color="secondary"
+                  onClick={() => setShowCandidates((c) => !c)}
+                >
+                  {!showCandidates ? "Mostrar " : "Esconder "}Candidatos
+                  {candidates.pendencies.length > 0 && (
+                    <Badge>{candidates.pendencies.length}</Badge>
+                  )}
+                </Btn>
+              )}
+            </>
+          )}
         </BtnWrapper>
       </Container>
       <CandidateContainer
-        nOfCandidates={candidates.length}
-        showCandidates={showCandidates}
+        nOfCandidates={
+          candidates.pendencies.length + candidates.approved.length
+        }
+        showCandidates={
+          showCandidates &&
+          candidates.pendencies.length + candidates.approved.length > 0
+        }
       >
-        {candidates.map((candidate) => (
-          <CandidateCard key={candidate.id} candidate={candidate} />
+        {candidates.pendencies.map((candidate) => (
+          <CandidateCard
+            tripID={id}
+            approved={false}
+            key={candidate.id}
+            candidate={candidate}
+            decideAction={decideAction}
+          />
+        ))}
+        {candidates.approved.map((candidate) => (
+          <CandidateCard
+            tripID={id}
+            approved={true}
+            key={candidate.id}
+            candidate={candidate}
+            decideAction={decideAction}
+          />
         ))}
       </CandidateContainer>
     </div>
@@ -88,7 +203,8 @@ const Container = styled.div`
   width: 100%;
   background-color: ${(props) => props.theme.light};
   display: flex;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
   box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4);
   color: ${(props) => props.theme.secondary};
@@ -103,8 +219,17 @@ const TripDataWrapper = styled.div`
   row-gap: 20px;
 `;
 
+const Badge = styled.div`
+  pointer-events: none;
+  background-color: #b33771;
+  border-radius: 4px;
+  padding: 4px;
+`;
+
 const BtnWrapper = styled.div`
+  position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   row-gap: 20px;
@@ -123,7 +248,11 @@ const CandidateContainer = styled.div<CandidateContainerProps>`
   padding: 20px;
   overflow: hidden;
   transition: 0.3s;
-  height: ${(props) => `${props.nOfCandidates * 110 + 40}px`};
+  height: ${(props) => `${props.nOfCandidates * 130 + 20}px`};
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+
   ${(props) =>
     !props.showCandidates &&
     css`

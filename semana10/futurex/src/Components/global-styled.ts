@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css, Keyframes } from "styled-components";
 
 interface BoxProps {
   fontSize?: string;
@@ -24,7 +24,7 @@ export const Btn = styled(DefaultBox)`
   align-items: center;
   background-color: ${(props) => props.theme[props.color]};
   flex: 1;
-
+  user-select: none;
   cursor: pointer;
   transition: 0.2s;
 

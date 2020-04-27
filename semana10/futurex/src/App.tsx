@@ -11,12 +11,18 @@ import Login from "./pages/Login";
 import CreateTrip from "./pages/CreateTrip";
 import TripSubscription from "./pages/TripSubscription";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import { rootSaga } from "./sagas";
+import createSagaMiddleware from "redux-saga";
 
 const history = createBrowserHistory();
+const sagaMiddleware = createSagaMiddleware();
+
 const store = createStore(
   reducers(history),
-  applyMiddleware(routerMiddleware(history))
+  applyMiddleware(routerMiddleware(history), sagaMiddleware)
 );
+
+sagaMiddleware.run(rootSaga);
 
 export const Routes = {
   home: "/",
@@ -50,15 +56,6 @@ function App() {
   );
 }
 
-export default App;
-
-const theme = {
-  primary: "#3B3B98",
-  secondary: "#182C61",
-  dark: "#2C3A47",
-  light: "#CAD3C8",
-};
-
 const GlobalStyle = createGlobalStyle`
   *{
     padding: 0;
@@ -67,6 +64,15 @@ const GlobalStyle = createGlobalStyle`
     font-family: sans-serif;
   }
 `;
+
+export default App;
+
+const theme = {
+  primary: "#3B3B98",
+  secondary: "#182C61",
+  dark: "#2C3A47",
+  light: "#CAD3C8",
+};
 
 const Container = styled.div`
   position: absolute;

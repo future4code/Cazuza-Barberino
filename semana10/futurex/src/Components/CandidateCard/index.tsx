@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { Btn } from "../global-styled";
+import { decideCandidate } from "../../services/api";
+import LoadingSpinner from "../../Components/LoadingSpinner";
 
 interface Props {
+  approved: boolean;
+  tripID: string;
+  decideAction: (approve: boolean, id: string) => void;
   candidate: {
     id: string;
     applicationText: string;
@@ -13,8 +18,25 @@ interface Props {
   };
 }
 
-const CandidateCard = ({ candidate }: Props) => {
-  const { name, applicationText, age, profession, country } = candidate;
+const CandidateCard = ({
+  approved,
+  tripID,
+  candidate,
+  decideAction,
+}: Props) => {
+  const { name, applicationText, age, profession, country, id } = candidate;
+  const [loading, setLoading] = React.useState(false);
+
+  const decideResponse = (approve: boolean) => () => {
+    setLoading(false);
+    decideAction(approve, id);
+  };
+
+  const onDecide = (approve: boolean) => {
+    setLoading(true);
+    decideCandidate(tripID, id, approve, decideResponse(approve));
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -35,10 +57,18 @@ const CandidateCard = ({ candidate }: Props) => {
           {country}
         </p>
       </Wrapper>
-      <BtnWrapper>
-        <Btn>Aceitar</Btn>
-        <Btn>Rejeitar</Btn>
-      </BtnWrapper>
+      {!approved && (
+        <BtnWrapper>
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <Btn onClick={() => onDecide(true)}>Aceitar</Btn>
+              <Btn onClick={() => onDecide(false)}>Rejeitar</Btn>
+            </>
+          )}
+        </BtnWrapper>
+      )}
     </Container>
   );
 };
@@ -46,6 +76,10 @@ const CandidateCard = ({ candidate }: Props) => {
 const Container = styled.div`
   width: 100%;
   display: flex;
+  border-bottom: 2px solid black;
+  padding: 0 20px;
+  max-height: 110px;
+  height: 110px;
 `;
 
 const Wrapper = styled.div`
@@ -54,6 +88,7 @@ const Wrapper = styled.div`
 `;
 
 const BtnWrapper = styled(Wrapper)`
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;

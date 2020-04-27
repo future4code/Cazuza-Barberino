@@ -31,6 +31,7 @@ const formFields: FormField[] = [
     name: "date",
     label: "Data",
     mask: "99/99/99",
+    validations: [validMinLetters(8)],
   },
   {
     name: "duration",

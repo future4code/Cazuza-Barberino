@@ -15,7 +15,7 @@ export const validMinLetters = (min: number) => (
   inputValue: string
 ): [boolean, string] => [
   inputValue.trim().length >= min,
-  `must contain ate least ${min} letters.`,
+  `must contain ate least ${min} characters.`,
 ];
 
 export const validMinValue = (min: number) => (
