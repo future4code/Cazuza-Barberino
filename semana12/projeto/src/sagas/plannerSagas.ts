@@ -4,33 +4,32 @@ import { fetchTasksEnded } from "../reducers/planner/actions";
 import { PlannerActions } from "../reducers/planner/types";
 import Task from "../models/Task";
 
-export function* watchFetchTasks() {
-  yield takeLatest("FETCH_TASKS_REQUESTED", fetchTasks);
-}
-
-export function* watchAddTask() {
-  yield takeLatest("ADD_TASK", addTask);
-}
+export const plannerWatchers = {
+  watchFetchTasks: function* () {
+    yield takeLatest("FETCH_TASKS_REQUESTED", fetchTasks);
+  },
+  watchAddTask: function* () {
+    yield takeEvery("ADD_TASK", addTask);
+  },
+};
 
 export function* fetchTasks() {
   const tasks = yield call(getTasks);
   yield put(fetchTasksEnded(tasks));
 }
 
-export function* addTask(
-  action: Extract<
-    {
-      type: "ADD_TASK";
-      payload: {
-        task: Task;
-      };
-    },
-    PlannerActions
-  >
-) {
-  console.log(action);
-
-  const { day, text } = action.payload.task;
+export function* addTask({
+  payload,
+}: Extract<
+  {
+    type: "ADD_TASK";
+    payload: {
+      task: Task;
+    };
+  },
+  PlannerActions
+>) {
+  const { day, text } = payload.task;
 
   yield call(createTask, {
     day,

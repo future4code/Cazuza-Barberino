@@ -10,8 +10,7 @@ export default api;
 
 export const getTasks = async (): Promise<Task[]> => {
   try {
-    const response = (await api.get("/")).data;
-    return response;
+    return (await api.get("/")).data;
   } catch (error) {
     alert("getTask " + error);
     return [];

@@ -1,17 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { applyMiddleware, createStore } from "redux";
-import createSagaMiddleware from "redux-saga";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import App from "./App";
-import reducers from "./reducers";
-import mySagas from "./sagas";
-
-//Redux
-const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducers, applyMiddleware(sagaMiddleware));
-sagaMiddleware.run(mySagas);
+import store from "./redux-store";
 
 // Theming
 const GlobalStyle = createGlobalStyle`

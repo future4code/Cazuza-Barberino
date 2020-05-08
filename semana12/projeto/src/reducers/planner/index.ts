@@ -35,7 +35,6 @@ const plannerReducer = (
         ),
       };
     case "ADD_TASK":
-      console.log("wtf");
       return {
         ...state,
         tasks: {
