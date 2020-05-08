@@ -1,7 +1,7 @@
 import { PlannerState, PlannerActions } from "./types";
 import weekdays from "../../data/weekdays";
 
-const initialState: PlannerState = {
+export const initialState: PlannerState = {
   fetchingTasks: false,
   tasks: weekdays.reduce(
     (previousValue, day) => ({
@@ -35,6 +35,7 @@ const plannerReducer = (
         ),
       };
     case "ADD_TASK":
+      console.log("wtf");
       return {
         ...state,
         tasks: {

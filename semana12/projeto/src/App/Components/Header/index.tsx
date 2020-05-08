@@ -34,7 +34,7 @@ const Header = () => {
   };
 
   return (
-    <Container onSubmit={handleSubmit}>
+    <Container data-testid="form" onSubmit={handleSubmit}>
       <input
         onChange={handleChange}
         value={inputValues.text}

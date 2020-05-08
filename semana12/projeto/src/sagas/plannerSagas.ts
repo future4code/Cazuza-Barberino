@@ -9,31 +9,31 @@ export function* watchFetchTasks() {
 }
 
 export function* watchAddTask() {
-  yield takeEvery("ADD_TASK", addTask);
+  yield takeLatest("ADD_TASK", addTask);
 }
 
-function* fetchTasks() {
+export function* fetchTasks() {
   const tasks = yield call(getTasks);
   yield put(fetchTasksEnded(tasks));
 }
 
-function* addTask({
-  payload,
-}: Extract<
-  {
-    type: "ADD_TASK";
-    payload: {
-      task: Task;
-    };
-  },
-  PlannerActions
->) {
-  const { day, text } = payload.task;
+export function* addTask(
+  action: Extract<
+    {
+      type: "ADD_TASK";
+      payload: {
+        task: Task;
+      };
+    },
+    PlannerActions
+  >
+) {
+  console.log(action);
 
-  yield call(() =>
-    createTask({
-      day,
-      text,
-    })
-  );
+  const { day, text } = action.payload.task;
+
+  yield call(createTask, {
+    day,
+    text,
+  });
 }
