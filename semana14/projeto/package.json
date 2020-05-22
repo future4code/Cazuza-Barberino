@@ -1,0 +1,13 @@
+{
+  "name": "projeto",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc && node build/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.4",
+    "typescript": "^3.9.3"
+  }
+}
