@@ -1,62 +1,58 @@
-import { Router } from "express";
-import knex from "../database/connection";
-import createUserService from "../services/createUserService";
-import updateUserService from "../services/updateUserService";
+import { Router, request, response } from "express";
+import createUserService from "../services/userServices/createUserService";
+import updateUserService from "../services/userServices/updateUserService";
+import deleteUserService from "../services/userServices/deleteUserService";
+
+import UserRepository from "../repositories/UserRepository";
 
 const usersRoutes = Router();
 
 usersRoutes.get("/", async (request, response) => {
-  const userList = await knex("TodoListUsers").select("id", "name");
-
+  const userList = await UserRepository.getAllUsers();
   response.json(userList);
 });
 
 usersRoutes.get("/:id", async (request, response) => {
   const { id } = request.params;
 
-  const user = await knex("TodoListUsers")
-    .select("id", "name", "nickname", "email")
-    .where({
-      id,
-    });
+  const user = await UserRepository.getUserById(id);
 
-  if (user.length) response.json(user[0]);
-  else response.status(400).json("no user found");
+  response.json(user);
 });
 
 usersRoutes.post("/", async (request, response) => {
   const { name, email, nickname, password } = request.body;
 
-  try {
-    const user = await createUserService({
-      name,
-      email,
-      nickname,
-      password,
-    });
+  const user = await createUserService({
+    name,
+    email,
+    nickname,
+    password,
+  });
 
-    response.json(user);
-  } catch (err) {
-    response.status(400).json({ msg: err });
-  }
+  response.json(user);
 });
 
 usersRoutes.put("/:id", async (request, response) => {
   const { name, email, nickname } = request.body;
   const { id } = request.params;
 
-  try {
-    await updateUserService({
-      name,
-      email,
-      nickname,
-      userId: id,
-    });
+  await updateUserService({
+    name,
+    email,
+    nickname,
+    userId: id,
+  });
 
-    response.json({ msg: "User successfully updated" });
-  } catch (err) {
-    response.status(400).json({ msg: err });
-  }
+  response.json({ msg: "User successfully updated" });
+});
+
+usersRoutes.delete("/:id", async (request, response) => {
+  const { id } = request.params;
+
+  await deleteUserService(id);
+
+  response.json({ msg: "ok" });
 });
 
 export default usersRoutes;
