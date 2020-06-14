@@ -1,32 +1,25 @@
 import AppError from "../../err";
 import UserRepository from "../../repositories/UserRepository";
+import checkIfValueAlreadyRegistered from "./util/checkIfValueAlreadyRegistered";
 
 interface Request {
-  name: string;
-  nickname: string;
-  email: string;
-  userId: string;
+  [key: string]: string;
 }
 
-export default async function updateUserService({
-  name,
-  nickname,
-  email,
-  userId,
-}: Request) {
-  if (nickname.trim() === "") throw new AppError("Invalid Nickname");
-  if (name.trim() === "") throw new AppError("Invalid Name");
-  if (email.trim() === "") throw new AppError("Invalid Email");
+export default async function updateUserService(id: string, values: Request) {
+  if (!(await UserRepository.getUserById(id)).length)
+    throw new AppError("User does not exist");
 
-  const userExists = await UserRepository.userExists(nickname, email, userId);
+  await Promise.all([
+    checkIfValueAlreadyRegistered("nickname", values["nickname"], id),
+    checkIfValueAlreadyRegistered("email", values["email"], id),
+  ]);
 
-  if (userExists) throw new AppError("Email or nickname already registered");
+  Object.entries(values).forEach(([key, val]) => {
+    if (!val) delete values[key];
+  });
 
-  const updatedUser = {
-    name,
-    nickname,
-    email,
-  };
+  if (!Object.entries(values).length) throw new AppError("Nothing to update");
 
-  await UserRepository.updateUserData(updatedUser, userId);
+  await UserRepository.updateUserData(values, id);
 }

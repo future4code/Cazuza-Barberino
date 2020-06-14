@@ -35,6 +35,15 @@ export default class UserRepository {
     return result[0].cnt > 0;
   }
 
+  public static async countUserWithData(data: object, ignoreId: string) {
+    return (
+      await knex("TodoListUsers")
+        .where(data)
+        .andWhereNot({ id: ignoreId })
+        .count("* as cnt")
+    )[0].cnt;
+  }
+
   public static async addNewUser(newUser: {
     id: string;
     nickname: string;
@@ -47,9 +56,7 @@ export default class UserRepository {
 
   public static async updateUserData(
     updatedUser: {
-      name: string;
-      nickname: string;
-      email: string;
+      [key: string]: string;
     },
     id: string
   ) {
