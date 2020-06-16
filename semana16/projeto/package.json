@@ -1,0 +1,20 @@
+{
+  "name": "projeto",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsnd --transpileOnly --ignore-watch node_modules ./src/index.ts"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.9.3"
+  },
+  "dependencies": {
+    "@types/node": "^14.0.10",
+    "axios": "^0.19.2",
+    "moment": "^2.26.0",
+    "uuidv4": "^6.1.0"
+  }
+}
