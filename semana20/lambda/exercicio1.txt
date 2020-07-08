@@ -1,0 +1,37 @@
+a)
+
+b){
+      statusCode: 400,
+      body: JSON.stringify({ message: "Missing input" })
+    };
+
+c) {
+      statusCode: 400,
+      body: JSON.stringify({ message: "Missing input" })
+    };
+
+d){
+      statusCode: 400,
+      body: JSON.stringify({ message: "Missing email" })
+    };
+
+e){
+      statusCode: 400,
+      body: JSON.stringify({ message: "Invalid password" })
+    };
+
+f) {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: "User is correct"
+    })
+  }
+
+g) if (!user.email) {
+    return {
+      statusCode: 422,
+      body: JSON.stringify({ message: "Missing email" })
+    };
+  }
+
+h) um objeto contento 'user', esse objeto deve conter um 'info' que deve contar 'name', 'email' e 'password', sendo que a password deve ter no mínimo 6 digitos.
